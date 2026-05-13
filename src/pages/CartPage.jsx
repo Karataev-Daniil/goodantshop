@@ -1,8 +1,10 @@
 ﻿import { useState } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
+import { ants } from "../data/antsData";
+import { formicariums } from "../data/formicariumsData";
 
 export default function CartPage() {
-  const { t, cartItems, updateCartQty, removeFromCart, clearCart } = useOutletContext();
+  const { t, cartIds, updateCartQty, removeFromCart, clearCart } = useOutletContext();
   const { lang = "ru" } = useParams();
 
   const [firstName, setFirstName] = useState("");
@@ -26,7 +28,7 @@ export default function CartPage() {
       return;
     }
 
-    if (cartItems.length === 0) {
+    if (cartIds.length === 0) {
       setStatus({
         type: "error",
         text: t({
@@ -49,7 +51,7 @@ export default function CartPage() {
           firstName,
           lastName,
           phone,
-          items: cartItems,
+          items: cartIds,
         }),
       });
 
@@ -86,6 +88,28 @@ export default function CartPage() {
     }
   };
 
+  const getText = (value) => {
+    if (value && typeof value === "object") {
+      return value[lang] ?? value.ru ?? value.ro ?? value.en ?? "";
+    }
+    return value ?? "";
+  };
+
+  const catalog = [...ants, ...formicariums];
+
+  const cartItems = cartIds
+    .map((cartItem) => {
+      const product = catalog.find((entry) => String(entry.id) === String(cartItem.id));
+      if (!product) return null;
+
+      return {
+        id: cartItem.id,
+        title: getText(product.title),
+        price: product.priceOptions?.[0]?.value ?? "",
+      };
+    })
+    .filter(Boolean);
+
   return (
     <section className="section cart-page">
       <h1>{t({ ru: "Корзина", ro: "Cos", en: "Cart" })}</h1>
@@ -96,20 +120,14 @@ export default function CartPage() {
             <p>{t({ ru: "Корзина пока пуста.", ro: "Cosul este gol.", en: "Your cart is empty." })}</p>
           ) : (
             cartItems.map((item) => (
-              <article key={`${item.id}-${item.variant}`} className="cart-item">
+              <article key={`${item.id}`} className="cart-item">
                 <div>
                   <h3>{item.title}</h3>
-                  {item.variant && <p>{item.variant}</p>}
                   {item.price && <p>{item.price}</p>}
+                  <p>{t({ ru: "Количество", ro: "Cantitate", en: "Quantity" })}: {item.qty}</p>
                 </div>
                 <div className="cart-item__controls">
-                  <input
-                    type="number"
-                    min="1"
-                    value={item.qty}
-                    onChange={(event) => updateCartQty(item.id, item.variant, Number(event.target.value || 1))}
-                  />
-                  <button type="button" className="btn btn-secondary" onClick={() => removeFromCart(item.id, item.variant)}>
+                  <button type="button" className="btn btn-secondary" onClick={() => removeFromCart(item.id)}>
                     {t({ ru: "Удалить", ro: "Sterge", en: "Remove" })}
                   </button>
                 </div>
@@ -135,7 +153,7 @@ export default function CartPage() {
 
           {status.text && <p className={`cart-status ${status.type}`}>{status.text}</p>}
 
-          <button type="submit" className="btn" disabled={loading || cartItems.length === 0}>
+          <button type="submit" className="btn" disabled={loading || cartIds.length === 0}>
             {loading
               ? t({ ru: "Отправка...", ro: "Se trimite...", en: "Sending..." })
               : t({ ru: "Отправить заказ", ro: "Trimite comanda", en: "Send order" })}
@@ -145,3 +163,4 @@ export default function CartPage() {
     </section>
   );
 }
+

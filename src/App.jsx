@@ -1,5 +1,6 @@
 ﻿import { NavLink, Navigate, Route, Routes, useLocation, useNavigate, useParams, Outlet } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import localforage from 'localforage';
 import HomePage from "./pages/HomePage";
 import AntsPage from "./pages/AntsPage";
 import SingleAntPage from "./pages/SingleAntPage";
@@ -12,13 +13,43 @@ import CartPage from "./pages/CartPage";
 import HeaderMenu from "./components/navigation/HeaderMenu";
 import FooterMenu from "./components/navigation/FooterMenu";
 
+function useLocalForage( key, initialValue ) {
+  const [state, setState] = useState(initialValue)
+  const [hydrated, setHydrated] = useState(false)
+
+  useEffect(() => {
+    let mounted = true
+
+    localforage.getItem(key).then(value => {
+      if (!mounted) return
+
+      if (value !== null) {
+        setState(value)
+      }
+
+      setHydrated(true)
+    })
+
+    return () => {
+      mounted = false
+    }
+  }, [key])
+
+  useEffect(() => {
+    if (!hydrated) return
+    localforage.setItem(key, state)
+  }, [key, state, hydrated])
+
+  return [state, setState]
+}
+
 function Layout() {
   const { lang } = useParams();
   const curLang = lang || "ru";
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [cartItems, setCartItems] = useState([]);
+  const [cartIds, setcartIds] = useLocalForage('cart-ids', []);
 
   const switchLang = (nextLang) => {
     const parts = location.pathname.split('/').filter(Boolean);
@@ -33,38 +64,36 @@ function Layout() {
   const t = (map) => map[curLang] ?? map.ru ?? map.ro ?? map.en;
 
   const addToCart = (item) => {
-    setCartItems((prev) => {
-      const idx = prev.findIndex((x) => x.id === item.id && x.variant === item.variant);
-      if (idx >= 0) {
-        const next = [...prev];
-        next[idx] = { ...next[idx], qty: next[idx].qty + 1 };
-        return next;
+    setcartIds((prev) => {
+      const existing = prev.find((entry) => entry.id === item.id);
+      if (existing) {
+        return prev.map((entry) => (entry.id === item.id ? { ...entry, qty: entry.qty + 1 } : entry));
       }
-      return [...prev, { ...item, qty: 1 }];
+      return [...prev, { id: item.id, qty: 1 }];
     });
   };
 
-  const updateCartQty = (id, variant, qty) => {
-    setCartItems((prev) =>
+  const updateCartQty = (id, qty) => {
+    setcartIds((prev) =>
       prev
-        .map((item) => (item.id === id && item.variant === variant ? { ...item, qty: Math.max(1, qty) } : item))
+        .map((item) => (item.id === id ? { id: item.id, qty: Math.max(1, qty) } : item))
         .filter((item) => item.qty > 0)
     );
   };
 
-  const removeFromCart = (id, variant) => {
-    setCartItems((prev) => prev.filter((item) => !(item.id === id && item.variant === variant)));
+  const removeFromCart = (id) => {
+    setcartIds((prev) => prev.filter((item) => !(item.id === id)));
   };
 
-  const clearCart = () => setCartItems([]);
+  const clearCart = () => setcartIds([]);
 
-  const cartCount = useMemo(() => cartItems.reduce((sum, item) => sum + item.qty, 0), [cartItems]);
+  const cartCount = useMemo(() => cartIds.reduce((sum, item) => sum + item.qty, 0), [cartIds]);
 
   return (
     <div className="site-shell">
       <HeaderMenu curLang={curLang} switchLang={switchLang} t={t} cartCount={cartCount} />
       <main className="container">
-        <Outlet context={{ t, addToCart, cartItems, updateCartQty, removeFromCart, clearCart }} />
+        <Outlet context={{ t, addToCart, cartIds, updateCartQty, removeFromCart, clearCart }} />
       </main>
       <FooterMenu curLang={curLang} />
     </div>

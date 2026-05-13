@@ -46,7 +46,7 @@ export default function ProductCard({ item, linkTo, onAddToCart }) {
               className="btn btn-secondary"
               onClick={() =>
                 onAddToCart({
-                  id: `${item.slug}-base`,
+                  id: item.id,
                   slug: item.slug,
                   title,
                   qty: 1,

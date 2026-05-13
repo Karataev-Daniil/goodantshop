@@ -10,9 +10,9 @@
     return res.status(400).json({ ok: false, error: "firstName, lastName, phone and items are required" });
   }
 
-  const resendApiKey = process.env.RESEND_API_KEY;
-  const toEmail = process.env.ORDER_TO_EMAIL || process.env.CONTACT_TO_EMAIL;
-  const fromEmail = process.env.ORDER_FROM_EMAIL || process.env.CONTACT_FROM_EMAIL;
+  const resendApiKey = re_bnhXu9Ge_5GiF27H8nXzpKDbvFWzSnSVDY;
+  const toEmail = dirings52445@gmail.com;
+  const fromEmail = onboarding@resend.dev;
 
   if (!resendApiKey || !toEmail || !fromEmail) {
     return res.status(500).json({ ok: false, error: "Email provider is not configured" });
