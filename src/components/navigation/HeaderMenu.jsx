@@ -1,6 +1,6 @@
 ﻿import { NavLink } from "react-router-dom";
 
-export default function HeaderMenu({ curLang, switchLang, t }) {
+export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
   const langLabel = curLang.toUpperCase();
 
   const onLangSelect = (event, nextLang) => {
@@ -34,6 +34,9 @@ export default function HeaderMenu({ curLang, switchLang, t }) {
           </NavLink>
           <NavLink to={`/${curLang}/blog`}>
             {t({ ru: "Блог", ro: "Blog", en: "Blog" })}
+          </NavLink>
+          <NavLink to={`/${curLang}/cart`}>
+            {t({ ru: `Корзина (${cartCount})`, ro: `Cos (${cartCount})`, en: `Cart (${cartCount})` })}
           </NavLink>
           <details className="lang-dropdown">
             <summary className="lang-dropdown__trigger">{langLabel}</summary>

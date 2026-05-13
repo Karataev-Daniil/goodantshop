@@ -3,7 +3,7 @@ import { ants } from "../data/antsData";
 import { useOutletContext, useParams } from "react-router-dom";
 
 export default function AntsPage() {
-  const { t } = useOutletContext();
+  const { t, addToCart } = useOutletContext();
   const { lang = "ru" } = useParams();
 
   return (
@@ -11,7 +11,7 @@ export default function AntsPage() {
       <h1>{t({ ru: "Муравьи", ro: "Furnici", en: "Ants" })}</h1>
       <div className="grid three">
         {ants.map((item) => (
-          <ProductCard key={item.id} item={item} linkTo={`/${lang}/ants/${item.slug}`} />
+          <ProductCard key={item.id} item={item} linkTo={`/${lang}/ants/${item.slug}`} onAddToCart={addToCart} />
         ))}
       </div>
     </section>

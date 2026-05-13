@@ -7,11 +7,14 @@ const getText = (value, lang) => {
   return value ?? "";
 };
 
-export default function ProductCard({ item, linkTo }) {
+export default function ProductCard({ item, linkTo, onAddToCart }) {
   const { lang = "ru" } = useParams();
   const imageSrc = item.image || item.images?.[0] || "/logo.png";
   const title = getText(item.title, lang);
   const excerpt = getText(item.excerpt, lang);
+  const priceOptions = item.priceOptions ?? [];
+
+  const firstPrice = priceOptions[0];
 
   return (
     <article className="product-card">
@@ -23,9 +26,39 @@ export default function ProductCard({ item, linkTo }) {
           <Link to={linkTo}>{title}</Link>
         </h3>
         <p>{excerpt}</p>
-        <Link className="btn" to={linkTo}>
-          Подробнее
-        </Link>
+        {priceOptions.length > 0 && (
+          <div className="product-prices">
+            {priceOptions.map((option) => (
+              <p key={`${option.value}-${option.label?.ru ?? "price"}`} className="product-prices__row">
+                <span>{getText(option.label, lang)}</span>
+                <strong>{option.value}</strong>
+              </p>
+            ))}
+          </div>
+        )}
+        <div className="product-actions">
+          <Link className="btn" to={linkTo}>
+            {getText({ ru: "Подробнее", ro: "Detalii", en: "Details" }, lang)}
+          </Link>
+          {onAddToCart && (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() =>
+                onAddToCart({
+                  id: `${item.slug}-base`,
+                  slug: item.slug,
+                  title,
+                  qty: 1,
+                  variant: firstPrice ? getText(firstPrice.label, lang) : "",
+                  price: firstPrice?.value ?? "",
+                })
+              }
+            >
+              {getText({ ru: "В корзину", ro: "In cos", en: "Add to cart" }, lang)}
+            </button>
+          )}
+        </div>
       </div>
     </article>
   );

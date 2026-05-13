@@ -2,6 +2,25 @@
 import lasiusNigerImage from "../assets/images/lasius-niger.webp";
 import camponotusFellahImage from "../assets/images/camponotus-fellah.webp";
 
+const priceOptions = [
+  {
+    label: {
+      ru: "Матка + расплод (стартовая колония)",
+      ro: "Regina + puiet (colonie starter)",
+      en: "Queen + brood (starter colony)",
+    },
+    value: "550 лей",
+  },
+  {
+    label: {
+      ru: "Матка + расплод + 10-20 рабочих",
+      ro: "Regina + puiet + 10-20 lucratoare",
+      en: "Queen + brood + 10-20 workers",
+    },
+    value: "650 лей",
+  },
+];
+
 export const ants = [
   {
     id: 44,
@@ -22,6 +41,7 @@ export const ants = [
       en: "Messor structor is a popular starter species. It needs a dry arena and moderate humidity in the nest area."
     },
     image: messorStructorImage,
+    priceOptions,
     characteristics: [
       {
         label: { ru: "Температура", ro: "Temperatura", en: "Temperature" },
@@ -57,6 +77,7 @@ export const ants = [
       en: "Lasius niger adapts easily and grows well in basic conditions. A great option for a first formicarium."
     },
     image: lasiusNigerImage,
+    priceOptions,
     characteristics: [
       {
         label: { ru: "Температура", ro: "Temperatura", en: "Temperature" },
@@ -92,6 +113,7 @@ export const ants = [
       en: "Camponotus fellah needs stable conditions and regular protein feeding. Suitable for confident beginners and experienced keepers."
     },
     image: camponotusFellahImage,
+    priceOptions,
     characteristics: [
       {
         label: { ru: "Температура", ro: "Temperatura", en: "Temperature" },
@@ -111,4 +133,3 @@ export const ants = [
 ];
 
 export const popularAntIds = [44, 43, 42];
-

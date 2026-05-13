@@ -1,0 +1,36 @@
+﻿.blog-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.blog-card { overflow: hidden; }
+.blog-card__cover { height: 180px; background: linear-gradient(140deg, #f0f0f0, #e7e7e7); border-bottom: 1px solid var(--line); }
+.blog-card__content { padding: 1rem; display: grid; gap: .8rem; }
+.blog-card__content h3,
+.blog-card__content p { margin: 0; }
+.blog-card__content p { color: var(--muted); }
+
+.blog-single { display: grid; gap: 1.2rem; }
+.blog-single__hero { display: grid; grid-template-columns: 1.1fr .9fr; gap: 1rem; }
+.blog-single__media {
+  min-height: 320px;
+  border-radius: 2px;
+  background: linear-gradient(140deg, #f1f1f1, #ebebeb);
+  box-shadow: 0 0 0 1px #ececec;
+}
+.blog-single__meta {
+  border-radius: 2px;
+  padding: 1rem;
+  display: grid;
+  align-content: start;
+  gap: .8rem;
+  box-shadow: 0 0 0 1px #ececec;
+  background: #fff;
+}
+.blog-single__meta h1,
+.blog-single__meta p { margin: 0; }
+
+@media (max-width: 980px) {
+  .blog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .blog-single__hero { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 680px) {
+  .blog-grid { grid-template-columns: 1fr; }
+}

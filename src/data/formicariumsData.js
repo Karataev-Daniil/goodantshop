@@ -1,4 +1,23 @@
-﻿export const formicariums = [
+﻿const priceOptions = [
+  {
+    label: {
+      ru: "Матка + расплод (стартовая колония)",
+      ro: "Regina + puiet (colonie starter)",
+      en: "Queen + brood (starter colony)",
+    },
+    value: "550 лей",
+  },
+  {
+    label: {
+      ru: "Матка + расплод + 10-20 рабочих",
+      ro: "Regina + puiet + 10-20 lucratoare",
+      en: "Queen + brood + 10-20 workers",
+    },
+    value: "650 лей",
+  },
+];
+
+export const formicariums = [
   {
     id: 201,
     slug: "acrylic-start-s",
@@ -12,7 +31,8 @@
       ro: "Formicar compact de start pentru o colonie tanara.",
       en: "A compact starter formicarium for a young colony."
     },
-    images: []
+    images: [],
+    priceOptions,
   },
   {
     id: 202,
@@ -27,7 +47,8 @@
       ro: "Umiditate stabila si vizibilitate buna a camerelor.",
       en: "Stable humidity and a convenient chamber view."
     },
-    images: []
+    images: [],
+    priceOptions,
   },
   {
     id: 203,
@@ -42,7 +63,8 @@
       ro: "Sistem modular cu posibilitate de extindere.",
       en: "Modular system with expansion options."
     },
-    images: []
+    images: [],
+    priceOptions,
   },
   {
     id: 204,
@@ -57,7 +79,8 @@
       ro: "Formicar fiabil cu ventilatie buna.",
       en: "Reliable formicarium with good ventilation."
     },
-    images: []
+    images: [],
+    priceOptions,
   },
   {
     id: 205,
@@ -72,7 +95,8 @@
       ro: "Model simplu si clar pentru primul start.",
       en: "Simple and clear model for a first setup."
     },
-    images: []
+    images: [],
+    priceOptions,
   },
   {
     id: 206,
@@ -87,7 +111,7 @@
       ro: "Suport pentru control precis al umiditatii in camere.",
       en: "Supports precise chamber humidity control."
     },
-    images: []
+    images: [],
+    priceOptions,
   }
 ];
-

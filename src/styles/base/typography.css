@@ -1,0 +1,76 @@
+﻿/* Typography Utilities */
+.display-largest { font-family: var(--font-ui); font-size: 96px; line-height: 130%; font-weight: 700; }
+.display-larger { font-family: var(--font-ui); font-size: 76px; line-height: 130%; font-weight: 700; }
+.display-large { font-family: var(--font-ui); font-size: 56px; line-height: 130%; font-weight: 700; }
+.display-medium { font-family: var(--font-ui); font-size: 48px; line-height: 130%; font-weight: 700; }
+.display-small { font-family: var(--font-ui); font-size: 36px; line-height: 130%; font-weight: 700; }
+.title-largest { font-family: var(--font-ui); font-size: 28px; line-height: 140%; font-weight: 700; }
+.title-larger { font-family: var(--font-ui); font-size: 24px; line-height: 140%; font-weight: 700; }
+.title-large { font-family: var(--font-ui); font-size: 20px; line-height: 140%; font-weight: 700; }
+.title-medium { font-family: var(--font-ui); font-size: 17px; line-height: 140%; font-weight: 700; }
+.title-small { font-family: var(--font-ui); font-size: 15px; line-height: 140%; font-weight: 700; }
+.title-smaller { font-family: var(--font-ui); font-size: 14px; line-height: 140%; font-weight: 700; }
+.button-larger { font-family: var(--font-ui); font-size: 24px; line-height: 130%; font-weight: 600; }
+.button-large { font-family: var(--font-ui); font-size: 20px; line-height: 130%; font-weight: 600; }
+.button-medium { font-family: var(--font-ui); font-size: 17px; line-height: 130%; font-weight: 600; }
+.button-small { font-family: var(--font-ui); font-size: 15px; line-height: 130%; font-weight: 600; }
+.label-larger { font-family: var(--font-ui); font-size: 24px; line-height: 150%; font-weight: 600; }
+.label-large { font-family: var(--font-ui); font-size: 20px; line-height: 150%; font-weight: 600; }
+.label-medium { font-family: var(--font-ui); font-size: 17px; line-height: 150%; font-weight: 600; }
+.label-small { font-family: var(--font-ui); font-size: 15px; line-height: 150%; font-weight: 600; }
+.link-larger-default, .link-larger-underline { font-family: var(--font-ui); font-size: 24px; line-height: 150%; font-weight: 500; }
+.link-large-default, .link-large-underline { font-family: var(--font-ui); font-size: 20px; line-height: 150%; font-weight: 500; }
+.link-medium-default, .link-medium-underline { font-family: var(--font-ui); font-size: 17px; line-height: 150%; font-weight: 500; }
+.link-small-default, .link-small-underline { font-family: var(--font-ui); font-size: 15px; line-height: 150%; font-weight: 500; }
+.link-larger-default, .link-large-default, .link-medium-default, .link-small-default { text-decoration: none; }
+.link-larger-underline, .link-large-underline, .link-medium-underline, .link-small-underline { text-decoration: underline; }
+.body-larger-regular { font-family: var(--font-ui); font-size: 24px; line-height: 160%; font-weight: 400; }
+.body-larger-medium { font-family: var(--font-ui); font-size: 24px; line-height: 160%; font-weight: 500; }
+.body-larger-semibold { font-family: var(--font-ui); font-size: 24px; line-height: 160%; font-weight: 600; }
+.body-large-regular { font-family: var(--font-ui); font-size: 20px; line-height: 160%; font-weight: 400; }
+.body-large-medium { font-family: var(--font-ui); font-size: 20px; line-height: 160%; font-weight: 500; }
+.body-large-semibold { font-family: var(--font-ui); font-size: 20px; line-height: 160%; font-weight: 600; }
+.body-medium-regular { font-family: var(--font-ui); font-size: 17px; line-height: 160%; font-weight: 400; }
+.body-medium-medium { font-family: var(--font-ui); font-size: 17px; line-height: 160%; font-weight: 500; }
+.body-medium-semibold { font-family: var(--font-ui); font-size: 17px; line-height: 160%; font-weight: 600; }
+.body-small-regular { font-family: var(--font-ui); font-size: 15px; line-height: 160%; font-weight: 400; }
+.body-small-medium { font-family: var(--font-ui); font-size: 15px; line-height: 160%; font-weight: 500; }
+.body-small-semibold { font-family: var(--font-ui); font-size: 15px; line-height: 160%; font-weight: 600; }
+.quote-default-medium { font-family: var(--font-ui); font-size: 17px; line-height: 150%; font-weight: 500; quotes: "'" "'"; }
+.uppercase-large { font-family: var(--font-ui); font-size: 20px; line-height: 140%; font-weight: 700; text-transform: uppercase; }
+.uppercase-medium { font-family: var(--font-ui); font-size: 17px; line-height: 140%; font-weight: 700; text-transform: uppercase; }
+.uppercase-small { font-family: var(--font-ui); font-size: 15px; line-height: 140%; font-weight: 700; text-transform: uppercase; }
+
+@media screen and (max-width: 440px) {
+  .display-largest { font-size: 64px; }
+  .display-larger { font-size: 56px; }
+  .display-large { font-size: 40px; }
+  .display-medium { font-size: 32px; }
+  .display-small { font-size: 28px; }
+  .title-largest { font-size: 22px; }
+  .title-larger { font-size: 20px; }
+  .title-large { font-size: 18px; }
+  .title-medium { font-size: 17px; }
+  .title-small { font-size: 15px; }
+  .title-smaller { font-size: 14px; }
+  .button-larger { font-size: 21px; }
+  .button-large { font-size: 18px; }
+  .button-medium { font-size: 15px; }
+  .button-small { font-size: 14px; }
+  .label-larger { font-size: 21px; line-height: 140%; }
+  .label-large { font-size: 18px; line-height: 140%; }
+  .label-medium { font-size: 15px; line-height: 140%; }
+  .label-small { font-size: 13px; line-height: 140%; }
+  .link-larger-default, .link-larger-underline { font-size: 21px; }
+  .link-large-default, .link-large-underline { font-size: 18px; }
+  .link-medium-default, .link-medium-underline { font-size: 15px; }
+  .link-small-default, .link-small-underline { font-size: 13px; }
+  .body-larger-regular, .body-larger-medium, .body-larger-semibold { font-size: 21px; line-height: 150%; }
+  .body-large-regular, .body-large-medium, .body-large-semibold { font-size: 18px; line-height: 150%; }
+  .body-medium-regular, .body-medium-medium, .body-medium-semibold { font-size: 15px; line-height: 150%; }
+  .body-small-regular, .body-small-medium, .body-small-semibold { font-size: 13px; line-height: 150%; }
+  .quote-default-medium { font-size: 20px; }
+  .uppercase-large { font-size: 24px; }
+  .uppercase-medium { font-size: 20px; }
+  .uppercase-small { font-size: 17px; }
+}

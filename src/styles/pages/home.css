@@ -1,0 +1,136 @@
+.home-section { margin-top: 120px; }
+.main.home-section { margin-top: 120px; }
+
+.main-wrap { display: grid; grid-template-columns: 1.2fr .8fr; gap: 2rem; align-items: center; }
+.main-wrap__kicker { margin: 0; color: var(--muted); font-weight: 700; letter-spacing: .08em; }
+.main-wrap__title { margin: .2rem 0 1rem; line-height: .95; color: var(--accent); }
+.main-wrap__text { color: var(--muted); }
+.main-wrap__actions { margin-top: 1.2rem; display: flex; flex-wrap: wrap; gap: .5rem; }
+.main-wrap__list { margin-top: 1rem; display: grid; gap: 1rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.main-wrap__item h3 { margin: 0; }
+.main-wrap__item p { margin: .5rem 0 0; color: var(--muted); }
+.main-wrap__media img { width: 100%; max-width: 420px; justify-self: center; border-radius: 2px; }
+
+.start-wrap__title,
+.packs-wrap__title,
+.benefit-wrap__title,
+.video-wrap__title,
+.category-wrap__title,
+.beginner-wrap__title,
+.care-wrap__title,
+.reviews-wrap__title,
+.faq-wrap__title { margin: 0 0 1.2rem; }
+
+.start-wrap__grid,
+.packs-wrap__grid,
+.benefit-wrap__grid,
+.video-wrap__grid,
+.category-wrap__grid,
+.beginner-wrap__grid,
+.care-wrap__grid,
+.reviews-wrap__grid { display: grid; gap: 1.2rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.start-wrap__card h3,
+.benefit-wrap__card h3,
+.video-wrap__card h3,
+.beginner-wrap__card h3,
+.care-wrap__card h3,
+.reviews-wrap__card h3,
+.packs-wrap__body h3 { margin: 0; }
+
+.start-wrap__card p,
+.benefit-wrap__card p,
+.video-wrap__card p,
+.beginner-wrap__card p,
+.care-wrap__card p,
+.reviews-wrap__card p,
+.packs-wrap__body p,
+.faq-wrap__item p { margin: .5rem 0 0; color: var(--muted); }
+
+.packs-wrap__card { overflow: hidden; display: grid; grid-template-rows: 210px 1fr; }
+.packs-wrap__media img { width: 100%; height: 100%; object-fit: cover; }
+.packs-wrap__body { padding: 1rem; display: grid; gap: .7rem; }
+.packs-wrap__body p { margin: 0; }
+
+.category-wrap__card { display: block; font-weight: 700; }
+.faq-wrap__list { display: grid; gap: .7rem; }
+.faq-wrap__item summary { cursor: pointer; font-weight: 700; }
+
+.hobby-intro {
+  box-shadow: 0 0 0 1px #ececec;
+  padding: 1.2rem;
+  display: grid;
+  gap: .8rem;
+  background: #fff;
+}
+.hobby-intro h2 { margin: 0; }
+.hobby-intro p { margin: 0; color: rgb(21 21 21 / 70%); }
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.section-heading h2 { margin: 0; }
+
+.product-prices {
+  display: grid;
+  gap: .4rem;
+  margin-top: .2rem;
+}
+.product-prices__row {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: .8rem;
+  color: rgb(21 21 21 / 76%);
+  font-size: .9rem;
+  line-height: 1.35;
+}
+.product-prices__row strong {
+  color: #0f110f;
+  white-space: nowrap;
+}
+
+@media (max-width: 980px) {
+  .main-wrap,
+  .start-wrap__grid,
+  .packs-wrap__grid,
+  .benefit-wrap__grid,
+  .video-wrap__grid,
+  .category-wrap__grid,
+  .beginner-wrap__grid,
+  .care-wrap__grid,
+  .reviews-wrap__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .main-wrap { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 680px) {
+  .main-wrap__list,
+  .start-wrap__grid,
+  .packs-wrap__grid,
+  .benefit-wrap__grid,
+  .video-wrap__grid,
+  .category-wrap__grid,
+  .beginner-wrap__grid,
+  .care-wrap__grid,
+  .reviews-wrap__grid { grid-template-columns: 1fr; }
+
+  .section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .product-prices__row {
+    flex-direction: column;
+    gap: .15rem;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .home-section { margin-top: 80px; }
+  .main.home-section { margin-top: 80px; }
+}
