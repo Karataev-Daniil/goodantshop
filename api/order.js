@@ -1,12 +1,22 @@
 ﻿export default async function handler(req, res) {
+  // Handle CORS preflight
+  if (req.method === "OPTIONS") {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    return res.status(200).end();
+  }
+
   if (req.method !== "POST") {
     res.setHeader("Allow", ["POST"]);
+    res.setHeader("Access-Control-Allow-Origin", "*");
     return res.status(405).json({ ok: false, error: "Method Not Allowed" });
   }
 
   const { firstName, lastName, phone, items } = req.body || {};
 
   if (!firstName || !lastName || !phone || !Array.isArray(items) || items.length === 0) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     return res.status(400).json({ ok: false, error: "firstName, lastName, phone and items are required" });
   }
 
@@ -17,6 +27,7 @@
   const fromEmail = req.body.from || process.env.FROM_EMAIL;
 
   if (!resendApiKey || !toEmail || !fromEmail) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
     return res.status(500).json({ ok: false, error: "Email provider is not configured" });
   }
 
@@ -88,12 +99,15 @@
     if (!response.ok) {
       const provider = await response.text();
       console.error('Resend send failed', { status: response.status, provider });
+      res.setHeader("Access-Control-Allow-Origin", "*");
       return res.status(502).json({ ok: false, error: "Email delivery failed", provider });
     }
 
+    res.setHeader("Access-Control-Allow-Origin", "*");
     return res.status(200).json({ ok: true, message: "Order sent successfully" });
   } catch (error) {
     console.error('Order send exception', error);
+    res.setHeader("Access-Control-Allow-Origin", "*");
     return res.status(502).json({ ok: false, error: "Email delivery failed" });
   }
 }
