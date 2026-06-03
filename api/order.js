@@ -1,23 +1,28 @@
-﻿export default async function handler(req, res) {
-  console.log('API handler called:', {
-    method: req.method,
-    path: req.url,
-    body: req.body ? Object.keys(req.body) : 'empty',
-  });
+﻿function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
 
-  // Set CORS headers for all responses
+async function handler(req, res) {
+  console.log('[ORDER] Method:', req.method, 'Path:', req.url);
+  
+  // Set CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  // Handle CORS preflight
+  // Handle preflight
   if (req.method === "OPTIONS") {
     return res.status(200).end();
   }
 
-  // Only allow POST
+  // Only POST
   if (req.method !== "POST") {
-    console.error('Method not POST:', req.method);
+    console.error('[ORDER] Not POST:', req.method);
     return res.status(405).json({ ok: false, error: "Method Not Allowed" });
   }
 
@@ -25,7 +30,8 @@
     const { firstName, lastName, phone, items } = req.body || {};
 
     if (!firstName || !lastName || !phone || !Array.isArray(items) || items.length === 0) {
-      return res.status(400).json({ ok: false, error: "Missing required fields" });
+      console.error('[ORDER] Invalid body');
+      return res.status(400).json({ ok: false, error: "Missing fields" });
     }
 
     const resendApiKey = process.env.RESEND_API_KEY;
@@ -34,12 +40,9 @@
     const fromEmail = req.body.from || process.env.FROM_EMAIL;
 
     if (!resendApiKey || !toEmail || !fromEmail) {
+      console.error('[ORDER] Missing config');
       return res.status(500).json({ ok: false, error: "Config missing" });
     }
-
-    const safeFirstName = String(firstName).trim();
-    const safeLastName = String(lastName).trim();
-    const safePhone = String(phone).trim();
 
     const normalizedItems = items.map((item) => ({
       title: String(item.title || "").trim(),
@@ -52,24 +55,9 @@
       .map((item, index) => `${index + 1}. ${item.title} x${item.qty}${item.variant ? ` | ${item.variant}` : ""}${item.price ? ` | ${item.price}` : ""}`)
       .join("\n");
 
-    const text = [
-      "New order from cart",
-      `First name: ${safeFirstName}`,
-      `Last name: ${safeLastName}`,
-      `Phone: ${safePhone}`,
-      "",
-      "Items:",
-      itemsText,
-    ].join("\n");
+    const html = `<h2>New order</h2><p><strong>Name:</strong> ${escapeHtml(firstName)} ${escapeHtml(lastName)}</p><p><strong>Phone:</strong> ${escapeHtml(phone)}</p><p><strong>Items:</strong></p><ol>${normalizedItems.map((i) => `<li>${escapeHtml(i.title)} x${i.qty}</li>`).join("")}</ol>`;
 
-    const htmlItems = normalizedItems
-      .map(
-        (item) =>
-          `<li><strong>${escapeHtml(item.title)}</strong> x${item.qty}${item.variant ? ` - ${escapeHtml(item.variant)}` : ""}${item.price ? ` - ${escapeHtml(item.price)}` : ""}</li>`
-      )
-      .join("");
-
-    const html = `<h2>New order</h2><p><strong>Name:</strong> ${escapeHtml(safeFirstName)} ${escapeHtml(safeLastName)}</p><p><strong>Phone:</strong> ${escapeHtml(safePhone)}</p><p><strong>Items:</strong></p><ol>${htmlItems}</ol>`;
+    console.log('[ORDER] Sending to:', toEmail);
 
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -80,30 +68,23 @@
       body: JSON.stringify({
         from: fromEmail,
         to: Array.isArray(toEmail) ? toEmail : [toEmail],
-        subject: `New order: ${safeFirstName} ${safeLastName}`,
-        text,
+        subject: `Order: ${firstName} ${lastName}`,
         html,
       }),
     });
 
     if (!response.ok) {
       const error = await response.text();
-      console.error('Resend error:', error);
+      console.error('[ORDER] Resend error:', error);
       return res.status(502).json({ ok: false, error: "Email failed" });
     }
 
     return res.status(200).json({ ok: true, message: "Order sent" });
-  } catch (error) {
-    console.error('Handler error:', error);
+  } catch (err) {
+    console.error('[ORDER] Error:', err.message);
     return res.status(500).json({ ok: false, error: "Server error" });
   }
 }
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
+export default handler;
+
