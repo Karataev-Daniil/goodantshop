@@ -1,13 +1,19 @@
 ﻿export default async function handler(req, res) {
+  console.log('API called:', { method: req.method, url: req.url, path: req.path });
+  
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    console.log('OPTIONS preflight handled');
     return res.status(200).end();
   }
 
+  console.log('Method check:', req.method);
+  
   if (req.method !== "POST") {
+    console.error('Invalid method:', req.method);
     res.setHeader("Allow", ["POST"]);
     res.setHeader("Access-Control-Allow-Origin", "*");
     return res.status(405).json({ ok: false, error: "Method Not Allowed" });
