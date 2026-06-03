@@ -1,92 +1,76 @@
 ﻿export default async function handler(req, res) {
-  console.log('API called:', { method: req.method, url: req.url, path: req.path });
-  
+  console.log('API handler called:', {
+    method: req.method,
+    path: req.url,
+    body: req.body ? Object.keys(req.body) : 'empty',
+  });
+
+  // Set CORS headers for all responses
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    console.log('OPTIONS preflight handled');
     return res.status(200).end();
   }
 
-  console.log('Method check:', req.method);
-  
+  // Only allow POST
   if (req.method !== "POST") {
-    console.error('Invalid method:', req.method);
-    res.setHeader("Allow", ["POST"]);
-    res.setHeader("Access-Control-Allow-Origin", "*");
+    console.error('Method not POST:', req.method);
     return res.status(405).json({ ok: false, error: "Method Not Allowed" });
   }
 
-  const { firstName, lastName, phone, items } = req.body || {};
-
-  if (!firstName || !lastName || !phone || !Array.isArray(items) || items.length === 0) {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    return res.status(400).json({ ok: false, error: "firstName, lastName, phone and items are required" });
-  }
-
-  const resendApiKey = process.env.RESEND_API_KEY;
-  const defaultOrderEmail = process.env.RESEND_TEST_EMAIL || process.env.ORDER_EMAIL;
-  // allow override from request body, otherwise use env fallback
-  const toEmail = req.body.to || defaultOrderEmail;
-  const fromEmail = req.body.from || process.env.FROM_EMAIL;
-
-  if (!resendApiKey || !toEmail || !fromEmail) {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    return res.status(500).json({ ok: false, error: "Email provider is not configured" });
-  }
-
-  const safeFirstName = String(firstName).trim();
-  const safeLastName = String(lastName).trim();
-  const safePhone = String(phone).trim();
-
-  const normalizedItems = items.map((item) => ({
-    title: String(item.title || "").trim(),
-    qty: Number(item.qty) > 0 ? Number(item.qty) : 1,
-    variant: String(item.variant || "").trim(),
-    price: String(item.price || "").trim(),
-  }));
-
-  console.log('Order request', {
-    firstName: safeFirstName,
-    lastName: safeLastName,
-    toEmail,
-    fromEmail,
-    itemCount: normalizedItems.length,
-  });
-
-  const itemsText = normalizedItems
-    .map((item, index) => `${index + 1}. ${item.title} x${item.qty}${item.variant ? ` | ${item.variant}` : ""}${item.price ? ` | ${item.price}` : ""}`)
-    .join("\n");
-
-  const text = [
-    "New order from cart",
-    `First name: ${safeFirstName}`,
-    `Last name: ${safeLastName}`,
-    `Phone: ${safePhone}`,
-    "",
-    "Items:",
-    itemsText,
-  ].join("\n");
-
-  const htmlItems = normalizedItems
-    .map(
-      (item) =>
-        `<li><strong>${escapeHtml(item.title)}</strong> x${item.qty}${item.variant ? ` - ${escapeHtml(item.variant)}` : ""}${item.price ? ` - ${escapeHtml(item.price)}` : ""}</li>`
-    )
-    .join("");
-
-  const html = `
-    <h2>New order from cart</h2>
-    <p><strong>First name:</strong> ${escapeHtml(safeFirstName)}</p>
-    <p><strong>Last name:</strong> ${escapeHtml(safeLastName)}</p>
-    <p><strong>Phone:</strong> ${escapeHtml(safePhone)}</p>
-    <p><strong>Items:</strong></p>
-    <ol>${htmlItems}</ol>
-  `;
-
   try {
+    const { firstName, lastName, phone, items } = req.body || {};
+
+    if (!firstName || !lastName || !phone || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ ok: false, error: "Missing required fields" });
+    }
+
+    const resendApiKey = process.env.RESEND_API_KEY;
+    const defaultOrderEmail = process.env.RESEND_TEST_EMAIL || process.env.ORDER_EMAIL;
+    const toEmail = req.body.to || defaultOrderEmail;
+    const fromEmail = req.body.from || process.env.FROM_EMAIL;
+
+    if (!resendApiKey || !toEmail || !fromEmail) {
+      return res.status(500).json({ ok: false, error: "Config missing" });
+    }
+
+    const safeFirstName = String(firstName).trim();
+    const safeLastName = String(lastName).trim();
+    const safePhone = String(phone).trim();
+
+    const normalizedItems = items.map((item) => ({
+      title: String(item.title || "").trim(),
+      qty: Number(item.qty) > 0 ? Number(item.qty) : 1,
+      variant: String(item.variant || "").trim(),
+      price: String(item.price || "").trim(),
+    }));
+
+    const itemsText = normalizedItems
+      .map((item, index) => `${index + 1}. ${item.title} x${item.qty}${item.variant ? ` | ${item.variant}` : ""}${item.price ? ` | ${item.price}` : ""}`)
+      .join("\n");
+
+    const text = [
+      "New order from cart",
+      `First name: ${safeFirstName}`,
+      `Last name: ${safeLastName}`,
+      `Phone: ${safePhone}`,
+      "",
+      "Items:",
+      itemsText,
+    ].join("\n");
+
+    const htmlItems = normalizedItems
+      .map(
+        (item) =>
+          `<li><strong>${escapeHtml(item.title)}</strong> x${item.qty}${item.variant ? ` - ${escapeHtml(item.variant)}` : ""}${item.price ? ` - ${escapeHtml(item.price)}` : ""}</li>`
+      )
+      .join("");
+
+    const html = `<h2>New order</h2><p><strong>Name:</strong> ${escapeHtml(safeFirstName)} ${escapeHtml(safeLastName)}</p><p><strong>Phone:</strong> ${escapeHtml(safePhone)}</p><p><strong>Items:</strong></p><ol>${htmlItems}</ol>`;
+
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -96,25 +80,22 @@
       body: JSON.stringify({
         from: fromEmail,
         to: Array.isArray(toEmail) ? toEmail : [toEmail],
-        subject: `New cart order: ${safeFirstName} ${safeLastName}`,
+        subject: `New order: ${safeFirstName} ${safeLastName}`,
         text,
         html,
       }),
     });
 
     if (!response.ok) {
-      const provider = await response.text();
-      console.error('Resend send failed', { status: response.status, provider });
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      return res.status(502).json({ ok: false, error: "Email delivery failed", provider });
+      const error = await response.text();
+      console.error('Resend error:', error);
+      return res.status(502).json({ ok: false, error: "Email failed" });
     }
 
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    return res.status(200).json({ ok: true, message: "Order sent successfully" });
+    return res.status(200).json({ ok: true, message: "Order sent" });
   } catch (error) {
-    console.error('Order send exception', error);
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    return res.status(502).json({ ok: false, error: "Email delivery failed" });
+    console.error('Handler error:', error);
+    return res.status(500).json({ ok: false, error: "Server error" });
   }
 }
 
