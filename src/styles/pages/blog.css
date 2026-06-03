@@ -2,7 +2,7 @@
 .blog-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
+  gap: 16px;
 }
 
 .blog-card {
@@ -16,9 +16,9 @@
 }
 
 .blog-card__content {
-  padding: 1rem;
+  padding: 16px;
   display: grid;
-  gap: 0.8rem;
+  gap: 12.8px;
 }
 
 .blog-card__content h3,
@@ -45,13 +45,13 @@
 /* Section: Blog Single */
 .blog-single {
   display: grid;
-  gap: 1.2rem;
+  gap: 19.2px;
 }
 
 .blog-single__hero {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  gap: 1rem;
+  gap: 16px;
 }
 
 .blog-single__media {
@@ -63,10 +63,10 @@
 
 .blog-single__meta {
   border-radius: 2px;
-  padding: 1rem;
+  padding: 16px;
   display: grid;
   align-content: start;
-  gap: 0.8rem;
+  gap: 12.8px;
   box-shadow: 0 0 0 1px #ececec;
   background: #fff;
 }

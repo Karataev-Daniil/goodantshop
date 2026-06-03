@@ -1,6 +1,5 @@
 ﻿import { NavLink, Navigate, Route, Routes, useLocation, useNavigate, useParams, Outlet } from "react-router-dom";
-import { useEffect, useMemo, useState } from "react";
-import localforage from 'localforage';
+import { useEffect, useState } from "react";
 import HomePage from "./pages/HomePage";
 import AntsPage from "./pages/AntsPage";
 import SingleAntPage from "./pages/SingleAntPage";
@@ -13,34 +12,25 @@ import CartPage from "./pages/CartPage";
 import HeaderMenu from "./components/navigation/HeaderMenu";
 import FooterMenu from "./components/navigation/FooterMenu";
 
-function useLocalForage( key, initialValue ) {
-  const [state, setState] = useState(initialValue)
-  const [hydrated, setHydrated] = useState(false)
+function useLocalStorage(key, initialValue) {
+  const [state, setState] = useState(initialValue);
 
   useEffect(() => {
-    let mounted = true
-
-    localforage.getItem(key).then(value => {
-      if (!mounted) return
-
-      if (value !== null) {
-        setState(value)
+    const stored = window.localStorage.getItem(key);
+    if (stored) {
+      try {
+        setState(JSON.parse(stored));
+      } catch {
+        setState(initialValue);
       }
-
-      setHydrated(true)
-    })
-
-    return () => {
-      mounted = false
     }
-  }, [key])
+  }, [key, initialValue]);
 
   useEffect(() => {
-    if (!hydrated) return
-    localforage.setItem(key, state)
-  }, [key, state, hydrated])
+    window.localStorage.setItem(key, JSON.stringify(state));
+  }, [key, state]);
 
-  return [state, setState]
+  return [state, setState];
 }
 
 function Layout() {
@@ -49,7 +39,7 @@ function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [cartIds, setcartIds] = useLocalForage('cart-ids', []);
+  const [cartIds, setcartIds] = useLocalStorage('cart-ids', []);
 
   const switchLang = (nextLang) => {
     const parts = location.pathname.split('/').filter(Boolean);
@@ -64,30 +54,32 @@ function Layout() {
   const t = (map) => map[curLang] ?? map.ru ?? map.ro ?? map.en;
 
   const addToCart = (item) => {
-    setcartIds((prev) => {
-      const existing = prev.find((entry) => entry.id === item.id);
-      if (existing) {
-        return prev.map((entry) => (entry.id === item.id ? { ...entry, qty: entry.qty + 1 } : entry));
-      }
-      return [...prev, { id: item.id, qty: 1 }];
-    });
+    setcartIds((prev) => [
+      ...prev,
+      {
+        uid: `${item}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`,
+        id: item,
+      },
+    ]);
   };
 
-  const updateCartQty = (id, qty) => {
+  const updateCartQty = (uid, qty) => {
     setcartIds((prev) =>
-      prev
-        .map((item) => (item.id === id ? { id: item.id, qty: Math.max(1, qty) } : item))
-        .filter((item) => item.qty > 0)
+      prev.map((item) => (item.uid === uid ? { ...item, qty } : item))
     );
   };
 
-  const removeFromCart = (id) => {
-    setcartIds((prev) => prev.filter((item) => !(item.id === id)));
+  const removeFromCart = (uid) => {
+    setcartIds((prev) => prev.filter((item) => item.uid !== uid));
   };
 
   const clearCart = () => setcartIds([]);
 
-  const cartCount = useMemo(() => cartIds.reduce((sum, item) => sum + item.qty, 0), [cartIds]);
+  const cartCount = cartIds.length;
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [location.pathname]);
 
   return (
     <div className="site-shell">

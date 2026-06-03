@@ -12,6 +12,7 @@ export default function CartPage() {
   const [phone, setPhone] = useState("");
   const [status, setStatus] = useState({ type: "", text: "" });
   const [loading, setLoading] = useState(false);
+  const [itemOptions, setItemOptions] = useState({});
 
   const submitOrder = async (event) => {
     event.preventDefault();
@@ -43,6 +44,21 @@ export default function CartPage() {
     setLoading(true);
     setStatus({ type: "", text: "" });
 
+    const orderItems = cartItems.map((item) => {
+      const selectedPriceIndex = itemOptions[item.lineId]?.priceIndex ?? 0;
+      const selectedPrice = item.priceOptions[selectedPriceIndex];
+      const selectedColorValue = itemOptions[item.lineId]?.colorValue ?? item.colorOptions?.[0]?.value ?? "";
+      const selectedColor = item.colorOptions.find((option) => option.value === selectedColorValue);
+      const cartItem = cartIds.find((cartItem) => cartItem.uid === item.lineId);
+
+      return {
+        title: getText(item.title),
+        qty: cartItem?.qty > 0 ? cartItem.qty : 1,
+        variant: selectedColor ? getText(selectedColor.label) : "",
+        price: selectedPrice?.value || selectedPrice?.label || "",
+      };
+    });
+
     try {
       const response = await fetch("/api/order", {
         method: "POST",
@@ -51,7 +67,7 @@ export default function CartPage() {
           firstName,
           lastName,
           phone,
-          items: cartIds,
+          items: orderItems,
         }),
       });
 
@@ -64,15 +80,16 @@ export default function CartPage() {
       setStatus({
         type: "success",
         text: t({
-          ru: "Заказ отправлен. Мы свяжемся с вами.",
-          ro: "Comanda a fost trimisa. Te contactam curand.",
-          en: "Order sent. We will contact you soon.",
+          ru: "Заказ отправлен. Мы свяжемся с вами для обсуждения доставки.",
+          ro: "Comanda a fost trimisa. Te contactam pentru a discuta livrarea.",
+          en: "Order sent. We will contact you to discuss delivery.",
         }),
       });
 
       setFirstName("");
       setLastName("");
       setPhone("");
+      setItemOptions({});
       clearCart();
     } catch {
       setStatus({
@@ -103,12 +120,26 @@ export default function CartPage() {
       if (!product) return null;
 
       return {
+        lineId: cartItem.uid,
         id: cartItem.id,
-        title: getText(product.title),
-        price: product.priceOptions?.[0]?.value ?? "",
+        product,
+        title: {
+          ru: product.title.ru,
+          ro: product.title.ro,
+          en: product.title.en,
+        },
+        priceOptions: product.priceOptions ?? [],
+        colorOptions: product.colorOptions ?? [],
       };
     })
     .filter(Boolean);
+
+  const updateItemOptions = (lineId, option) => {
+    setItemOptions((prev) => ({
+      ...prev,
+      [lineId]: { ...(prev[lineId] || {}), ...option },
+    }));
+  };
 
   return (
     <section className="section cart-page">
@@ -119,20 +150,58 @@ export default function CartPage() {
           {cartItems.length === 0 ? (
             <p>{t({ ru: "Корзина пока пуста.", ro: "Cosul este gol.", en: "Your cart is empty." })}</p>
           ) : (
-            cartItems.map((item) => (
-              <article key={`${item.id}`} className="cart-item">
-                <div>
-                  <h3>{item.title}</h3>
-                  {item.price && <p>{item.price}</p>}
-                  <p>{t({ ru: "Количество", ro: "Cantitate", en: "Quantity" })}: {item.qty}</p>
-                </div>
-                <div className="cart-item__controls">
-                  <button type="button" className="btn btn-secondary" onClick={() => removeFromCart(item.id)}>
-                    {t({ ru: "Удалить", ro: "Sterge", en: "Remove" })}
-                  </button>
-                </div>
-              </article>
-            ))
+            cartItems.map((item) => {
+              const selectedPriceIndex = itemOptions[item.lineId]?.priceIndex ?? 0;
+              const selectedColorValue =
+                itemOptions[item.lineId]?.colorValue ?? item.colorOptions?.[0]?.value ?? "";
+
+              return (
+                <article key={item.lineId} className="cart-item">
+                  <div>
+                    <h3>{t({ ru: item.title.ru, ro: item.title.ro, en: item.title.en })}</h3>
+                    {item.priceOptions.length > 0 && (
+                      <label>
+                        {t({ ru: "Вариант", ro: "Opțiune", en: "Option" })}
+                        <select
+                          value={selectedPriceIndex}
+                          onChange={(event) =>
+                            updateItemOptions(item.lineId, { priceIndex: Number(event.target.value) })
+                          }
+                        >
+                          {item.priceOptions.map((option, index) => (
+                            <option key={index} value={index}>
+                              {getText(option.label)} — {option.value}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    )}
+                    {item.colorOptions.length > 0 && (
+                      <label>
+                        {t({ ru: "Цвет", ro: "Culoare", en: "Color" })}
+                        <select
+                          value={selectedColorValue}
+                          onChange={(event) =>
+                            updateItemOptions(item.lineId, { colorValue: event.target.value })
+                          }
+                        >
+                          {item.colorOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {getText(option.label)}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    )}
+                  </div>
+                  <div className="cart-item__controls">
+                    <button type="button" className="btn btn-secondary" onClick={() => removeFromCart(item.lineId)}>
+                      {t({ ru: "Удалить", ro: "Sterge", en: "Remove" })}
+                    </button>
+                  </div>
+                </article>
+              );
+            })
           )}
         </div>
 
@@ -158,6 +227,13 @@ export default function CartPage() {
               ? t({ ru: "Отправка...", ro: "Se trimite...", en: "Sending..." })
               : t({ ru: "Отправить заказ", ro: "Trimite comanda", en: "Send order" })}
           </button>
+          <p className="cart-delivery-note">
+            {t({
+              ru: "После оформления с вами свяжутся для обсуждения доставки.",
+              ro: "După finalizare, te contactăm pentru a discuta livrarea.",
+              en: "After checkout, we will contact you to discuss delivery.",
+            })}
+          </p>
         </form>
       </div>
     </section>

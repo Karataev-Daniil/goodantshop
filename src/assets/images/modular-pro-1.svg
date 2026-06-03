@@ -1,0 +1,8 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#f7f3ee"/>
+  <rect x="120" y="130" width="960" height="520" rx="30" fill="#e5dbca" stroke="#b19d76" stroke-width="12"/>
+  <rect x="220" y="220" width="200" height="260" rx="22" fill="#f9f3e6"/>
+  <rect x="460" y="220" width="260" height="260" rx="22" fill="#fffbf3"/>
+  <rect x="760" y="220" width="200" height="260" rx="22" fill="#f2e8d8"/>
+  <text x="600" y="740" fill="#5f503d" font-size="56" font-family="Arial, sans-serif" text-anchor="middle">Modular Pro</text>
+</svg>

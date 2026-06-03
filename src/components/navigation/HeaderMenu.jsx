@@ -15,7 +15,7 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
         <NavLink className="brand" to={`/${curLang}`}>
           <img src="/logo.png" alt="GoodAnt" />
           <div>
-            <strong>GOODANTSHOP</strong>
+            <strong><span>GOOD</span>ANTSHOP<span>.md</span></strong>
             <span>
               {t({
                 ru: "Муравьи, формикарии, корм",

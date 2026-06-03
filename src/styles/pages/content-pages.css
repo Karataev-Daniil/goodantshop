@@ -1,6 +1,6 @@
 ﻿/* Section: Global Section Spacing */
 .section {
-  margin-top: 160px;
+  margin-top: 120px;
 }
 
 @media (max-width: 550px) {
@@ -12,15 +12,15 @@
 /* Section: Global Headings Spacing */
 h1,
 h2 {
-  margin: 0 0 1.2rem;
+  margin: 0 0 19.2px;
 }
 
 /* Section: Hero */
 .hero {
-  margin-top: 1.5rem;
+  margin-top: 60px;
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
-  gap: 2rem;
+  gap: 32px;
   align-items: center;
 }
 
@@ -49,7 +49,9 @@ h2 {
 }
 
 .actions {
-  margin-top: 1.2rem;
+  margin-top: 19.2px;
+  display: flex;
+  gap: 8px;
 }
 
 @media (max-width: 980px) {
@@ -62,7 +64,7 @@ h2 {
 .single-layout {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
-  gap: 1.5rem;
+  gap: 24px;
   align-items: start;
 }
 
@@ -79,7 +81,7 @@ h2 {
 }
 
 .single-content {
-  margin-top: 1rem;
+  margin-top: 16px;
 }
 
 .single-content p {
@@ -95,15 +97,15 @@ h2 {
 /* Section: Specs */
 .specs {
   display: grid;
-  gap: 0.55rem;
+  gap: 8.8px;
 }
 
 .spec-row {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 0.8rem;
-  padding: 0.62rem 0.7rem;
+  gap: 12.8px;
+  padding: 9.92px 11.2px;
   border: 1px solid #ececec;
   border-radius: 2px;
   background: #fafafa;
@@ -111,38 +113,38 @@ h2 {
 
 .spec-label {
   color: #4a4a4a;
-  font-size: 0.85rem;
+  font-size: 13.6px;
   font-weight: 700;
 }
 
 .spec-row > div:last-child {
   color: var(--text);
-  font-size: 0.85rem;
+  font-size: 13.6px;
   font-weight: 600;
   text-align: right;
   background: #fff;
   border: 1px solid #ededed;
   border-radius: 2px;
-  padding: 0.2rem 0.55rem;
+  padding: 3.2px 8.8px;
 }
 
 @media (max-width: 680px) {
   .spec-row {
     grid-template-columns: 1fr;
-    gap: 0.3rem;
+    gap: 4.8px;
   }
 }
 
 /* Section: Single Page */
 .single-page {
   display: grid;
-  gap: 1.4rem;
+  gap: 22.4px;
 }
 
 .single-hero {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  gap: 1.2rem;
+  gap: 19.2px;
   align-items: start;
 }
 
@@ -155,16 +157,16 @@ h2 {
 
 .single-hero__content {
   border-radius: 2px;
-  padding: 1.2rem;
+  padding: 19.2px;
   display: grid;
   align-content: start;
-  gap: 0.9rem;
+  gap: 14.4px;
 }
 
 .single-hero__kicker {
   margin: 0;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 12.48px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -185,7 +187,7 @@ h2 {
 .single-grid {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  gap: 1.2rem;
+  gap: 19.2px;
 }
 
 @media (max-width: 980px) {
@@ -202,7 +204,7 @@ h2 {
 
   .single-hero__content,
   .panel {
-    padding: 0.85rem;
+    padding: 13.6px;
   }
 }
 
@@ -216,7 +218,7 @@ h2 {
   height: 14px;
   border-radius: 2px;
   background: #efefef;
-  margin-bottom: 0.7rem;
+  margin-bottom: 11.2px;
 }
 
 .panel__placeholder--short {
@@ -227,7 +229,7 @@ h2 {
 /* Section: Specs Skeleton */
 .specs-skeleton {
   display: grid;
-  gap: 0.7rem;
+  gap: 11.2px;
 }
 
 .specs-skeleton__row {
@@ -241,7 +243,7 @@ h2 {
 .related-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.9rem;
+  gap: 14.4px;
 }
 
 .related-card {
@@ -264,7 +266,7 @@ h2 {
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.9rem;
+  gap: 14.4px;
 }
 
 .gallery-tile {

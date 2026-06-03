@@ -10,9 +10,11 @@
     return res.status(400).json({ ok: false, error: "firstName, lastName, phone and items are required" });
   }
 
-  const resendApiKey = re_bnhXu9Ge_5GiF27H8nXzpKDbvFWzSnSVDY;
-  const toEmail = dirings52445@gmail.com;
-  const fromEmail = onboarding@resend.dev;
+  const resendApiKey = process.env.RESEND_API_KEY;
+  const defaultOrderEmail = process.env.RESEND_TEST_EMAIL || process.env.ORDER_EMAIL;
+  // allow override from request body, otherwise use env fallback
+  const toEmail = req.body.to || defaultOrderEmail;
+  const fromEmail = req.body.from || process.env.FROM_EMAIL;
 
   if (!resendApiKey || !toEmail || !fromEmail) {
     return res.status(500).json({ ok: false, error: "Email provider is not configured" });
@@ -28,6 +30,14 @@
     variant: String(item.variant || "").trim(),
     price: String(item.price || "").trim(),
   }));
+
+  console.log('Order request', {
+    firstName: safeFirstName,
+    lastName: safeLastName,
+    toEmail,
+    fromEmail,
+    itemCount: normalizedItems.length,
+  });
 
   const itemsText = normalizedItems
     .map((item, index) => `${index + 1}. ${item.title} x${item.qty}${item.variant ? ` | ${item.variant}` : ""}${item.price ? ` | ${item.price}` : ""}`)
@@ -68,7 +78,7 @@
       },
       body: JSON.stringify({
         from: fromEmail,
-        to: [toEmail],
+        to: Array.isArray(toEmail) ? toEmail : [toEmail],
         subject: `New cart order: ${safeFirstName} ${safeLastName}`,
         text,
         html,
@@ -77,11 +87,13 @@
 
     if (!response.ok) {
       const provider = await response.text();
+      console.error('Resend send failed', { status: response.status, provider });
       return res.status(502).json({ ok: false, error: "Email delivery failed", provider });
     }
 
     return res.status(200).json({ ok: true, message: "Order sent successfully" });
-  } catch {
+  } catch (error) {
+    console.error('Order send exception', error);
     return res.status(502).json({ ok: false, error: "Email delivery failed" });
   }
 }

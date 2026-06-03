@@ -1,39 +1,26 @@
-﻿const priceOptions = [
+﻿import sandLabM1 from "../assets/images/sand-lab-m-1.svg";
+import sandLabM2 from "../assets/images/sand-lab-m-2.svg";
+
+const priceOptions = [
   {
     label: {
-      ru: "Матка + расплод (стартовая колония)",
-      ro: "Regina + puiet (colonie starter)",
-      en: "Queen + brood (starter colony)",
+      ru: "Базовая модель",
+      ro: "Model de bază",
+      en: "Basic model",
     },
-    value: "550 лей",
+    value: "2200 лей",
   },
   {
     label: {
-      ru: "Матка + расплод + 10-20 рабочих",
-      ro: "Regina + puiet + 10-20 lucratoare",
-      en: "Queen + brood + 10-20 workers",
+      ru: "Полный комплект",
+      ro: "Pachet complet",
+      en: "Complete kit",
     },
-    value: "650 лей",
+    value: "2600 лей",
   },
 ];
 
 export const formicariums = [
-  {
-    id: 201,
-    slug: "acrylic-start-s",
-    title: {
-      ru: "Acrylic Start S",
-      ro: "Acrylic Start S",
-      en: "Acrylic Start S"
-    },
-    excerpt: {
-      ru: "Компактный стартовый формикарий для молодой колонии.",
-      ro: "Formicar compact de start pentru o colonie tanara.",
-      en: "A compact starter formicarium for a young colony."
-    },
-    images: [],
-    priceOptions,
-  },
   {
     id: 202,
     slug: "sand-lab-m",
@@ -44,74 +31,40 @@ export const formicariums = [
     },
     excerpt: {
       ru: "Стабильная влажность и удобный обзор камер.",
-      ro: "Umiditate stabila si vizibilitate buna a camerelor.",
+      ro: "Umiditate stabilă și vizibilitate bună a camerelor.",
       en: "Stable humidity and a convenient chamber view."
     },
-    images: [],
+    description: {
+      ru: "Усиленная конструкция с сетчатой вентиляцией и системой для равномерного увлажнения. Отлично подходит для видов, любящих песчаный грунт.",
+      ro: "Construcție rezistentă cu ventilație din plasă și sistem de umidificare uniformă. Potrivit pentru speciile care preferă substratul nisipos.",
+      en: "Reinforced construction with mesh ventilation and even moisture system. Great for species that prefer sandy substrate."
+    },
+    images: [sandLabM1, sandLabM2],
+    characteristics: [
+      {
+        label: { ru: "Размер", ro: "Dimensiune", en: "Size" },
+        value: { ru: "34×22×18 см", ro: "34×22×18 cm", en: "34×22×18 cm" }
+      },
+      {
+        label: { ru: "Материал", ro: "Material", en: "Material" },
+        value: { ru: "Прочный пластик", ro: "Plastic rezistent", en: "Durable plastic" }
+      },
+      {
+        label: { ru: "Цвет", ro: "Culoare", en: "Color" },
+        value: { ru: "Песочный", ro: "Nisipiu", en: "Sand" }
+      }
+    ],
+    colorOptions: [
+      { label: { ru: "Песочный", ro: "Nisipiu", en: "Sand" }, value: "sand" },
+      { label: { ru: "Прозрачный", ro: "Transparent", en: "Clear" }, value: "clear" }
+    ],
+    defaultColor: "sand",
+    sizeCategory: "medium",
+    careLevel: "easy",
+    feedingType: "seeds",
+    availability: "inStock",
     priceOptions,
-  },
-  {
-    id: 203,
-    slug: "modular-pro",
-    title: {
-      ru: "Modular Pro",
-      ro: "Modular Pro",
-      en: "Modular Pro"
-    },
-    excerpt: {
-      ru: "Модульная система с возможностью расширения.",
-      ro: "Sistem modular cu posibilitate de extindere.",
-      en: "Modular system with expansion options."
-    },
-    images: [],
-    priceOptions,
-  },
-  {
-    id: 204,
-    slug: "stone-nest-classic",
-    title: {
-      ru: "Stone Nest Classic",
-      ro: "Stone Nest Classic",
-      en: "Stone Nest Classic"
-    },
-    excerpt: {
-      ru: "Надежный формикарий с хорошей вентиляцией.",
-      ro: "Formicar fiabil cu ventilatie buna.",
-      en: "Reliable formicarium with good ventilation."
-    },
-    images: [],
-    priceOptions,
-  },
-  {
-    id: 205,
-    slug: "compact-view",
-    title: {
-      ru: "Compact View",
-      ro: "Compact View",
-      en: "Compact View"
-    },
-    excerpt: {
-      ru: "Простая и понятная модель для первого запуска.",
-      ro: "Model simplu si clar pentru primul start.",
-      en: "Simple and clear model for a first setup."
-    },
-    images: [],
-    priceOptions,
-  },
-  {
-    id: 206,
-    slug: "humidity-control-x",
-    title: {
-      ru: "Humidity Control X",
-      ro: "Humidity Control X",
-      en: "Humidity Control X"
-    },
-    excerpt: {
-      ru: "Поддержка точного режима увлажнения камер.",
-      ro: "Suport pentru control precis al umiditatii in camere.",
-      en: "Supports precise chamber humidity control."
-    },
-    images: [],
-    priceOptions,
+    recommendedAntIds: [44],
+    relatedBlogIds: [402]
   }
 ];

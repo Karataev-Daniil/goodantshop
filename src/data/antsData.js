@@ -2,7 +2,7 @@
 import lasiusNigerImage from "../assets/images/lasius-niger.webp";
 import camponotusFellahImage from "../assets/images/camponotus-fellah.webp";
 
-const priceOptions = [
+export const priceOptions = [
   {
     label: {
       ru: "Матка + расплод (стартовая колония)",
@@ -10,6 +10,7 @@ const priceOptions = [
       en: "Queen + brood (starter colony)",
     },
     value: "550 лей",
+    selected: true,
   },
   {
     label: {
@@ -18,6 +19,7 @@ const priceOptions = [
       en: "Queen + brood + 10-20 workers",
     },
     value: "650 лей",
+    selected: false,
   },
 ];
 
@@ -41,7 +43,9 @@ export const ants = [
       en: "Messor structor is a popular starter species. It needs a dry arena and moderate humidity in the nest area."
     },
     image: messorStructorImage,
+    images: [messorStructorImage, "/placeholder-ant.svg"],
     priceOptions,
+    availability: "inStock",
     characteristics: [
       {
         label: { ru: "Температура", ro: "Temperatura", en: "Temperature" },
@@ -56,7 +60,8 @@ export const ants = [
         value: { ru: "Низкая", ro: "Redusa", en: "Low" }
       }
     ],
-    recommendedFormicariumIds: [201, 202, 203]
+    recommendedFormicariumIds: [202],
+    relatedBlogIds: [401, 402, 404]
   },
   {
     id: 43,
@@ -77,7 +82,9 @@ export const ants = [
       en: "Lasius niger adapts easily and grows well in basic conditions. A great option for a first formicarium."
     },
     image: lasiusNigerImage,
+    images: [lasiusNigerImage, "/placeholder-ant.svg"],
     priceOptions,
+    availability: "preorder",
     characteristics: [
       {
         label: { ru: "Температура", ro: "Temperatura", en: "Temperature" },
@@ -92,7 +99,8 @@ export const ants = [
         value: { ru: "Низкая", ro: "Redusa", en: "Low" }
       }
     ],
-    recommendedFormicariumIds: [201, 204, 205]
+    recommendedFormicariumIds: [202],
+    relatedBlogIds: [401, 403]
   },
   {
     id: 42,
@@ -113,7 +121,9 @@ export const ants = [
       en: "Camponotus fellah needs stable conditions and regular protein feeding. Suitable for confident beginners and experienced keepers."
     },
     image: camponotusFellahImage,
+    images: [camponotusFellahImage, "/placeholder-ant.svg"],
     priceOptions,
+    availability: "preorder",
     characteristics: [
       {
         label: { ru: "Температура", ro: "Temperatura", en: "Temperature" },
@@ -128,7 +138,8 @@ export const ants = [
         value: { ru: "Средняя", ro: "Medie", en: "Medium" }
       }
     ],
-    recommendedFormicariumIds: [202, 204, 206]
+    recommendedFormicariumIds: [202],
+    relatedBlogIds: [402, 403]
   }
 ];
 

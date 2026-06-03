@@ -10,17 +10,31 @@
 
 ## Запуск
 1. Перейти в папку:
-   `cd react-version`
+   `cd good-ant-react`
 2. Установить зависимости:
    `npm install`
-3. Запустить dev:
+3. Запустить фронтенд:
    `npm run dev`
+4. Запустить локальный API-сервер:
+   `npm run api`
+5. Запустить сразу фронтенд + API:
+   `npm run dev:full`
 
-## Мок-данные
-Все данные лежат в:
-`src/data/mockData.js`
+## Деплой на Vercel
+- На Vercel бекенд используется из `api/order.js`
+- Фронтенд делает запросы к `/api/order`
+- В продакшене это будет `https://goodantshop.md/api/order`
+- В Vercel задайте секреты:
+  - `RESEND_API_KEY`
+  - `ORDER_EMAIL`
+  - `FROM_EMAIL`
 
-Там можно менять:
-- `ants`
-- `formicariums`
-- `popularAntIds`
+## Локальная разработка
+- `api-server.js` нужен только для локального запуска
+- В проде `http://localhost:3001` не используется
+
+## Данные
+Каталог товаров лежит в:
+- `src/data/antsData.js`
+- `src/data/formicariumsData.js`
+- `src/data/blogPostsData.js`
