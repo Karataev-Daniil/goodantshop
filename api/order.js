@@ -27,9 +27,9 @@ async function handler(req, res) {
   }
 
   try {
-    const { firstName, lastName, phone, items } = req.body || {};
+    const { name, phone, address, comment, items, total, itemsTotal } = req.body || {};
 
-    if (!firstName || !lastName || !phone || !Array.isArray(items) || items.length === 0) {
+    if (!name || !phone || !address || !Array.isArray(items) || items.length === 0) {
       console.error('[ORDER] Invalid body');
       return res.status(400).json({ ok: false, error: "Missing fields" });
     }
@@ -47,15 +47,23 @@ async function handler(req, res) {
     const normalizedItems = items.map((item) => ({
       title: String(item.title || "").trim(),
       qty: Number(item.qty) > 0 ? Number(item.qty) : 1,
-      variant: String(item.variant || "").trim(),
       price: String(item.price || "").trim(),
+      lineTotal: String(item.lineTotal || "").trim(),
     }));
 
-    const itemsText = normalizedItems
-      .map((item, index) => `${index + 1}. ${item.title} x${item.qty}${item.variant ? ` | ${item.variant}` : ""}${item.price ? ` | ${item.price}` : ""}`)
-      .join("\n");
+    const orderTotal = String(total || itemsTotal || "").trim();
 
-    const html = `<h2>New order</h2><p><strong>Name:</strong> ${escapeHtml(firstName)} ${escapeHtml(lastName)}</p><p><strong>Phone:</strong> ${escapeHtml(phone)}</p><p><strong>Items:</strong></p><ol>${normalizedItems.map((i) => `<li>${escapeHtml(i.title)} x${i.qty}</li>`).join("")}</ol>`;
+    const itemsHtml = normalizedItems
+      .map((item) => `<li>${escapeHtml(item.title)} × ${item.qty}${item.price ? ` — ${escapeHtml(item.price)}/шт` : ""}${item.lineTotal ? ` = ${escapeHtml(item.lineTotal)}` : ""}</li>`)
+      .join("");
+
+    const html = `<h2>Новый заказ</h2>` +
+      `<p><strong>Имя:</strong> ${escapeHtml(name)}</p>` +
+      `<p><strong>Телефон:</strong> ${escapeHtml(phone)}</p>` +
+      `<p><strong>Адрес доставки:</strong> ${escapeHtml(address)}</p>` +
+      (comment ? `<p><strong>Комментарий:</strong> ${escapeHtml(comment)}</p>` : "") +
+      `<p><strong>Товары:</strong></p><ol>${itemsHtml}</ol>` +
+      (orderTotal ? `<p><strong>Итого:</strong> ${escapeHtml(orderTotal)}</p>` : "");
 
     console.log('[ORDER] Sending to:', toEmail);
 
@@ -68,7 +76,7 @@ async function handler(req, res) {
       body: JSON.stringify({
         from: fromEmail,
         to: Array.isArray(toEmail) ? toEmail : [toEmail],
-        subject: `Order: ${firstName} ${lastName}`,
+        subject: `Заказ: ${name}`,
         html,
       }),
     });

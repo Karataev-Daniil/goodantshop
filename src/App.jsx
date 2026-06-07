@@ -5,26 +5,23 @@ import AntsPage from "./pages/AntsPage";
 import SingleAntPage from "./pages/SingleAntPage";
 import FormicariumsPage from "./pages/FormicariumsPage";
 import FormicPage from "./pages/SingleFormicPage";
-import BlogPage from "./pages/BlogPage";
-import SingleBlogPage from "./pages/SingleBlogPage";
+// import BlogPage from "./pages/BlogPage";
+// import SingleBlogPage from "./pages/SingleBlogPage";
+import ContactsPage from "./pages/ContactsPage";
 import CartPage from "./pages/CartPage";
 
 import HeaderMenu from "./components/navigation/HeaderMenu";
 import FooterMenu from "./components/navigation/FooterMenu";
 
 function useLocalStorage(key, initialValue) {
-  const [state, setState] = useState(initialValue);
-
-  useEffect(() => {
-    const stored = window.localStorage.getItem(key);
-    if (stored) {
-      try {
-        setState(JSON.parse(stored));
-      } catch {
-        setState(initialValue);
-      }
+  const [state, setState] = useState(() => {
+    try {
+      const stored = window.localStorage.getItem(key);
+      return stored ? JSON.parse(stored) : initialValue;
+    } catch {
+      return initialValue;
     }
-  }, [key, initialValue]);
+  });
 
   useEffect(() => {
     window.localStorage.setItem(key, JSON.stringify(state));
@@ -53,12 +50,12 @@ function Layout() {
 
   const t = (map) => map[curLang] ?? map.ru ?? map.ro ?? map.en;
 
-  const addToCart = (item) => {
+  const addToCart = (id) => {
     setcartIds((prev) => [
       ...prev,
       {
-        uid: `${item}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`,
-        id: item,
+        uid: crypto.randomUUID(),
+        id,
       },
     ]);
   };
@@ -102,8 +99,9 @@ export default function App() {
         <Route path="ants/:slug" element={<SingleAntPage />} />
         <Route path="formicariums" element={<FormicariumsPage />} />
         <Route path="formic/:slug" element={<FormicPage />} />
-        <Route path="blog" element={<BlogPage />} />
-        <Route path="blog/:slug" element={<SingleBlogPage />} />
+        {/* <Route path="blog" element={<BlogPage />} /> */}
+        {/* <Route path="blog/:slug" element={<SingleBlogPage />} /> */}
+        <Route path="contacts" element={<ContactsPage />} />
         <Route path="cart" element={<CartPage />} />
       </Route>
     </Routes>

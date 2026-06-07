@@ -1,7 +1,0 @@
-<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="800" fill="#eef1f0"/>
-  <rect x="120" y="150" width="960" height="500" rx="38" fill="#d9e2e2" stroke="#8fa5a7" stroke-width="12"/>
-  <rect x="300" y="260" width="220" height="260" rx="28" fill="#f4f8f8"/>
-  <rect x="620" y="280" width="330" height="220" rx="28" fill="#cbd6d6"/>
-  <text x="600" y="740" fill="#51656a" font-size="56" font-family="Arial, sans-serif" text-anchor="middle">Humidity Control X</text>
-</svg>

@@ -4,3 +4,6 @@
 @import "./styles/pages/home.css";
 @import "./styles/pages/content-pages.css";
 @import "./styles/pages/blog.css";
+@import "./styles/pages/contacts.css";
+@import "./styles/pages/product-detail.css";
+@import "./styles/pages/checkout.css";

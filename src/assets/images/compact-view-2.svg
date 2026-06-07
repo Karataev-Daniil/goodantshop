@@ -1,7 +1,0 @@
-<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="800" fill="#eef2e7"/>
-  <rect x="170" y="110" width="860" height="580" rx="44" fill="#dfe7d9"/>
-  <rect x="310" y="270" width="260" height="200" rx="24" fill="#f9f5ec"/>
-  <rect x="620" y="310" width="220" height="160" rx="24" fill="#dde4d2"/>
-  <text x="600" y="740" fill="#5c6a53" font-size="56" font-family="Arial, sans-serif" text-anchor="middle">Минимальный</text>
-</svg>

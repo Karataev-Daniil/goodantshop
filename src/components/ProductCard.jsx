@@ -37,6 +37,7 @@ export default function ProductCard({ item, linkTo, onAddToCart }) {
   const title = getText(item.title, lang);
   const excerpt = getText(item.excerpt, lang);
   const availabilityTitle = getAvailabilityTitle(item.availability, lang);
+  const primaryPrice = item.priceOptions?.[0];
   const isPreorder = item.availability === "preorder";
   const isOutOfStock = item.availability === "outOfStock";
 
@@ -62,7 +63,9 @@ export default function ProductCard({ item, linkTo, onAddToCart }) {
         onMouseMove={handleProductHoverMove}
         onMouseLeave={resetPreview}
       >
-        <img src={imageSrc} alt={title} loading="lazy" />
+        <span className="product-media__frame">
+          <img src={imageSrc} alt={title} loading="lazy" />
+        </span>
         {item.availability && (
           <span
             className={`product-card__status product-card__status--${item.availability}`}
@@ -81,6 +84,12 @@ export default function ProductCard({ item, linkTo, onAddToCart }) {
           <Link to={linkTo}>{title}</Link>
         </h3>
         <p>{excerpt}</p>
+        {primaryPrice && (
+          <div className="product-card__price">
+            <span>{getText(primaryPrice.label, lang)}</span>
+            <strong>{primaryPrice.value}</strong>
+          </div>
+        )}
         <div className="product-actions">
           <Link className="btn" to={linkTo}>
             {getText({ ru: "Подробнее", ro: "Detalii", en: "Details" }, lang)}

@@ -1,61 +1,93 @@
-﻿import { useState } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useState } from "react";
+import { Link, useOutletContext, useParams } from "react-router-dom";
 import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
 
+const getText = (value, lang) => {
+  if (value && typeof value === "object") {
+    return value[lang] ?? value.ru ?? value.ro ?? value.en ?? "";
+  }
+  return value ?? "";
+};
+
+const priceNumber = (product) => {
+  const option = product.priceOptions?.find((o) => o.selected) || product.priceOptions?.[0];
+  return parseInt(String(option?.value || "").replace(/[^\d]/g, ""), 10) || 0;
+};
+
+const countWord = (count, lang) => {
+  if (lang === "ro") return count === 1 ? "produs" : "produse";
+  if (lang === "en") return count === 1 ? "item" : "items";
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+  if (mod10 === 1 && mod100 !== 11) return "товар";
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return "товара";
+  return "товаров";
+};
+
 export default function CartPage() {
-  const { t, cartIds, updateCartQty, removeFromCart, clearCart } = useOutletContext();
+  const { t, cartIds, removeFromCart, clearCart } = useOutletContext();
   const { lang = "ru" } = useParams();
 
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [comment, setComment] = useState("");
   const [status, setStatus] = useState({ type: "", text: "" });
   const [loading, setLoading] = useState(false);
-  const [itemOptions, setItemOptions] = useState({});
+
+  const catalog = [...ants, ...formicariums];
+
+  // Group cart lines by product — one line equals one unit
+  const groupsMap = new Map();
+  cartIds.forEach((line) => {
+    const product = catalog.find((entry) => String(entry.id) === String(line.id));
+    if (!product) return;
+    const key = String(line.id);
+    if (!groupsMap.has(key)) groupsMap.set(key, { product, qty: 0, uids: [] });
+    const group = groupsMap.get(key);
+    group.qty += 1;
+    group.uids.push(line.uid);
+  });
+  const groups = [...groupsMap.values()];
+
+  const totalQty = groups.reduce((sum, group) => sum + group.qty, 0);
+  const itemsTotal = groups.reduce((sum, group) => sum + priceNumber(group.product) * group.qty, 0);
+  const currency = t({ ru: "лей", ro: "lei", en: "lei" });
+  const fmt = (value) => `${value} ${currency}`;
+
+  const removeGroup = (uids) => uids.forEach((uid) => removeFromCart(uid));
 
   const submitOrder = async (event) => {
     event.preventDefault();
 
-    if (!firstName.trim() || !lastName.trim() || !phone.trim()) {
+    if (!name.trim() || !phone.trim() || !address.trim()) {
       setStatus({
         type: "error",
         text: t({
-          ru: "Заполните имя, фамилию и телефон.",
-          ro: "Completeaza nume, prenume si telefon.",
-          en: "Please fill first name, last name and phone.",
+          ru: "Заполните имя, телефон и адрес доставки.",
+          ro: "Completează numele, telefonul și adresa de livrare.",
+          en: "Please fill in name, phone and delivery address.",
         }),
       });
       return;
     }
 
-    if (cartIds.length === 0) {
-      setStatus({
-        type: "error",
-        text: t({
-          ru: "Корзина пуста.",
-          ro: "Cosul este gol.",
-          en: "Cart is empty.",
-        }),
-      });
+    if (groups.length === 0) {
+      setStatus({ type: "error", text: t({ ru: "Корзина пуста.", ro: "Coșul este gol.", en: "Cart is empty." }) });
       return;
     }
 
     setLoading(true);
     setStatus({ type: "", text: "" });
 
-    const orderItems = cartItems.map((item) => {
-      const selectedPriceIndex = itemOptions[item.lineId]?.priceIndex ?? 0;
-      const selectedPrice = item.priceOptions[selectedPriceIndex];
-      const selectedColorValue = itemOptions[item.lineId]?.colorValue ?? item.colorOptions?.[0]?.value ?? "";
-      const selectedColor = item.colorOptions.find((option) => option.value === selectedColorValue);
-      const cartItem = cartIds.find((cartItem) => cartItem.uid === item.lineId);
-
+    const orderItems = groups.map((group) => {
+      const unit = priceNumber(group.product);
       return {
-        title: getText(item.title),
-        qty: cartItem?.qty > 0 ? cartItem.qty : 1,
-        variant: selectedColor ? getText(selectedColor.label) : "",
-        price: selectedPrice?.value || selectedPrice?.label || "",
+        title: getText(group.product.title, lang),
+        qty: group.qty,
+        price: fmt(unit),
+        lineTotal: fmt(unit * group.qty),
       };
     });
 
@@ -64,15 +96,17 @@ export default function CartPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          firstName,
-          lastName,
+          name,
           phone,
+          address,
+          comment,
           items: orderItems,
+          itemsTotal: fmt(itemsTotal),
+          total: fmt(itemsTotal),
         }),
       });
 
       const data = await response.json();
-
       if (!response.ok || !data.ok) {
         throw new Error(data.error || "Order sending failed");
       }
@@ -80,23 +114,23 @@ export default function CartPage() {
       setStatus({
         type: "success",
         text: t({
-          ru: "Заказ отправлен. Мы свяжемся с вами для обсуждения доставки.",
-          ro: "Comanda a fost trimisa. Te contactam pentru a discuta livrarea.",
-          en: "Order sent. We will contact you to discuss delivery.",
+          ru: "Заказ отправлен. Мы свяжемся с вами для подтверждения доставки.",
+          ro: "Comanda a fost trimisă. Te contactăm pentru a confirma livrarea.",
+          en: "Order sent. We will contact you to confirm delivery.",
         }),
       });
 
-      setFirstName("");
-      setLastName("");
+      setName("");
       setPhone("");
-      setItemOptions({});
+      setAddress("");
+      setComment("");
       clearCart();
     } catch {
       setStatus({
         type: "error",
         text: t({
           ru: "Не удалось отправить заказ. Попробуйте позже.",
-          ro: "Comanda nu a putut fi trimisa. Incearca mai tarziu.",
+          ro: "Comanda nu a putut fi trimisă. Încearcă mai târziu.",
           en: "Failed to send order. Please try again later.",
         }),
       });
@@ -105,138 +139,116 @@ export default function CartPage() {
     }
   };
 
-  const getText = (value) => {
-    if (value && typeof value === "object") {
-      return value[lang] ?? value.ru ?? value.ro ?? value.en ?? "";
-    }
-    return value ?? "";
-  };
-
-  const catalog = [...ants, ...formicariums];
-
-  const cartItems = cartIds
-    .map((cartItem) => {
-      const product = catalog.find((entry) => String(entry.id) === String(cartItem.id));
-      if (!product) return null;
-
-      return {
-        lineId: cartItem.uid,
-        id: cartItem.id,
-        product,
-        title: {
-          ru: product.title.ru,
-          ro: product.title.ro,
-          en: product.title.en,
-        },
-        priceOptions: product.priceOptions ?? [],
-        colorOptions: product.colorOptions ?? [],
-      };
-    })
-    .filter(Boolean);
-
-  const updateItemOptions = (lineId, option) => {
-    setItemOptions((prev) => ({
-      ...prev,
-      [lineId]: { ...(prev[lineId] || {}), ...option },
-    }));
-  };
-
   return (
-    <section className="section cart-page">
-      <h1>{t({ ru: "Корзина", ro: "Cos", en: "Cart" })}</h1>
+    <section className="section checkout">
+      <header className="checkout__head">
+        <h1>{t({ ru: "Корзина", ro: "Coș", en: "Cart" })}</h1>
+        {totalQty > 0 && (
+          <p className="checkout__count">
+            {totalQty} {countWord(totalQty, lang)}
+          </p>
+        )}
+      </header>
 
-      <div className="cart-grid">
-        <div className="panel cart-items">
-          {cartItems.length === 0 ? (
-            <p>{t({ ru: "Корзина пока пуста.", ro: "Cosul este gol.", en: "Your cart is empty." })}</p>
-          ) : (
-            cartItems.map((item) => {
-              const selectedPriceIndex = itemOptions[item.lineId]?.priceIndex ?? 0;
-              const selectedColorValue =
-                itemOptions[item.lineId]?.colorValue ?? item.colorOptions?.[0]?.value ?? "";
+      {status.text && <p className={`checkout-status checkout-status--${status.type}`}>{status.text}</p>}
 
+      {groups.length === 0 ? (
+        <div className="checkout-empty">
+          {status.type !== "success" && (
+            <p>{t({ ru: "Корзина пока пуста.", ro: "Coșul este încă gol.", en: "Your cart is empty." })}</p>
+          )}
+          <Link className="btn" to={`/${lang}/ants`}>
+            {t({ ru: "Перейти к каталогу", ro: "Mergi la catalog", en: "Go to catalog" })}
+          </Link>
+        </div>
+      ) : (
+        <>
+          {/* 2. Items */}
+          <div className="checkout-items">
+            {groups.map((group) => {
+              const unit = priceNumber(group.product);
+              const image = group.product.images?.[0] || group.product.image || "/placeholder-ant.svg";
               return (
-                <article key={item.lineId} className="cart-item">
-                  <div>
-                    <h3>{t({ ru: item.title.ru, ro: item.title.ro, en: item.title.en })}</h3>
-                    {item.priceOptions.length > 0 && (
-                      <label>
-                        {t({ ru: "Вариант", ro: "Opțiune", en: "Option" })}
-                        <select
-                          value={selectedPriceIndex}
-                          onChange={(event) =>
-                            updateItemOptions(item.lineId, { priceIndex: Number(event.target.value) })
-                          }
-                        >
-                          {item.priceOptions.map((option, index) => (
-                            <option key={index} value={index}>
-                              {getText(option.label)} — {option.value}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                    )}
-                    {item.colorOptions.length > 0 && (
-                      <label>
-                        {t({ ru: "Цвет", ro: "Culoare", en: "Color" })}
-                        <select
-                          value={selectedColorValue}
-                          onChange={(event) =>
-                            updateItemOptions(item.lineId, { colorValue: event.target.value })
-                          }
-                        >
-                          {item.colorOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {getText(option.label)}
-                            </option>
-                          ))}
-                        </select>
-                      </label>
-                    )}
+                <article className="checkout-item" key={group.product.id}>
+                  <div className="checkout-item__media">
+                    <img src={image} alt={getText(group.product.title, lang)} loading="lazy" />
                   </div>
-                  <div className="cart-item__controls">
-                    <button type="button" className="btn btn-secondary" onClick={() => removeFromCart(item.lineId)}>
-                      {t({ ru: "Удалить", ro: "Sterge", en: "Remove" })}
+                  <div className="checkout-item__info">
+                    <h3>{getText(group.product.title, lang)}</h3>
+                    <p>{getText(group.product.excerpt, lang)}</p>
+                    <div className="checkout-item__meta">
+                      <span>
+                        {t({ ru: "Цена за единицу", ro: "Preț per unitate", en: "Unit price" })}: {fmt(unit)}
+                      </span>
+                      <span>
+                        {t({ ru: "Количество", ro: "Cantitate", en: "Quantity" })}: {group.qty}
+                      </span>
+                    </div>
+                    <button type="button" className="checkout-item__remove" onClick={() => removeGroup(group.uids)}>
+                      {t({ ru: "Удалить", ro: "Șterge", en: "Remove" })}
                     </button>
                   </div>
+                  <div className="checkout-item__total">{fmt(unit * group.qty)}</div>
                 </article>
               );
-            })
-          )}
-        </div>
-
-        <form className="panel cart-form" onSubmit={submitOrder}>
-          <h2>{t({ ru: "Оформление", ro: "Finalizare", en: "Checkout" })}</h2>
-          <label>
-            {t({ ru: "Имя", ro: "Prenume", en: "First name" })}
-            <input value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-          </label>
-          <label>
-            {t({ ru: "Фамилия", ro: "Nume", en: "Last name" })}
-            <input value={lastName} onChange={(e) => setLastName(e.target.value)} />
-          </label>
-          <label>
-            {t({ ru: "Телефон", ro: "Telefon", en: "Phone" })}
-            <input value={phone} onChange={(e) => setPhone(e.target.value)} />
-          </label>
-
-          {status.text && <p className={`cart-status ${status.type}`}>{status.text}</p>}
-
-          <button type="submit" className="btn" disabled={loading || cartIds.length === 0}>
-            {loading
-              ? t({ ru: "Отправка...", ro: "Se trimite...", en: "Sending..." })
-              : t({ ru: "Отправить заказ", ro: "Trimite comanda", en: "Send order" })}
-          </button>
-          <p className="cart-delivery-note">
-            {t({
-              ru: "После оформления с вами свяжутся для обсуждения доставки.",
-              ro: "După finalizare, te contactăm pentru a discuta livrarea.",
-              en: "After checkout, we will contact you to discuss delivery.",
             })}
-          </p>
-        </form>
-      </div>
+          </div>
+
+          {/* 3. Summary */}
+          <div className="checkout-summary">
+            <div className="checkout-summary__row">
+              <span>{t({ ru: "Стоимость товаров", ro: "Costul produselor", en: "Items cost" })}</span>
+              <span>{fmt(itemsTotal)}</span>
+            </div>
+            <div className="checkout-summary__row checkout-summary__row--total">
+              <span>{t({ ru: "Общая сумма", ro: "Total", en: "Total" })}</span>
+              <strong>{fmt(itemsTotal)}</strong>
+            </div>
+          </div>
+
+          {/* 4 + 5. Checkout form & submit */}
+          <form className="checkout-form" onSubmit={submitOrder}>
+            <h2>{t({ ru: "Оформление заказа", ro: "Finalizarea comenzii", en: "Checkout" })}</h2>
+
+            <label className="checkout-field">
+              <span>{t({ ru: "Имя", ro: "Nume", en: "Name" })}</span>
+              <input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
+            </label>
+
+            <label className="checkout-field">
+              <span>{t({ ru: "Телефон", ro: "Telefon", en: "Phone" })}</span>
+              <input value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="tel" autoComplete="tel" />
+            </label>
+
+            <label className="checkout-field">
+              <span>{t({ ru: "Адрес доставки", ro: "Adresa de livrare", en: "Delivery address" })}</span>
+              <input value={address} onChange={(e) => setAddress(e.target.value)} autoComplete="street-address" />
+            </label>
+
+            <label className="checkout-field">
+              <span>
+                {t({ ru: "Комментарий к заказу", ro: "Comentariu la comandă", en: "Order comment" })}{" "}
+                <em>{t({ ru: "(необязательно)", ro: "(opțional)", en: "(optional)" })}</em>
+              </span>
+              <textarea value={comment} onChange={(e) => setComment(e.target.value)} rows={3} />
+            </label>
+
+            <button type="submit" className="btn checkout-submit" disabled={loading}>
+              {loading
+                ? t({ ru: "Отправка...", ro: "Se trimite...", en: "Sending..." })
+                : t({ ru: "Оформить заказ", ro: "Trimite comanda", en: "Place order" })}
+            </button>
+
+            <p className="checkout-note">
+              {t({
+                ru: "После оформления мы свяжемся с вами для подтверждения доставки.",
+                ro: "După plasarea comenzii te contactăm pentru a confirma livrarea.",
+                en: "After you place the order we will contact you to confirm delivery.",
+              })}
+            </p>
+          </form>
+        </>
+      )}
     </section>
   );
 }
-

@@ -1,6 +1,6 @@
-﻿import messorStructorImage from "../assets/images/messor-structor.webp";
-import lasiusNigerImage from "../assets/images/lasius-niger.webp";
-import camponotusFellahImage from "../assets/images/camponotus-fellah.webp";
+﻿import messorStructorImage from "../assets/images/ants/messor-structor.jpg";
+import lasiusNigerImage from "../assets/images/ants/lasius-niger.jpg";
+import camponotusFellahImage from "../assets/images/ants/camponotus-fellah.jpg";
 
 export const priceOptions = [
   {
@@ -43,7 +43,9 @@ export const ants = [
       en: "Messor structor is a popular starter species. It needs a dry arena and moderate humidity in the nest area."
     },
     image: messorStructorImage,
-    images: [messorStructorImage, "/placeholder-ant.svg"],
+    images: [messorStructorImage],
+    colonySize: { ru: "Матка + 10–20 рабочих", ro: "Regină + 10–20 lucrătoare", en: "Queen + 10–20 workers" },
+    food: { ru: "Семена и зёрна", ro: "Semințe și grăunțe", en: "Seeds and grains" },
     priceOptions,
     availability: "inStock",
     characteristics: [
@@ -82,7 +84,9 @@ export const ants = [
       en: "Lasius niger adapts easily and grows well in basic conditions. A great option for a first formicarium."
     },
     image: lasiusNigerImage,
-    images: [lasiusNigerImage, "/placeholder-ant.svg"],
+    images: [lasiusNigerImage],
+    colonySize: { ru: "Матка + расплод", ro: "Regină + puiet", en: "Queen + brood" },
+    food: { ru: "Сахарный сироп, насекомые", ro: "Sirop de zahăr, insecte", en: "Sugar syrup, insects" },
     priceOptions,
     availability: "preorder",
     characteristics: [
@@ -121,7 +125,9 @@ export const ants = [
       en: "Camponotus fellah needs stable conditions and regular protein feeding. Suitable for confident beginners and experienced keepers."
     },
     image: camponotusFellahImage,
-    images: [camponotusFellahImage, "/placeholder-ant.svg"],
+    images: [camponotusFellahImage],
+    colonySize: { ru: "Матка + расплод", ro: "Regină + puiet", en: "Queen + brood" },
+    food: { ru: "Белок и сахарный сироп", ro: "Proteine și sirop de zahăr", en: "Protein and sugar syrup" },
     priceOptions,
     availability: "preorder",
     characteristics: [

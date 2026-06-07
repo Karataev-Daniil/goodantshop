@@ -1,7 +1,0 @@
-<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="800" fill="#f4efe8"/>
-  <rect x="100" y="140" width="1000" height="520" rx="30" fill="#dad1c4" stroke="#978a70" stroke-width="12"/>
-  <rect x="260" y="240" width="680" height="280" rx="26" fill="#f7f0e4"/>
-  <path d="M360 520 C430 460 520 450 620 500 C700 540 780 520 840 486" fill="none" stroke="#99826a" stroke-width="16" stroke-linecap="round"/>
-  <text x="600" y="730" fill="#5c4f40" font-size="56" font-family="Arial, sans-serif" text-anchor="middle">Stone Nest Classic</text>
-</svg>

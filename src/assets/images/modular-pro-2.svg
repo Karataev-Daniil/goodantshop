@@ -1,8 +1,0 @@
-<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="800" fill="#eef4f3"/>
-  <rect x="120" y="130" width="960" height="520" rx="34" fill="#dee8e2" stroke="#94a79c" stroke-width="11"/>
-  <rect x="260" y="260" width="200" height="180" rx="20" fill="#f7f4ef"/>
-  <rect x="520" y="260" width="160" height="180" rx="20" fill="#dee4d9"/>
-  <rect x="740" y="260" width="200" height="180" rx="20" fill="#f2efe8"/>
-  <text x="600" y="730" fill="#55655b" font-size="56" font-family="Arial, sans-serif" text-anchor="middle">Модули</text>
-</svg>
