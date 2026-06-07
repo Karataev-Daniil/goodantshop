@@ -1,8 +1,24 @@
-﻿import { NavLink } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import cartIcon from "../../assets/images/icons/cart.svg";
+
+const LANGS = ["ru", "ro", "en"];
 
 export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
   const langLabel = curLang.toUpperCase();
+  const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Close the mobile menu whenever the route changes.
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
+
+  // Lock background scroll while the full-screen menu is open.
+  useEffect(() => {
+    document.body.classList.toggle("nav-locked", menuOpen);
+    return () => document.body.classList.remove("nav-locked");
+  }, [menuOpen]);
 
   const onLangSelect = (event, nextLang) => {
     switchLang(nextLang);
@@ -26,19 +42,45 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
             </span>
           </div>
         </NavLink>
-        <nav className="main-nav">
-          <NavLink to={`/${curLang}/ants`}>
-            {t({ ru: "Муравьи", ro: "Furnici", en: "Ants" })}
-          </NavLink>
-          <NavLink to={`/${curLang}/formicariums`}>
-            {t({ ru: "Формикарии", ro: "Formicarii", en: "Formicariums" })}
-          </NavLink>
-          <NavLink to={`/${curLang}/contacts`}>
-            {t({ ru: "Контакты", ro: "Contacte", en: "Contacts" })}
-          </NavLink>
-          {/* <NavLink to={`/${curLang}/blog`}>
-            {t({ ru: "Блог", ro: "Blog", en: "Blog" })}
-          </NavLink> */}
+
+        <div className="header-actions">
+          <nav
+            id="primary-nav"
+            className={`main-nav ${menuOpen ? "is-open" : ""}`}
+          >
+            <NavLink to={`/${curLang}/ants`}>
+              {t({ ru: "Муравьи", ro: "Furnici", en: "Ants" })}
+            </NavLink>
+            <NavLink to={`/${curLang}/formicariums`}>
+              {t({ ru: "Формикарии", ro: "Formicarii", en: "Formicariums" })}
+            </NavLink>
+            <NavLink to={`/${curLang}/contacts`}>
+              {t({ ru: "Контакты", ro: "Contacte", en: "Contacts" })}
+            </NavLink>
+            {/* <NavLink to={`/${curLang}/blog`}>
+              {t({ ru: "Блог", ro: "Blog", en: "Blog" })}
+            </NavLink> */}
+
+            {/* Language picker — only shown inside the mobile menu */}
+            <div className="nav-lang">
+              <span className="nav-lang__label">
+                {t({ ru: "Язык", ro: "Limba", en: "Language" })}
+              </span>
+              <div className="nav-lang__options">
+                {LANGS.map((lng) => (
+                  <button
+                    key={lng}
+                    type="button"
+                    className={curLang === lng ? "is-current" : ""}
+                    onClick={() => switchLang(lng)}
+                  >
+                    {lng.toUpperCase()}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </nav>
+
           <NavLink
             className="cart-link"
             to={`/${curLang}/cart`}
@@ -47,6 +89,8 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
             <img className="cart-link__icon" src={cartIcon} alt={t({ ru: "Корзина", ro: "Cos", en: "Cart" })} />
             {cartCount > 0 && <span className="cart-link__badge">{cartCount}</span>}
           </NavLink>
+
+          {/* Desktop language dropdown — hidden on mobile */}
           <details className="lang-dropdown">
             <summary className="lang-dropdown__trigger">
               <span className="lang-dropdown__label">{langLabel}</span>
@@ -68,30 +112,32 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
               </svg>
             </summary>
             <div className="lang-dropdown__menu" role="listbox" aria-label="Language">
-              <button
-                type="button"
-                className={curLang === "ru" ? "is-current" : ""}
-                onClick={(event) => onLangSelect(event, "ru")}
-              >
-                RU
-              </button>
-              <button
-                type="button"
-                className={curLang === "ro" ? "is-current" : ""}
-                onClick={(event) => onLangSelect(event, "ro")}
-              >
-                RO
-              </button>
-              <button
-                type="button"
-                className={curLang === "en" ? "is-current" : ""}
-                onClick={(event) => onLangSelect(event, "en")}
-              >
-                EN
-              </button>
+              {LANGS.map((lng) => (
+                <button
+                  key={lng}
+                  type="button"
+                  className={curLang === lng ? "is-current" : ""}
+                  onClick={(event) => onLangSelect(event, lng)}
+                >
+                  {lng.toUpperCase()}
+                </button>
+              ))}
             </div>
           </details>
-        </nav>
+
+          <button
+            type="button"
+            className={`nav-toggle ${menuOpen ? "is-open" : ""}`}
+            aria-label={t({ ru: "Меню", ro: "Meniu", en: "Menu" })}
+            aria-expanded={menuOpen}
+            aria-controls="primary-nav"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span className="nav-toggle__bar" />
+            <span className="nav-toggle__bar" />
+            <span className="nav-toggle__bar" />
+          </button>
+        </div>
       </div>
     </header>
   );

@@ -878,6 +878,12 @@
 }
 
 @media (max-width: 980px) {
+  /* Generic 4-col grids (e.g. hero-trust) -> 2 cols on tablet.
+     Declared first so the more specific .category-grid .grid.four below wins. */
+  .grid.four {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
   .store-hero,
   .starter-kit,
   .order-steps {
@@ -966,6 +972,14 @@
   .section-heading {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .section-heading h2 {
+    text-align: left;
+  }
+
+  .grid.four {
+    grid-template-columns: 1fr;
   }
 
   .order-steps__grid > div {
