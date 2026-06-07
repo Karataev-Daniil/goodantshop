@@ -9,12 +9,13 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Close the mobile menu whenever the route changes.
+  // Close the mobile menu on navigation.
   useEffect(() => {
     setMenuOpen(false);
   }, [location.pathname]);
 
-  // Lock background scroll while the full-screen menu is open.
+  // Lock background scroll while the menu is open (only takes effect on mobile,
+  // where `.nav-locked` is wired up in CSS).
   useEffect(() => {
     document.body.classList.toggle("nav-locked", menuOpen);
     return () => document.body.classList.remove("nav-locked");
@@ -61,7 +62,7 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
               {t({ ru: "Блог", ro: "Blog", en: "Blog" })}
             </NavLink> */}
 
-            {/* Language picker — only shown inside the mobile menu */}
+            {/* Language picker — shown only inside the mobile menu (CSS) */}
             <div className="nav-lang">
               <span className="nav-lang__label">
                 {t({ ru: "Язык", ro: "Limba", en: "Language" })}
@@ -90,7 +91,7 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
             {cartCount > 0 && <span className="cart-link__badge">{cartCount}</span>}
           </NavLink>
 
-          {/* Desktop language dropdown — hidden on mobile */}
+          {/* Desktop language dropdown — hidden on mobile (CSS) */}
           <details className="lang-dropdown">
             <summary className="lang-dropdown__trigger">
               <span className="lang-dropdown__label">{langLabel}</span>

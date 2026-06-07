@@ -929,7 +929,10 @@
 
   .content-grid,
   .steps-grid,
+  .how-it-works .steps-grid,
   .trust-grid,
+  .trust-section .trust-grid,
+  .why-buy-us .trust-grid,
   .category-grid .grid.four {
     grid-template-columns: 1fr;
   }
