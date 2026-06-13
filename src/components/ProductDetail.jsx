@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import ProductGallery from "./ProductGallery";
 import ProductCard from "./ProductCard";
+import SEO, { breadcrumbSchema, productSchema, productSeo } from "./SEO";
 
 const getText = (value, lang) => {
   if (value && typeof value === "object") {
@@ -171,9 +172,32 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
     type === "ant"
       ? { ru: "Для запуска колонии понадобится дом", ro: "Pentru pornirea coloniei e nevoie de o casă", en: "Your colony will need a home to start" }
       : { ru: "Выберите колонию для заселения", ro: "Alege o colonie pentru populare", en: "Choose a colony to move in" };
+  const seo = productSeo(item, type, lang);
+  const productPath = type === "ant" ? `/ants/${item.slug}` : `/formic/${item.slug}`;
+  const catalogSeoPath = type === "ant" ? "/ants" : "/formicariums";
+  const catalogSeoName =
+    type === "ant"
+      ? { ru: "Муравьи", ro: "Furnici", en: "Ants" }
+      : { ru: "Формикарии", ro: "Formicarii", en: "Formicariums" };
 
   return (
     <article className="section product-detail">
+      <SEO
+        lang={lang}
+        path={productPath}
+        title={seo.title}
+        description={seo.description}
+        image={images[0]}
+        type="product"
+        jsonLd={[
+          breadcrumbSchema(lang, [
+            { name: { ru: "Главная", ro: "Acasă", en: "Home" }, path: "/" },
+            { name: catalogSeoName, path: catalogSeoPath },
+            { name: item.title, path: productPath },
+          ]),
+          productSchema(item, type, lang, productPath),
+        ]}
+      />
       <Link className="product-detail__back" to={catalogPath(type, lang)}>
         ← {getText({ ru: "Назад в каталог", ro: "Înapoi la catalog", en: "Back to catalog" }, lang)}
       </Link>

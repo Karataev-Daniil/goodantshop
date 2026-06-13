@@ -3,6 +3,7 @@ import { useOutletContext, useParams } from "react-router-dom";
 import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
 import ProductCard from "../components/ProductCard";
+import SEO, { breadcrumbSchema, faqSchema, pageSeo } from "../components/SEO";
 import messorForagingSeeds from "../assets/images/ants/messor-foraging-seeds.jpg";
 import messorSeedStore from "../assets/images/ants/messor-seed-store.jpg";
 import messorStructor from "../assets/images/ants/messor-structor.jpg";
@@ -70,9 +71,45 @@ export default function HomePage() {
   const currentSlide = gallerySlides[galleryIndex];
   const showPrevSlide = () => setGalleryIndex((i) => (i - 1 + galleryCount) % galleryCount);
   const showNextSlide = () => setGalleryIndex((i) => (i + 1) % galleryCount);
+  const homeFaq = [
+    {
+      q: { ru: "Безопасна ли муравьиная ферма дома?", ro: "Este sigură o fermă de furnici acasă?", en: "Is a home ant farm safe?" },
+      a: {
+        ru: "Да. Муравьи остаются внутри закрытого формикария, а комплекты перед отправкой проверяются.",
+        ro: "Da. Furnicile rămân în formicariul închis, iar seturile sunt verificate înainte de livrare.",
+        en: "Yes. Ants stay inside the closed formicarium, and kits are checked before delivery.",
+      },
+    },
+    {
+      q: { ru: "Подходит ли ферма новичкам?", ro: "Este potrivită pentru începători?", en: "Is it suitable for beginners?" },
+      a: {
+        ru: "Да. Стартовые наборы рассчитаны на спокойный запуск первой колонии и сопровождаются консультацией.",
+        ro: "Da. Seturile de start sunt gândite pentru prima colonie și includ suport.",
+        en: "Yes. Starter kits are made for a calm first colony launch and include support.",
+      },
+    },
+    {
+      q: { ru: "Есть ли доставка по Молдове?", ro: "Există livrare în Moldova?", en: "Do you deliver across Moldova?" },
+      a: {
+        ru: "Да. GoodAntShop доставляет формикарии и колонии муравьёв по всей Молдове в безопасной упаковке.",
+        ro: "Da. GoodAntShop livrează formicarii și colonii de furnici în toată Moldova, în ambalaj sigur.",
+        en: "Yes. GoodAntShop delivers formicariums and ant colonies across Moldova in safe packaging.",
+      },
+    },
+  ];
 
   return (
     <>
+      <SEO
+        lang={lang}
+        path="/"
+        title={pageSeo.home.title}
+        description={pageSeo.home.description}
+        jsonLd={[
+          breadcrumbSchema(lang, [{ name: { ru: "Главная", ro: "Acasă", en: "Home" }, path: "/" }]),
+          faqSchema(lang, homeFaq),
+        ]}
+      />
       <section className="store-hero">
         <div className="store-hero__content">
           <p className="kicker">{t({ ru: "Для дома", ro: "Pentru acasă", en: "For home" })}</p>

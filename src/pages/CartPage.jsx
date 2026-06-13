@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
+import SEO, { breadcrumbSchema, pageSeo } from "../components/SEO";
 
 const getText = (value, lang) => {
   if (value && typeof value === "object") {
@@ -140,115 +141,125 @@ export default function CartPage() {
   };
 
   return (
-    <section className="section checkout">
-      <header className="checkout__head">
-        <h1>{t({ ru: "Корзина", ro: "Coș", en: "Cart" })}</h1>
-        {totalQty > 0 && (
-          <p className="checkout__count">
-            {totalQty} {countWord(totalQty, lang)}
-          </p>
-        )}
-      </header>
-
-      {status.text && <p className={`checkout-status checkout-status--${status.type}`}>{status.text}</p>}
-
-      {groups.length === 0 ? (
-        <div className="checkout-empty">
-          {status.type !== "success" && (
-            <p>{t({ ru: "Корзина пока пуста.", ro: "Coșul este încă gol.", en: "Your cart is empty." })}</p>
-          )}
-          <Link className="btn" to={`/${lang}/ants`}>
-            {t({ ru: "Перейти к каталогу", ro: "Mergi la catalog", en: "Go to catalog" })}
-          </Link>
-        </div>
-      ) : (
-        <>
-          {/* 2. Items */}
-          <div className="checkout-items">
-            {groups.map((group) => {
-              const unit = priceNumber(group.product);
-              const image = group.product.images?.[0] || group.product.image || "/placeholder-ant.svg";
-              return (
-                <article className="checkout-item" key={group.product.id}>
-                  <div className="checkout-item__media">
-                    <img src={image} alt={getText(group.product.title, lang)} loading="lazy" />
-                  </div>
-                  <div className="checkout-item__info">
-                    <h3>{getText(group.product.title, lang)}</h3>
-                    <p>{getText(group.product.excerpt, lang)}</p>
-                    <div className="checkout-item__meta">
-                      <span>
-                        {t({ ru: "Цена за единицу", ro: "Preț per unitate", en: "Unit price" })}: {fmt(unit)}
-                      </span>
-                      <span>
-                        {t({ ru: "Количество", ro: "Cantitate", en: "Quantity" })}: {group.qty}
-                      </span>
-                    </div>
-                    <button type="button" className="checkout-item__remove" onClick={() => removeGroup(group.uids)}>
-                      {t({ ru: "Удалить", ro: "Șterge", en: "Remove" })}
-                    </button>
-                  </div>
-                  <div className="checkout-item__total">{fmt(unit * group.qty)}</div>
-                </article>
-              );
-            })}
-          </div>
-
-          {/* 3. Summary */}
-          <div className="checkout-summary">
-            <div className="checkout-summary__row">
-              <span>{t({ ru: "Стоимость товаров", ro: "Costul produselor", en: "Items cost" })}</span>
-              <span>{fmt(itemsTotal)}</span>
-            </div>
-            <div className="checkout-summary__row checkout-summary__row--total">
-              <span>{t({ ru: "Общая сумма", ro: "Total", en: "Total" })}</span>
-              <strong>{fmt(itemsTotal)}</strong>
-            </div>
-          </div>
-
-          {/* 4 + 5. Checkout form & submit */}
-          <form className="checkout-form" onSubmit={submitOrder}>
-            <h2>{t({ ru: "Оформление заказа", ro: "Finalizarea comenzii", en: "Checkout" })}</h2>
-
-            <label className="checkout-field">
-              <span>{t({ ru: "Имя", ro: "Nume", en: "Name" })}</span>
-              <input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
-            </label>
-
-            <label className="checkout-field">
-              <span>{t({ ru: "Телефон", ro: "Telefon", en: "Phone" })}</span>
-              <input value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="tel" autoComplete="tel" />
-            </label>
-
-            <label className="checkout-field">
-              <span>{t({ ru: "Адрес доставки", ro: "Adresa de livrare", en: "Delivery address" })}</span>
-              <input value={address} onChange={(e) => setAddress(e.target.value)} autoComplete="street-address" />
-            </label>
-
-            <label className="checkout-field">
-              <span>
-                {t({ ru: "Комментарий к заказу", ro: "Comentariu la comandă", en: "Order comment" })}{" "}
-                <em>{t({ ru: "(необязательно)", ro: "(opțional)", en: "(optional)" })}</em>
-              </span>
-              <textarea value={comment} onChange={(e) => setComment(e.target.value)} rows={3} />
-            </label>
-
-            <button type="submit" className="btn checkout-submit" disabled={loading}>
-              {loading
-                ? t({ ru: "Отправка...", ro: "Se trimite...", en: "Sending..." })
-                : t({ ru: "Оформить заказ", ro: "Trimite comanda", en: "Place order" })}
-            </button>
-
-            <p className="checkout-note">
-              {t({
-                ru: "После оформления мы свяжемся с вами для подтверждения доставки.",
-                ro: "După plasarea comenzii te contactăm pentru a confirma livrarea.",
-                en: "After you place the order we will contact you to confirm delivery.",
-              })}
+    <>
+      <SEO
+        lang={lang}
+        path="/cart"
+        title={pageSeo.cart.title}
+        description={pageSeo.cart.description}
+        robots="noindex,nofollow"
+        jsonLd={breadcrumbSchema(lang, [
+          { name: { ru: "Главная", ro: "Acasă", en: "Home" }, path: "/" },
+          { name: { ru: "Корзина", ro: "Coș", en: "Cart" }, path: "/cart" },
+        ])}
+      />
+      <section className="section checkout">
+        <header className="checkout__head">
+          <h1>{t({ ru: "Корзина", ro: "Coș", en: "Cart" })}</h1>
+          {totalQty > 0 && (
+            <p className="checkout__count">
+              {totalQty} {countWord(totalQty, lang)}
             </p>
-          </form>
-        </>
-      )}
-    </section>
+          )}
+        </header>
+
+        {status.text && <p className={`checkout-status checkout-status--${status.type}`}>{status.text}</p>}
+
+        {groups.length === 0 ? (
+          <div className="checkout-empty">
+            {status.type !== "success" && (
+              <p>{t({ ru: "Корзина пока пуста.", ro: "Coșul este încă gol.", en: "Your cart is empty." })}</p>
+            )}
+            <Link className="btn" to={`/${lang}/ants`}>
+              {t({ ru: "Перейти к каталогу", ro: "Mergi la catalog", en: "Go to catalog" })}
+            </Link>
+          </div>
+        ) : (
+          <>
+            <div className="checkout-items">
+              {groups.map((group) => {
+                const unit = priceNumber(group.product);
+                const image = group.product.images?.[0] || group.product.image || "/placeholder-ant.svg";
+                return (
+                  <article className="checkout-item" key={group.product.id}>
+                    <div className="checkout-item__media">
+                      <img src={image} alt={getText(group.product.title, lang)} loading="lazy" />
+                    </div>
+                    <div className="checkout-item__info">
+                      <h3>{getText(group.product.title, lang)}</h3>
+                      <p>{getText(group.product.excerpt, lang)}</p>
+                      <div className="checkout-item__meta">
+                        <span>
+                          {t({ ru: "Цена за единицу", ro: "Preț per unitate", en: "Unit price" })}: {fmt(unit)}
+                        </span>
+                        <span>
+                          {t({ ru: "Количество", ro: "Cantitate", en: "Quantity" })}: {group.qty}
+                        </span>
+                      </div>
+                      <button type="button" className="checkout-item__remove" onClick={() => removeGroup(group.uids)}>
+                        {t({ ru: "Удалить", ro: "Șterge", en: "Remove" })}
+                      </button>
+                    </div>
+                    <div className="checkout-item__total">{fmt(unit * group.qty)}</div>
+                  </article>
+                );
+              })}
+            </div>
+
+            <div className="checkout-summary">
+              <div className="checkout-summary__row">
+                <span>{t({ ru: "Стоимость товаров", ro: "Costul produselor", en: "Items cost" })}</span>
+                <span>{fmt(itemsTotal)}</span>
+              </div>
+              <div className="checkout-summary__row checkout-summary__row--total">
+                <span>{t({ ru: "Общая сумма", ro: "Total", en: "Total" })}</span>
+                <strong>{fmt(itemsTotal)}</strong>
+              </div>
+            </div>
+
+            <form className="checkout-form" onSubmit={submitOrder}>
+              <h2>{t({ ru: "Оформление заказа", ro: "Finalizarea comenzii", en: "Checkout" })}</h2>
+
+              <label className="checkout-field">
+                <span>{t({ ru: "Имя", ro: "Nume", en: "Name" })}</span>
+                <input value={name} onChange={(e) => setName(e.target.value)} autoComplete="name" />
+              </label>
+
+              <label className="checkout-field">
+                <span>{t({ ru: "Телефон", ro: "Telefon", en: "Phone" })}</span>
+                <input value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="tel" autoComplete="tel" />
+              </label>
+
+              <label className="checkout-field">
+                <span>{t({ ru: "Адрес доставки", ro: "Adresa de livrare", en: "Delivery address" })}</span>
+                <input value={address} onChange={(e) => setAddress(e.target.value)} autoComplete="street-address" />
+              </label>
+
+              <label className="checkout-field">
+                <span>
+                  {t({ ru: "Комментарий к заказу", ro: "Comentariu la comandă", en: "Order comment" })}{" "}
+                  <em>{t({ ru: "(необязательно)", ro: "(opțional)", en: "(optional)" })}</em>
+                </span>
+                <textarea value={comment} onChange={(e) => setComment(e.target.value)} rows={3} />
+              </label>
+
+              <button type="submit" className="btn checkout-submit" disabled={loading}>
+                {loading
+                  ? t({ ru: "Отправка...", ro: "Se trimite...", en: "Sending..." })
+                  : t({ ru: "Оформить заказ", ro: "Trimite comanda", en: "Place order" })}
+              </button>
+
+              <p className="checkout-note">
+                {t({
+                  ru: "После оформления мы свяжемся с вами для подтверждения доставки.",
+                  ro: "După plasarea comenzii te contactăm pentru a confirma livrarea.",
+                  en: "After you place the order we will contact you to confirm delivery.",
+                })}
+              </p>
+            </form>
+          </>
+        )}
+      </section>
+    </>
   );
 }

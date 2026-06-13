@@ -13,6 +13,8 @@ import CartPage from "./pages/CartPage";
 import HeaderMenu from "./components/navigation/HeaderMenu";
 import FooterMenu from "./components/navigation/FooterMenu";
 
+import { HelmetProvider } from "react-helmet-async";
+
 function useLocalStorage(key, initialValue) {
   const [state, setState] = useState(() => {
     try {
@@ -91,19 +93,21 @@ function Layout() {
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Navigate to="/ru" replace />} />
-      <Route path="/:lang/*" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path="ants" element={<AntsPage />} />
-        <Route path="ants/:slug" element={<SingleAntPage />} />
-        <Route path="formicariums" element={<FormicariumsPage />} />
-        <Route path="formic/:slug" element={<FormicPage />} />
-        {/* <Route path="blog" element={<BlogPage />} /> */}
-        {/* <Route path="blog/:slug" element={<SingleBlogPage />} /> */}
-        <Route path="contacts" element={<ContactsPage />} />
-        <Route path="cart" element={<CartPage />} />
-      </Route>
-    </Routes>
+    <HelmetProvider>
+      <Routes>
+        <Route path="/" element={<Navigate to="/ru" replace />} />
+        <Route path="/:lang/*" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="ants" element={<AntsPage />} />
+          <Route path="ants/:slug" element={<SingleAntPage />} />
+          <Route path="formicariums" element={<FormicariumsPage />} />
+          <Route path="formic/:slug" element={<FormicPage />} />
+          {/* <Route path="blog" element={<BlogPage />} /> */}
+          {/* <Route path="blog/:slug" element={<SingleBlogPage />} /> */}
+          <Route path="contacts" element={<ContactsPage />} />
+          <Route path="cart" element={<CartPage />} />
+        </Route>
+      </Routes>
+    </HelmetProvider>
   );
 }
