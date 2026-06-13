@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useOutletContext, useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
 import ProductCard from "../components/ProductCard";
@@ -92,12 +92,9 @@ export default function HomePage() {
             ))}
           </ul>
           <div className="actions store-hero__actions">
-            <button className="btn btn-primary" type="button" onClick={addStarterKit}>
+            <a className="btn btn-primary" href="#popular-products">
               {t({ ru: "Выбрать стартовый набор", ro: "Alege kitul de start", en: "Choose starter kit" })}
-            </button>
-            <Link className="btn btn-secondary" to={`/${lang}/ants`}>
-              {t({ ru: "Смотреть колонии", ro: "Vezi colonii", en: "View colonies" })}
-            </Link>
+            </a>
           </div>
         </div>
         <div className="store-hero__media">
@@ -129,7 +126,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section popular-products">
+      <section className="section popular-products" id="popular-products">
         <div className="section-heading">
           <p className="kicker">{t({ ru: "Популярные товары", ro: "Produse populare", en: "Popular products" })}</p>
           <h2>{t({ ru: "Самые популярные товары", ro: "Cele mai populare produse", en: "Most popular products" })}</h2>

@@ -1,0 +1,22 @@
+
+> goodantshop-react@1.0.0 dev
+> vite --host 127.0.0.1
+
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m188[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5173[22m/[39m
+[2m13:04:20[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/HomePage.jsx[22m
+[2m13:04:30[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m13:07:40[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/HomePage.jsx[22m
+[2m13:07:53[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/HomePage.jsx[22m
+[2m13:08:03[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/HomePage.jsx[22m
+[2m13:08:06[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/HomePage.jsx[22m
+[2m13:08:10[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m13:08:14[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m13:13:02[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/AntsPage.jsx[22m
+[2m13:13:10[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/FormicariumsPage.jsx[22m
+[2m13:13:16[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/styles.css[22m
+[2m13:13:20[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/navigation/HeaderMenu.jsx[22m
+[2m13:13:35[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/components/navigation/FooterMenu.jsx[22m
+[2m13:13:50[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/pages/ContactsPage.jsx[22m

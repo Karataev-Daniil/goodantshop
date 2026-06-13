@@ -16,16 +16,6 @@ export default function ContactsPage() {
       }),
     },
     {
-      label: "Email",
-      value: "info@goodantshop.md",
-      href: "mailto:info@goodantshop.md",
-      hint: t({
-        ru: "Для заказов и сотрудничества",
-        ro: "Pentru comenzi și colaborare",
-        en: "For orders and partnerships",
-      }),
-    },
-    {
       label: t({ ru: "Доставка", ro: "Livrare", en: "Delivery" }),
       value: t({ ru: "По всей Молдове", ro: "În toată Moldova", en: "Across Moldova" }),
       hint: t({

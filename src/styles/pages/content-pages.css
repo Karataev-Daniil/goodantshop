@@ -20,6 +20,14 @@ h2 {
   margin: 0 0 19.2px;
 }
 
+.catalog-intro {
+  max-width: 760px;
+  margin: -4px 0 32px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
 /* Section: Hero */
 .hero {
   margin-top: 60px;
