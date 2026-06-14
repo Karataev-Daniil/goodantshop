@@ -1,6 +1,6 @@
-﻿import messorStructorImage from "../assets/images/ants/messor-structor.jpg";
-import lasiusNigerImage from "../assets/images/ants/lasius-niger.jpg";
-import camponotusFellahImage from "../assets/images/ants/camponotus-fellah.jpg";
+﻿import messorStructorImage from "../assets/images/ants/messor-structor.webp";
+import lasiusNigerImage from "../assets/images/ants/lasius-niger.webp";
+import camponotusFellahImage from "../assets/images/ants/camponotus-fellah.webp";
 
 export const priceOptions = [
   {

@@ -4,11 +4,11 @@ import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
 import ProductCard from "../components/ProductCard";
 import SEO, { breadcrumbSchema, faqSchema, pageSeo } from "../components/SEO";
-import messorForagingSeeds from "../assets/images/ants/messor-foraging-seeds.jpg";
-import messorSeedStore from "../assets/images/ants/messor-seed-store.jpg";
-import messorStructor from "../assets/images/ants/messor-structor.jpg";
-import messorWorkersCloseup from "../assets/images/ants/messor-workers-closeup.jpg";
-import messorQueenWithBrood from "../assets/images/ants/messor-queen-with-brood.png";
+import messorForagingSeeds from "../assets/images/ants/messor-foraging-seeds.webp";
+import messorSeedStore from "../assets/images/ants/messor-seed-store.webp";
+import messorStructor from "../assets/images/ants/messor-structor.webp";
+import messorWorkersCloseup from "../assets/images/ants/messor-workers-closeup.webp";
+import messorQueenWithBrood from "../assets/images/ants/messor-queen-with-brood.webp";
 
 export default function HomePage() {
   const { t, addToCart } = useOutletContext();
@@ -31,7 +31,7 @@ export default function HomePage() {
       ro: "Formicariu Terra + colonie Messor Structor — tot ce trebuie pentru start.",
       en: "Terra formicarium + Messor Structor colony — everything to get started.",
     },
-    images: ["/formicarium-colony.jpg"],
+    images: ["/formicarium-colony.webp"],
     availability: "inStock",
     priceOptions: [
       {
@@ -65,7 +65,7 @@ export default function HomePage() {
     { image: messorForagingSeeds, label: t({ ru: "Охота и добыча пищи", ro: "Vânătoare și procurarea hranei", en: "Hunting and foraging for food" }) },
     { image: messorQueenWithBrood, label: t({ ru: "Личинки будущих рабочих", ro: "Larvele viitoarelor lucrătoare", en: "Larvae of future workers" }) },
     { image: messorWorkersCloseup, label: t({ ru: "Развитая социальная система", ro: "Un sistem social dezvoltat", en: "A developed social system" }) },
-    { image: "/formicarium-colony.jpg", label: t({ ru: "Формикарий дома", ro: "Formicariu acasă", en: "Formicarium at home" }) },
+    { image: "/formicarium-colony.webp", label: t({ ru: "Формикарий дома", ro: "Formicariu acasă", en: "Formicarium at home" }) },
   ];
   const galleryCount = gallerySlides.length;
   const currentSlide = gallerySlides[galleryIndex];
@@ -137,7 +137,7 @@ export default function HomePage() {
         <div className="store-hero__media">
           <img
             className="store-hero__image"
-            src="/formicarium-colony.jpg"
+            src="/formicarium-colony.webp"
             alt={t({ ru: "Формикарий с живой колонией муравьёв", ro: "Formicariu cu colonie vie de furnici", en: "Formicarium with a live ant colony" })}
             loading="lazy"
           />

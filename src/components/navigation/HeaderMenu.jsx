@@ -31,7 +31,7 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
     <header className="site-header">
       <div className="container header-inner">
         <NavLink className="brand" to={`/${curLang}`}>
-          <img src="/logo.png" alt="GoodAnt" />
+          <img src="/logo.webp" alt="GoodAnt" />
           <div>
             <strong><span>GOOD</span>ANTSHOP<span>.md</span></strong>
             <span>

@@ -2,8 +2,8 @@ import { Helmet } from "react-helmet-async";
 
 export const SITE_URL = "https://goodantshop.md";
 export const SITE_NAME = "GoodAntShop";
-export const SITE_LOGO = `${SITE_URL}/logo.png`;
-export const DEFAULT_IMAGE = `${SITE_URL}/formicarium-colony.jpg`;
+export const SITE_LOGO = `${SITE_URL}/logo.webp`;
+export const DEFAULT_IMAGE = `${SITE_URL}/formicarium-colony.webp`;
 export const SUPPORTED_LANGS = ["ru", "ro", "en"];
 
 const LOCALES = {

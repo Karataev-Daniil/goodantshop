@@ -1,10 +1,10 @@
-﻿import formicariumBlueFront from "../assets/images/formicariums/formicarium-blue-front.avif";
-import formicariumBlueBackCorner from "../assets/images/formicariums/formicarium-blue-back-corner.avif";
-import formicariumBlueRear from "../assets/images/formicariums/formicarium-blue-rear.avif";
-import formicariumOrange from "../assets/images/formicariums/formicarium-orange-back-corner.avif";
-import formicariumYellow from "../assets/images/formicariums/formicarium-yellow-back-corner.avif";
-import formicariumGreen from "../assets/images/formicariums/formicarium-green-back-corner.avif";
-import formicariumBlack from "../assets/images/formicariums/formicarium-black-back-corner.avif";
+﻿import formicariumBlueFront from "../assets/images/formicariums/formicarium-blue-front.webp";
+import formicariumBlueBackCorner from "../assets/images/formicariums/formicarium-blue-back-corner.webp";
+import formicariumBlueRear from "../assets/images/formicariums/formicarium-blue-rear.webp";
+import formicariumOrange from "../assets/images/formicariums/formicarium-orange-back-corner.webp";
+import formicariumYellow from "../assets/images/formicariums/formicarium-yellow-back-corner.webp";
+import formicariumGreen from "../assets/images/formicariums/formicarium-green-back-corner.webp";
+import formicariumBlack from "../assets/images/formicariums/formicarium-black-back-corner.webp";
 
 const priceOptions = [
   {
