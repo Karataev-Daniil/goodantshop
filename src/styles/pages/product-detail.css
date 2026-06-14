@@ -460,6 +460,9 @@
 }
 
 @media (max-width: 680px) {
+  .product-gallery__lightbox img {
+    width: 100%;
+  }
   .included-list {
     grid-template-columns: 1fr;
   }

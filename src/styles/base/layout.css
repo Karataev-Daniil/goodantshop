@@ -144,7 +144,6 @@
 
 .nav-lang__options {
   display: flex;
-  flex-direction: column;
   gap: 8px;
 }
 
@@ -209,10 +208,10 @@
 
 .cart-link__badge {
   position: absolute;
-  top: 1px;
-  right: 1px;
-  min-width: 18px;
-  height: 18px;
+  top: -2px;
+  right: -3px;
+  min-width: 13px;
+  height: 13px;
   padding: 0 5px;
   display: inline-flex;
   align-items: center;
@@ -220,9 +219,9 @@
   border-radius: 999px;
   background: var(--accent);
   color: #fff;
-  font-size: 11px;
+  font-size: 8px;
   font-weight: 800;
-  line-height: 1;
+  line-height: 0px;
 }
 
 .lang-dropdown {
@@ -407,9 +406,14 @@
   }
 
   .main-nav a {
-    padding: 14px;
+    padding: 14px 0 ;
     border-radius: 12px;
     font-size: 18px;
+  }
+
+  .main-nav a.active {
+    padding: 14px;
+    margin: 0 -14px;
   }
 
   .nav-lang {

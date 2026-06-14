@@ -4,7 +4,6 @@
   grid-template-columns: minmax(0, 0.95fr) minmax(340px, 0.72fr);
   gap: 46px;
   align-items: center;
-  padding: 44px 0 50px;
   background: transparent;
   color: var(--text);
 }
@@ -123,14 +122,6 @@
   border-radius: 999px;
   background: var(--accent);
   transform: translateY(-50%);
-}
-
-.hero-trust {
-  padding: 28px 0 0;
-}
-
-.hero-trust {
-  padding: 40px 0 24px;
 }
 
 .hero-trust .section-heading {
@@ -333,18 +324,6 @@
   margin-bottom: 10px;
 }
 
-.what-is,
-.why-hobby,
-.category-grid,
-.categories-section,
-.popular-products,
-.how-it-works,
-.trust-section,
-.why-buy-us,
-.final-cta {
-  padding: 48px 0;
-}
-
 .what-is .section-heading,
 .why-hobby .section-heading,
 .category-grid .section-heading,
@@ -515,15 +494,6 @@
   font-weight: 700;
 }
 
-.what-is,
-.why-hobby,
-.category-grid,
-.how-it-works,
-.trust-section,
-.final-cta {
-  padding: 48px 0;
-}
-
 .what-is .section-heading,
 .why-hobby .section-heading,
 .category-grid .section-heading,
@@ -561,6 +531,10 @@
   background: #fff;
   padding: 24px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+}
+
+.content-grid > div h3 {
+  text-align: center;
 }
 
 .content-grid > div h3,
@@ -968,7 +942,11 @@
   .store-hero {
     margin-top: 24px;
     gap: 18px;
-    padding: 32px 18px;
+    padding: 0;
+  }
+
+  .hero-trust {
+    padding: 0;
   }
 
   .store-hero__content,
