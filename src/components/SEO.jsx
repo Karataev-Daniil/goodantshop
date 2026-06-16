@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet-async";
+import { reviewsFor, reviewStatsFor } from "../data/reviewsData";
 
 export const SITE_URL = "https://goodantshop.md";
 export const SITE_NAME = "GoodAntShop";
@@ -185,6 +186,33 @@ export const itemListSchema = (lang = "ru", items = [], pathFactory) => ({
   })),
 });
 
+export const aggregateRatingSchema = (type) => {
+  const stats = reviewStatsFor(type);
+  return {
+    "@type": "AggregateRating",
+    ratingValue: stats.ratingValue,
+    reviewCount: stats.reviewCount,
+    bestRating: stats.bestRating,
+    worstRating: stats.worstRating,
+  };
+};
+
+export const reviewSchema = (review) => ({
+  "@type": "Review",
+  author: {
+    "@type": "Person",
+    name: review.author,
+  },
+  datePublished: review.date,
+  reviewBody: review.body,
+  reviewRating: {
+    "@type": "Rating",
+    ratingValue: review.rating,
+    bestRating: 5,
+    worstRating: 1,
+  },
+});
+
 export const productSchema = (product, type, lang = "ru", path = "/") => {
   const images = product.images?.length ? product.images : [product.image].filter(Boolean);
 
@@ -198,6 +226,8 @@ export const productSchema = (product, type, lang = "ru", path = "/") => {
       "@type": "Brand",
       name: SITE_NAME,
     },
+    aggregateRating: aggregateRatingSchema(type),
+    review: reviewsFor(type).map(reviewSchema),
     offers: {
       "@type": "Offer",
       url: localizedUrl(lang, path),

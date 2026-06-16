@@ -124,26 +124,39 @@
   transform: translateY(-50%);
 }
 
-.hero-trust .section-heading {
-  margin-bottom: 24px;
+/* Slim trust strip right under the hero */
+.hero-trust {
+  margin-top: 40px;
 }
 
-.hero-trust .trust-card {
+.hero-trust__strip {
+  list-style: none;
+  margin: 0;
+  padding: 18px 0;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  min-height: 160px;
-  border-radius: 20px;
-  background: transparent;
-  border: 1px solid var(--line);
-  color: var(--text);
-  text-align: center;
+  gap: 12px 30px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
-.hero-trust .trust-card strong {
-  display: block;
-  font-size: 18px;
-  line-height: 1.2;
+.hero-trust__strip li {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.hero-trust__strip li::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--accent);
 }
 
 .popular-products .section-heading {
@@ -309,19 +322,45 @@
   font-weight: 800;
 }
 
+/* USP block — soft panel with icon cards, distinct from the other grids */
+.why-buy-us {
+  padding: 44px;
+  border-radius: 28px;
+  background: var(--surface-soft);
+}
+
 .why-buy-us .trust-grid {
-  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, minmax(200px, 1fr));
 }
 
 .why-buy-us .trust-grid > div {
+  display: grid;
+  gap: 12px;
+  align-content: start;
   padding: 24px;
-  border-radius: 20px;
+  border-radius: 18px;
   background: #fff;
+  box-shadow: none;
+}
+
+.why-buy-us .trust-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  background: rgba(189, 36, 31, 0.1);
+  color: var(--accent);
 }
 
 .why-buy-us .trust-grid > div strong {
   display: block;
-  margin-bottom: 10px;
+  font-size: 17px;
+}
+
+.why-buy-us .trust-grid > div p {
+  margin: 0;
 }
 
 .what-is .section-heading,
@@ -535,6 +574,79 @@
 
 .content-grid > div h3 {
   text-align: center;
+}
+
+/* "Reasons to start" — light, airy checklist instead of heavy cards */
+.why-hobby .content-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 44px;
+}
+.why-hobby .content-grid > div {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 0;
+  padding: 18px 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+.why-hobby .content-grid > div::before {
+  content: "✓";
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  background: rgba(189, 36, 31, 0.1);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 800;
+}
+.why-hobby .content-grid > div h3 {
+  margin: 0;
+  text-align: left;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/* "How to start" — numbered timeline instead of cards */
+.how-it-works .steps-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+}
+.how-it-works .steps-grid > div {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  padding: 24px;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: none;
+}
+.how-it-works .steps-grid > div strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+}
+.how-it-works .steps-grid > div h3 {
+  margin: 0;
+  font-size: 19px;
+}
+.how-it-works .steps-grid > div p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
 }
 
 .content-grid > div h3,
@@ -869,11 +981,74 @@
   line-height: 1.7;
 }
 
+/* ===== Home reviews strip ===== */
+.home-reviews__summary {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+  margin-bottom: 28px;
+}
+.home-reviews__rating {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.home-reviews__score {
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--text);
+}
+.home-reviews__summary .stars {
+  font-size: 22px;
+}
+.home-reviews__count {
+  color: var(--muted);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--line);
+  transition: color 0.18s ease, text-decoration-color 0.18s ease;
+}
+.home-reviews__count:hover {
+  color: var(--text);
+  text-decoration-color: var(--accent);
+}
+.home-reviews__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 28px;
+}
+.home-review-card {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  background: transparent;
+}
+.home-review-card .stars {
+  font-size: 16px;
+}
+.home-review-card__body {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.home-review-card__author {
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 14px;
+}
+
 @media (max-width: 980px) {
   /* Generic 4-col grids (e.g. hero-trust) -> 2 cols on tablet.
      Declared first so the more specific .category-grid .grid.four below wins. */
   .grid.four {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .home-reviews__grid {
+    grid-template-columns: 1fr;
   }
 
   .store-hero,
@@ -926,6 +1101,11 @@
   .why-buy-us .trust-grid,
   .category-grid .grid.four {
     grid-template-columns: 1fr;
+  }
+
+  /* checklist keeps two columns on tablet */
+  .why-hobby .content-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .final-cta__content {
@@ -1003,5 +1183,14 @@
 
   .final-cta__content {
     padding: 18px;
+  }
+
+  .why-hobby .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .why-buy-us {
+    padding: 22px;
+    border-radius: 18px;
   }
 }

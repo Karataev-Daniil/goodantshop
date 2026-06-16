@@ -16,6 +16,26 @@ body { margin: 0; font-family: var(--font-ui); background: var(--bg); color: var
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 
+/* ===== Star rating (partial-fill) ===== */
+.stars {
+  position: relative;
+  display: inline-block;
+  font-size: 15px;
+  line-height: 1;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.stars__bg {
+  color: #d9d3c8;
+}
+.stars__fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  color: #f5a623;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;

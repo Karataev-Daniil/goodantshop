@@ -4,6 +4,8 @@ import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
 import ProductCard from "../components/ProductCard";
 import SEO, { breadcrumbSchema, faqSchema, pageSeo } from "../components/SEO";
+import Stars from "../components/Stars";
+import { featuredReviews, reviewStatsAll, SELLER_999_URL } from "../data/reviewsData";
 import messorForagingSeeds from "../assets/images/ants/messor-foraging-seeds.webp";
 import messorSeedStore from "../assets/images/ants/messor-seed-store.webp";
 import messorStructor from "../assets/images/ants/messor-structor.webp";
@@ -15,6 +17,8 @@ export default function HomePage() {
   const { lang = "ru" } = useParams();
   const starterAnt = ants[0];
   const starterFormicarium = formicariums[0];
+  const homeReviewStats = reviewStatsAll();
+  const homeReviews = featuredReviews();
 
   const [galleryIndex, setGalleryIndex] = useState(0);
 
@@ -144,41 +148,27 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section hero-trust">
-        <div className="section-heading">
-          <p className="kicker">{t({ ru: "Доверие и опыт", ro: "Încredere și experiență", en: "Trust & experience" })}</p>
-          <h2>{t({ ru: "Почему с нами удобно начинать", ro: "De ce e comod să începi cu noi", en: "Why it’s easy to start with us" })}</h2>
-        </div>
-        <div className="grid four">
+      <section className="hero-trust">
+        <ul className="hero-trust__strip">
           {[
-            { title: t({ ru: "5+ лет опыта", ro: "Peste 5 ani de experiență", en: "5+ years of experience" }) },
-            { title: t({ ru: "500+ отправленных колоний", ro: "Peste 500 de colonii trimise", en: "500+ colonies shipped" }) },
-            { title: t({ ru: "Поддержка после покупки", ro: "Suport după achiziție", en: "Support after purchase" }) },
-            { title: t({ ru: "Консультация каждому клиенту", ro: "Consultanță pentru fiecare client", en: "Consultation for every customer" }) },
+            t({ ru: "5+ лет опыта", ro: "Peste 5 ani de experiență", en: "5+ years of experience" }),
+            t({ ru: "500+ отправленных колоний", ro: "Peste 500 de colonii trimise", en: "500+ colonies shipped" }),
+            t({ ru: "Поддержка после покупки", ro: "Suport după achiziție", en: "Support after purchase" }),
+            t({ ru: "Консультация каждому клиенту", ro: "Consultanță pentru fiecare client", en: "Consultation for every customer" }),
           ].map((item) => (
-            <div key={item.title} className="trust-card">
-              <strong>{item.title}</strong>
-            </div>
+            <li key={item}>{item}</li>
           ))}
-        </div>
-      </section>
-
-      <section className="section popular-products" id="popular-products">
-        <div className="section-heading">
-          <p className="kicker">{t({ ru: "Популярные товары", ro: "Produse populare", en: "Popular products" })}</p>
-          <h2>{t({ ru: "Самые популярные товары", ro: "Cele mai populare produse", en: "Most popular products" })}</h2>
-        </div>
-        <div className="grid popular-grid">
-          {popularItems.map(({ item, linkTo, onAddToCart }) => (
-            <ProductCard key={item.id} item={item} linkTo={linkTo} onAddToCart={onAddToCart} />
-          ))}
-        </div>
+        </ul>
       </section>
 
       <section className="section what-is-explained">
         <div className="section-heading">
           <p className="kicker">{t({ ru: "Что такое муравьиная ферма", ro: "Ce este o fermă de furnici", en: "What is an ant farm" })}</p>
-          <h2>{t({ ru: "Живой мини-мир за стеклом", ro: "Un mini-lume vie în spatele sticlei", en: "A living mini-world behind glass" })}</h2>
+          <h2>
+            {t({ ru: "Живой мини-мир", ro: "O mini-lume vie", en: "A living mini-world" })}
+            <br />
+            {t({ ru: "за стеклом", ro: "în spatele sticlei", en: "behind glass" })}
+          </h2>
         </div>
         <div className="what-is__inner">
           <div className="what-is__image">
@@ -202,7 +192,11 @@ export default function HomePage() {
       <section className="section why-hobby">
         <div className="section-heading">
           <p className="kicker">{t({ ru: "Почему люди выбирают это хобби", ro: "De ce oamenii aleg acest hobby", en: "Why people choose this hobby" })}</p>
-          <h2>{t({ ru: "Причины начать наблюдать живую колонию", ro: "Motivele pentru a începe să urmărești o colonie vie", en: "Reasons to start watching a living colony" })}</h2>
+          <h2>
+            {t({ ru: "Причины начать", ro: "Motivele pentru a începe", en: "Reasons to start" })}
+            <br />
+            {t({ ru: "наблюдать живую колонию", ro: "să urmărești o colonie vie", en: "watching a living colony" })}
+          </h2>
         </div>
         <div className="content-grid">
           {[
@@ -263,6 +257,51 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="section popular-products" id="popular-products">
+        <div className="section-heading">
+          <p className="kicker">{t({ ru: "Популярные товары", ro: "Produse populare", en: "Popular products" })}</p>
+          <h2>{t({ ru: "Самые популярные товары", ro: "Cele mai populare produse", en: "Most popular products" })}</h2>
+        </div>
+        <div className="grid popular-grid">
+          {popularItems.map(({ item, linkTo, onAddToCart }) => (
+            <ProductCard key={item.id} item={item} linkTo={linkTo} onAddToCart={onAddToCart} />
+          ))}
+        </div>
+      </section>
+
+      <section className="section home-reviews">
+        <div className="section-heading">
+          <p className="kicker">{t({ ru: "Отзывы", ro: "Recenzii", en: "Reviews" })}</p>
+          <h2>{t({ ru: "Что говорят покупатели", ro: "Ce spun clienții", en: "What customers say" })}</h2>
+        </div>
+
+        <div className="home-reviews__summary">
+          <div className="home-reviews__rating">
+            <span className="home-reviews__score">{homeReviewStats.ratingValue.toFixed(1)}</span>
+            <Stars value={homeReviewStats.ratingValue} />
+          </div>
+          <a
+            className="home-reviews__count"
+            href={SELLER_999_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {homeReviewStats.reviewCount}{" "}
+            {t({ ru: "отзывов на 999.md", ro: "recenzii pe 999.md", en: "reviews on 999.md" })}
+          </a>
+        </div>
+
+        <div className="home-reviews__grid">
+          {homeReviews.map((review) => (
+            <article className="home-review-card" key={`${review.author}-${review.date}`}>
+              <Stars value={review.rating} />
+              <p className="home-review-card__body">{review.body}</p>
+              <span className="home-review-card__author">{review.author}</span>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="section how-it-works">
         <div className="section-heading">
           <p className="kicker">{t({ ru: "Как начать", ro: "Cum să începi", en: "How to start" })}</p>
@@ -298,28 +337,61 @@ export default function HomePage() {
       <section className="section why-buy-us">
         <div className="section-heading">
           <p className="kicker">{t({ ru: "Почему покупают у нас", ro: "De ce cumpără la noi", en: "Why buy from us" })}</p>
-          <h2>{t({ ru: "Надёжный старт муравьиной колонии", ro: "Un start sigur pentru colonie", en: "A reliable start for your colony" })}</h2>
+          <h2>
+            {t({ ru: "Надёжный старт", ro: "Un start sigur", en: "A reliable start" })}
+            <br />
+            {t({ ru: "муравьиной колонии", ro: "pentru colonie", en: "for your colony" })}
+          </h2>
         </div>
         <div className="trust-grid">
           {[
-            { 
+            {
+              icon: (
+                <path d="M3 7h11v8H3zM14 10h3.4L21 13v2h-7z" />
+              ),
+              extraIcon: <><circle cx="7" cy="17" r="1.7" /><circle cx="17" cy="17" r="1.7" /></>,
               title: t({ ru: "Безопасная доставка", ro: "Livrare sigură", en: "Safe delivery" }),
-              description: t({ru: "Надежно утепляем посылки в холодное время года и компенсируем риски в пути", ro: "", en: ""}) 
+              description: t({
+                ru: "Надёжно утепляем посылки в холодное время года и компенсируем риски в пути.",
+                ro: "Ambalăm coletele termic pe timp rece și compensăm riscurile pe drum.",
+                en: "We insulate parcels in cold weather and cover transit risks.",
+              }),
             },
-            { 
+            {
+              icon: <path d="M12 3l7 3v5c0 4.4-3 7.4-7 9-4-1.6-7-4.6-7-9V6zM9 12l2 2 4-4" />,
               title: t({ ru: "Проверенные колонии", ro: "Colonii verificate", en: "Verified colonies" }),
-              description: t({ru: "Каждая матка проходит строгий карантин и проверку на наличие здорового расплода", ro: "", en: ""}) 
+              description: t({
+                ru: "Каждая матка проходит строгий карантин и проверку на наличие здорового расплода.",
+                ro: "Fiecare regină trece prin carantină strictă și verificarea puietului sănătos.",
+                en: "Every queen passes strict quarantine and a healthy-brood check.",
+              }),
             },
-            { 
+            {
+              icon: <path d="M20 15a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" />,
               title: t({ ru: "Поддержка новичков", ro: "Suport pentru începători", en: "Beginner support" }),
-              description: t({ru: "Остаемся на связи после покупки и помогаем адаптировать колонию на новом месте", ro: "", en: ""}) 
+              description: t({
+                ru: "Остаёмся на связи после покупки и помогаем адаптировать колонию на новом месте.",
+                ro: "Rămânem în legătură după achiziție și ajutăm la adaptarea coloniei la noul loc.",
+                en: "We stay in touch after purchase and help your colony settle in.",
+              }),
             },
-            { 
+            {
+              icon: <path d="M12 3l8 4v10l-8 4-8-4V7zM4 7l8 4 8-4M12 11v10" />,
               title: t({ ru: "Качественные формикарии", ro: "Formicarii de calitate", en: "Quality formicariums" }),
-              description: t({ru: "Используем безопасный акрил и продуманную систему автоувлажнения", ro: "", en: ""}) 
+              description: t({
+                ru: "Используем безопасный акрил и продуманную систему автоувлажнения.",
+                ro: "Folosim acril sigur și un sistem de umidificare bine gândit.",
+                en: "We use safe acrylic and a well-designed auto-humidity system.",
+              }),
             },
           ].map((item) => (
             <div key={item.title}>
+              <span className="trust-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  {item.icon}
+                  {item.extraIcon}
+                </svg>
+              </span>
               <strong>{item.title}</strong>
               <p>{item.description}</p>
             </div>
