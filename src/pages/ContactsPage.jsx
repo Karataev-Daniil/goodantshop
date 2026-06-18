@@ -1,11 +1,26 @@
 import { useOutletContext, useParams } from "react-router-dom";
-import SEO, { breadcrumbSchema, pageSeo } from "../components/SEO";
+import SEO, {
+  breadcrumbSchema,
+  pageSeo,
+  SITE_PHONE,
+  SITE_PHONE_DISPLAY,
+} from "../components/SEO";
 
 export default function ContactsPage() {
   const { t } = useOutletContext();
   const { lang = "ru" } = useParams();
 
   const channels = [
+    {
+      label: t({ ru: "Телефон", ro: "Telefon", en: "Phone" }),
+      value: SITE_PHONE_DISPLAY,
+      href: `tel:${SITE_PHONE}`,
+      hint: t({
+        ru: "Звонки и сообщения с 10:00 до 22:00",
+        ro: "Apeluri și mesaje între 10:00 și 22:00",
+        en: "Calls and messages from 10:00 to 22:00",
+      }),
+    },
     {
       label: "Telegram",
       value: "@goodantshop",

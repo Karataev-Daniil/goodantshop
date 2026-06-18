@@ -1,8 +1,8 @@
 .store-hero {
   margin-top: 28px;
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(340px, 0.72fr);
-  gap: 46px;
+  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+  gap: 44px;
   align-items: center;
   background: transparent;
   color: var(--text);
@@ -27,7 +27,7 @@
 .store-hero__title {
   max-width: 760px;
   margin: 0;
-  font-size: clamp(40px, 5vw, 58px);
+  font-size: clamp(40px, 5vw, 59px);
   line-height: 1.08;
 }
 
@@ -146,7 +146,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: var(--text);
+  color: var(--accent);
   font-size: 15px;
   font-weight: 700;
 }
@@ -1071,7 +1071,7 @@
   }
 
   .store-hero__title {
-    font-size: 48px;
+    font-size: 52px;
   }
 
   .store-hero__media {

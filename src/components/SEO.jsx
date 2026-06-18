@@ -7,6 +7,10 @@ export const SITE_LOGO = `${SITE_URL}/logo.webp`;
 export const DEFAULT_IMAGE = `${SITE_URL}/formicarium-colony.webp`;
 export const SUPPORTED_LANGS = ["ru", "ro", "en"];
 
+// Full international number for `tel:` links; national format for display.
+export const SITE_PHONE = "+37360983052";
+export const SITE_PHONE_DISPLAY = "060 983 052";
+
 const LOCALES = {
   ru: "ru_MD",
   ro: "ro_MD",
@@ -150,6 +154,7 @@ export const organizationSchema = (lang = "ru") => ({
     contactType: "customer support",
     areaServed: "MD",
     availableLanguage: ["ru", "ro", "en"],
+    telephone: SITE_PHONE,
     url: "https://t.me/GoodAnt_Shop",
   },
   sameAs: ["https://t.me/GoodAnt_Shop"],
@@ -236,6 +241,27 @@ export const productSchema = (product, type, lang = "ru", path = "/") => {
       availability: AVAILABILITY[product.availability] || AVAILABILITY.inStock,
       seller: {
         "@id": `${SITE_URL}/#organization`,
+      },
+      // Flat 200 MDL within Chișinău. Out-of-town delivery is variable
+      // (public transport fare + 100 MDL), so it can't be a fixed rate here.
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: {
+          "@type": "MonetaryAmount",
+          value: 200,
+          currency: "MDL",
+        },
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          addressCountry: "MD",
+          addressRegion: "Chișinău",
+        },
+      },
+      // Sales are final — returns are not offered.
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "MD",
+        returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
       },
     },
     additionalProperty: product.characteristics?.map((entry) => ({

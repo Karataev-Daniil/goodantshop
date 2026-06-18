@@ -117,7 +117,13 @@ export default function HomePage() {
       <section className="store-hero">
         <div className="store-hero__content">
           <p className="kicker">{t({ ru: "Для дома", ro: "Pentru acasă", en: "For home" })}</p>
-          <h1 className="store-hero__title">{t({ ru: "Муравьиная ферма для дома", ro: "O fermă de furnici pentru acasă", en: "An ant farm for home" })}</h1>
+          <h1 className="store-hero__title">
+            {t({
+              ru: <>Настоящая муравьиная<br />ферма у вас дома</>,
+              ro: <>O fermă de furnici adevărată<br />la tine acasă</>,
+              en: <>A real ant farm<br />in your home</>,
+            })}
+          </h1>
           <p className="store-hero__lead">
             {t({ ru: "Наблюдайте за строительством настоящего подземного города прямо у себя дома.", ro: "Urmărește construcția unui oraș subteran adevărat chiar la tine acasă.", en: "Watch the construction of a real underground city right at home." })}
           </p>
