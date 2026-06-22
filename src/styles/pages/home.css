@@ -1124,6 +1124,14 @@
     padding: 0;
   }
 
+  .hero-trust__strip {
+    flex-direction: column;
+  }
+
+  .hero-trust__strip li::before {
+    display: none;
+  }
+
   .hero-trust {
     padding: 0;
   }
@@ -1187,6 +1195,10 @@
 
   .why-hobby .content-grid {
     grid-template-columns: 1fr;
+  }
+
+  .why-hobby .content-grid>div {
+    justify-content: flex-start;
   }
 
   .why-buy-us {
