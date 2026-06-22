@@ -63,8 +63,8 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
             <NavLink to={`/${curLang}/formicariums`}>
               {t({ ru: "Формикарий", ro: "Formicariu", en: "Formicarium" })}
             </NavLink>
-            <NavLink to={`/${curLang}/contacts`}>
-              {t({ ru: "Контакты", ro: "Contacte", en: "Contacts" })}
+            <NavLink to={`/${curLang}/about`}>
+              {t({ ru: "О нас", ro: "Despre noi", en: "About" })}
             </NavLink>
             {/* <NavLink to={`/${curLang}/blog`}>
               {t({ ru: "Блог", ro: "Blog", en: "Blog" })}

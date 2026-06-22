@@ -31,9 +31,9 @@ export default function HomePage() {
     id: "starter-kit",
     title: { ru: "Стартовый набор", ro: "Set de start", en: "Starter kit" },
     excerpt: {
-      ru: "Формикарий Terra + колония Messor Structor — всё для запуска.",
-      ro: "Formicariu Terra + colonie Messor Structor — tot ce trebuie pentru start.",
-      en: "Terra formicarium + Messor Structor colony — everything to get started.",
+      ru: "Формикарий Terra и колония Messor Structor: всё для запуска.",
+      ro: "Formicariu Terra și colonie Messor Structor: tot ce trebuie pentru start.",
+      en: "Terra formicarium and a Messor Structor colony: everything to get started.",
     },
     images: ["/formicarium-colony.webp"],
     availability: "inStock",
@@ -253,7 +253,7 @@ export default function HomePage() {
           <div className="gallery-showcase__text">
             <p className="gallery-showcase__lead">
               {t({
-                ru: "Каждый кадр — момент из жизни живой колонии: от заботы о расплоде до строительства тоннелей. Листайте, чтобы рассмотреть детали.",
+                ru: "Каждый кадр показывает момент из жизни живой колонии: от заботы о расплоде до строительства тоннелей. Листайте, чтобы рассмотреть детали.",
                 ro: "Fiecare cadru este un moment din viața unei colonii vii: de la îngrijirea puietului până la construirea tunelelor. Răsfoiește pentru a vedea detaliile.",
                 en: "Every frame is a moment from a living colony's life: from brood care to tunnel building. Browse through to see the details.",
               })}
@@ -425,7 +425,7 @@ export default function HomePage() {
 
           <details className="faq-wrap__item">
             <summary>{t({ ru: "Как долго живут колонии?", ro: "Cât timp trăiesc coloniile?", en: "How long do colonies live?" })}</summary>
-            <p>{t({ ru: "С правильным уходом — до нескольких лет. Это живой проект, который развивается.", ro: "Cu îngrijire corectă — câțiva ani. Este un proiect viu care crește.", en: "With proper care — several years. It is a living project that grows." })}</p>
+            <p>{t({ ru: "При правильном уходе колония живёт несколько лет. Это живой проект, который развивается.", ro: "Cu îngrijire corectă, colonia trăiește câțiva ani. Este un proiect viu care crește.", en: "With proper care, a colony lives several years. It is a living project that grows." })}</p>
           </details>
 
           <details className="faq-wrap__item">

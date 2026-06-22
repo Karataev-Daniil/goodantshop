@@ -100,6 +100,18 @@ export const pageSeo = {
       en: "Contact GoodAntShop on Telegram to order ants, formicariums or care advice. Safe delivery across Moldova.",
     },
   },
+  about: {
+    title: {
+      ru: "О GoodAntShop: муравьиные фермы в Молдове | GoodAntShop",
+      ro: "Despre GoodAntShop: ferme de furnici în Moldova | GoodAntShop",
+      en: "About GoodAntShop: ant farms in Moldova | GoodAntShop",
+    },
+    description: {
+      ru: "Команда GoodAntShop из Молдовы выращивает здоровые колонии муравьёв, делает формикарии и помогает новичкам с запуском. 10 лет с муравьями, 5 лет продаём, доставка по всей Молдове.",
+      ro: "Echipa GoodAntShop din Moldova crește colonii sănătoase de furnici, fabrică formicarii și ajută începătorii. 10 ani cu furnici, 5 ani de vânzări, livrare în toată Moldova.",
+      en: "GoodAntShop is a Moldova-based team: we raise healthy ant colonies, build formicariums and help beginners get started. 10 years with ants, 5 years selling, delivery across Moldova.",
+    },
+  },
   cart: {
     title: {
       ru: "Корзина | GoodAntShop",

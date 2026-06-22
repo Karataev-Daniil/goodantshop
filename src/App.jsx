@@ -8,6 +8,7 @@ import FormicPage from "./pages/SingleFormicPage";
 // import BlogPage from "./pages/BlogPage";
 // import SingleBlogPage from "./pages/SingleBlogPage";
 import ContactsPage from "./pages/ContactsPage";
+import AboutPage from "./pages/AboutPage";
 import CartPage from "./pages/CartPage";
 
 import HeaderMenu from "./components/navigation/HeaderMenu";
@@ -105,6 +106,7 @@ export default function App() {
           {/* <Route path="blog" element={<BlogPage />} /> */}
           {/* <Route path="blog/:slug" element={<SingleBlogPage />} /> */}
           <Route path="contacts" element={<ContactsPage />} />
+          <Route path="about" element={<AboutPage />} />
           <Route path="cart" element={<CartPage />} />
         </Route>
       </Routes>

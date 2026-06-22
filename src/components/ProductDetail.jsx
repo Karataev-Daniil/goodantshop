@@ -111,8 +111,9 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
   const specCards = (type === "ant"
     ? [
         { label: { ru: "Вид", ro: "Specie", en: "Species" }, value: item.title },
-        { label: { ru: "Размер колонии", ro: "Mărimea coloniei", en: "Colony size" }, value: item.colonySize },
-        { label: { ru: "Наличие матки", ro: "Regină inclusă", en: "Queen included" }, value: { ru: "Да", ro: "Da", en: "Yes" } },
+        { label: { ru: "Размер матки", ro: "Mărimea reginei", en: "Queen size" }, value: item.queenSize },
+        { label: { ru: "Размер рабочего", ro: "Mărimea lucrătoarei", en: "Worker size" }, value: item.workerSize },
+        { label: { ru: "Размер солдата", ro: "Mărimea soldatului", en: "Soldier size" }, value: item.soldierSize },
         { label: { ru: "Уровень сложности", ro: "Dificultate", en: "Difficulty" }, value: findChar("diff") },
         { label: { ru: "Температура содержания", ro: "Temperatura", en: "Temperature" }, value: findChar("temp") },
         { label: { ru: "Питание", ro: "Hrană", en: "Food" }, value: item.food },
@@ -146,7 +147,7 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
   const careText =
     type === "ant"
       ? {
-          ru: "Держите арену сухой, а зону гнезда — слегка увлажнённой. Кормите углеводами и белком 2–3 раза в неделю и убирайте остатки. Первые недели не тревожьте колонию, давая ей закрепиться.",
+          ru: "Держите арену сухой, а зону гнезда слегка увлажнённой. Кормите углеводами и белком 2–3 раза в неделю и убирайте остатки. Первые недели не тревожьте колонию, давая ей закрепиться.",
           ro: "Păstrează arena uscată, iar zona cuibului ușor umedă. Hrănește cu carbohidrați și proteine de 2–3 ori pe săptămână și îndepărtează resturile. Primele săptămâni nu deranja colonia.",
           en: "Keep the arena dry and the nest area slightly humid. Feed carbohydrates and protein 2–3 times a week and remove leftovers. Don't disturb the colony in the first weeks while it settles.",
         }

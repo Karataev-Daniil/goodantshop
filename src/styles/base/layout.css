@@ -3,6 +3,18 @@
   margin: 0 auto;
 }
 
+/* Sticky footer: keep the shell at least full-height and let the main content
+   grow, so the footer sits at the bottom even on short pages (e.g. empty cart). */
+.site-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.site-shell > main {
+  flex: 1 0 auto;
+}
+
 .site-header {
   position: sticky;
   z-index: 99;
@@ -360,40 +372,149 @@
 
 .site-footer {
   margin-top: 88px;
-  padding: 32px 0;
+  padding: 48px 0 24px;
   background: #171512;
-  color: #ddd;
-}
-
-.site-footer a {
-  color: #fff;
-}
-
-.site-footer p {
-  max-width: 460px;
-  margin: 8px 0 0;
-  color: rgba(255, 255, 255, 0.68);
-  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .footer-inner {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Brand column */
+.footer-brand__name {
+  display: inline-block;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.footer-brand__name strong {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.footer-brand__name span {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.footer-brand__tagline {
+  max-width: 380px;
+  margin: 14px 0 18px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+}
+
+.footer-tg {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  transition: background 0.18s ease;
+}
+
+.footer-tg:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.footer-tg svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Link / contact columns */
+.footer-col {
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+
+.footer-col__title {
+  margin: 0 0 4px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.footer-col a {
+  width: fit-content;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
+  transition: color 0.18s ease;
+}
+
+.footer-col a:hover {
+  color: #fff;
+}
+
+.footer-col a.footer-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.footer-col a.footer-phone svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.footer-col__muted {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Bottom bar */
+.footer-bottom {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 12px;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 13px;
 }
 
-.footer-links {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex-wrap: wrap;
+@media (max-width: 760px) {
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
 }
 
-.footer-links a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 700;
+@media (max-width: 460px) {
+  .footer-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
 }
 
 /* Narrow desktop / tablet — collapse the phone to an icon-only tap target so
@@ -485,11 +606,6 @@
   /* Prevent background scroll while the menu is open */
   .nav-locked {
     overflow: hidden;
-  }
-
-  .footer-inner {
-    align-items: flex-start;
-    flex-direction: column;
   }
 }
 

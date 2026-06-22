@@ -71,7 +71,7 @@ export const formicariums = [
     feedingType: "seeds",
     availability: "inStock",
     priceOptions,
-    recommendedAntIds: [44],
+    recommendedAntIds: [44, 45],
     relatedBlogIds: [402]
   }
 ];
