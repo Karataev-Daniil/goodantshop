@@ -30,10 +30,10 @@ img { display: block; max-width: 100%; }
 }
 .stars__fill {
   position: absolute;
-  top: 0;
+  top: 1px;
   left: 0;
   overflow: hidden;
-  color: #f5a623;
+  color: #f5a623 !important;
 }
 
 .btn {
