@@ -149,11 +149,8 @@ export default function HomePage() {
             className="store-hero__image"
             src="/formicarium-colony.webp"
             alt={t({ ru: "Формикарий с живой колонией муравьёв и маткой", ro: "Formicariu cu colonie vie de furnici și regină", en: "Formicarium with a live ant colony and queen" })}
-            width="1200"
-            height="900"
             loading="eager"
             fetchpriority="high"
-            decoding="async"
           />
         </div>
       </section>
