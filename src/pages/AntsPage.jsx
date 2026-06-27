@@ -24,13 +24,13 @@ export default function AntsPage() {
       />
 
       <section className="section">
-        <h1>{t({ ru: "Муравьи", ro: "Furnici", en: "Ants" })}</h1>
+        <h1>{t({ ru: "Купить муравьёв для домашней фермы", ro: "Cumpără furnici pentru ferma de acasă", en: "Buy ants for a home farm" })}</h1>
 
         <p className="catalog-intro">
           {t({
-            ru: "Выберите живую колонию для первого запуска или расширения домашней муравьиной фермы. Все виды подобраны так, чтобы уход был понятным и спокойным.",
-            ro: "Alege o colonie vie pentru primul start sau pentru extinderea fermei de furnici de acasa. Speciile sunt selectate pentru ingrijire clara si linistita.",
-            en: "Choose a live colony for your first setup or to expand your home ant farm. Each species is selected for clear, calm care.",
+            ru: "В каталоге GoodAntShop можно купить живых муравьёв с маткой и расплодом — готовую колонию для запуска домашней муравьиной фермы. Мы предлагаем неприхотливые виды для новичков и эффектные виды для опытных киперов: Messor Structor, Lasius Niger, Lasius Neglectus и Camponotus Fellah. Каждая колония проверена и упакована для безопасной перевозки, а доставка работает по Кишинёву и всей Молдове.",
+            ro: "În catalogul GoodAntShop poți cumpăra furnici vii cu regină și puiet — o colonie gata de pornit pentru ferma ta de acasă. Avem specii nepretențioase pentru începători și specii spectaculoase pentru pasionați: Messor Structor, Lasius Niger, Lasius Neglectus și Camponotus Fellah. Fiecare colonie este verificată și ambalată pentru transport sigur, cu livrare în Chișinău și în toată Moldova.",
+            en: "At GoodAntShop you can buy live ants with a queen and brood — a ready-to-start colony for your home ant farm. We offer easy species for beginners and striking species for experienced keepers: Messor Structor, Lasius Niger, Lasius Neglectus and Camponotus Fellah. Every colony is checked and packed for safe transport, with delivery across Chișinău and all of Moldova.",
           })}
         </p>
 

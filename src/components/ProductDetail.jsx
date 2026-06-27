@@ -81,6 +81,13 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
 
   const crossType = type === "ant" ? "formicarium" : "ant";
   const images = item.images?.length ? item.images : [item.image || "/placeholder-ant.svg"];
+  // Descriptive alt for the main product image (e.g. "Messor Structor — живая колония муравьёв с маткой").
+  const galleryAlt = `${getText(item.title, lang)} — ${getText(
+    type === "ant"
+      ? { ru: "живая колония муравьёв с маткой", ro: "colonie vie de furnici cu regină", en: "live ant colony with a queen" }
+      : { ru: "формикарий для домашней муравьиной фермы", ro: "formicariu pentru ferma de furnici de acasă", en: "formicarium for a home ant farm" },
+    lang
+  )}`;
   const primaryPrice = item.priceOptions?.[0];
   const isOutOfStock = item.availability === "outOfStock";
   const isPreorder = item.availability === "preorder";
@@ -256,6 +263,7 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
         <ProductGallery
           images={images}
           title={getText(item.title, lang)}
+          imageAlt={galleryAlt}
           zoomLabel={getText({ ru: "Увеличить", ro: "Mărește", en: "Zoom" }, lang)}
           badge={
             item.availability ? (

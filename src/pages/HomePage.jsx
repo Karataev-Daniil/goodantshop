@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { Link, useOutletContext, useParams } from "react-router-dom";
 import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
 import ProductCard from "../components/ProductCard";
@@ -116,16 +116,16 @@ export default function HomePage() {
       />
       <section className="store-hero">
         <div className="store-hero__content">
-          <p className="kicker">{t({ ru: "Для дома", ro: "Pentru acasă", en: "For home" })}</p>
+          <p className="kicker">{t({ ru: "Магазин муравьёв и формикариев", ro: "Magazin de furnici și formicarii", en: "Ant & formicarium shop" })}</p>
           <h1 className="store-hero__title">
             {t({
-              ru: <>Настоящая муравьиная<br />ферма у вас дома</>,
-              ro: <>O fermă de furnici adevărată<br />la tine acasă</>,
-              en: <>A real ant farm<br />in your home</>,
+              ru: <>Живые муравьи и формикарии<br />для вашего дома</>,
+              ro: <>Furnici vii și formicarii<br />pentru casa ta</>,
+              en: <>Live ants and formicariums<br />for your home</>,
             })}
           </h1>
           <p className="store-hero__lead">
-            {t({ ru: "Наблюдайте за строительством настоящего подземного города прямо у себя дома.", ro: "Urmărește construcția unui oraș subteran adevărat chiar la tine acasă.", en: "Watch the construction of a real underground city right at home." })}
+            {t({ ru: "Колонии с маткой, формикарии и всё для старта муравьиной фермы. Наблюдайте за настоящим подземным городом прямо у себя дома — с доставкой по всей Молдове.", ro: "Colonii cu regină, formicarii și tot ce trebuie pentru a porni o fermă de furnici. Urmărește un oraș subteran adevărat chiar la tine acasă — cu livrare în toată Moldova.", en: "Queen-right colonies, formicariums and everything to start an ant farm. Watch a real underground city right at home — with delivery across Moldova." })}
           </p>
           <ul className="hero-benefits">
             {[
@@ -148,8 +148,12 @@ export default function HomePage() {
           <img
             className="store-hero__image"
             src="/formicarium-colony.webp"
-            alt={t({ ru: "Формикарий с живой колонией муравьёв", ro: "Formicariu cu colonie vie de furnici", en: "Formicarium with a live ant colony" })}
-            loading="lazy"
+            alt={t({ ru: "Формикарий с живой колонией муравьёв и маткой", ro: "Formicariu cu colonie vie de furnici și regină", en: "Formicarium with a live ant colony and queen" })}
+            width="1200"
+            height="900"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
           />
         </div>
       </section>
@@ -272,6 +276,71 @@ export default function HomePage() {
           {popularItems.map(({ item, linkTo, onAddToCart }) => (
             <ProductCard key={item.id} item={item} linkTo={linkTo} onAddToCart={onAddToCart} />
           ))}
+        </div>
+      </section>
+
+      <section className="section seo-prose">
+        <div className="seo-prose__inner">
+          <h2>{t({
+            ru: "Купить живых муравьёв и формикарии в Молдове",
+            ro: "Cumpără furnici vii și formicarii în Moldova",
+            en: "Buy live ants and formicariums in Moldova",
+          })}</h2>
+
+          <p>{t({
+            ru: "GoodAntShop — специализированный магазин для мирмекипинга: у нас можно купить живых муравьёв, колонии с маткой, формикарии и товары для содержания муравьёв дома. Мы сами разводим и проверяем колонии перед отправкой, поэтому подскажем, какой вид и формикарий подойдут под ваш опыт, бюджет и условия в квартире. Домашняя муравьиная ферма — спокойное и наглядное хобби: за колонией интересно наблюдать и детям, и взрослым, она не шумит и почти не занимает места.",
+            ro: "GoodAntShop este un magazin specializat pentru mirmecologie: aici poți cumpăra furnici vii, colonii cu regină, formicarii și produse pentru creșterea furnicilor acasă. Creștem și verificăm coloniile înainte de expediere, așa că te ajutăm să alegi specia și formicariul potrivite experienței, bugetului și condițiilor din locuință. O fermă de furnici acasă este un hobby liniștit și captivant: colonia e interesantă atât pentru copii, cât și pentru adulți, nu face zgomot și ocupă foarte puțin loc.",
+            en: "GoodAntShop is a specialized ant-keeping shop: here you can buy live ants, queen-right colonies, formicariums and supplies for keeping ants at home. We raise and check the colonies before shipping, so we help you pick the species and formicarium that match your experience, budget and home conditions. A home ant farm is a calm, visual hobby: the colony is fascinating for both kids and adults, it makes no noise and takes up very little space.",
+          })}</p>
+
+          <h3>{t({
+            ru: "Каких муравьёв можно купить",
+            ro: "Ce furnici poți cumpăra",
+            en: "Which ants you can buy",
+          })}</h3>
+          <p>
+            {t({
+              ru: "В каталоге есть спокойные зерноядные Messor Structor — лучший выбор для первой колонии, выносливые Lasius Niger, быстрорастущие Lasius Neglectus и крупные эффектные Camponotus Fellah. Если вы только выбираете первых питомцев и хотите купить муравьёв в Кишинёве или с доставкой по Молдове, начните с Messor Structor. Все виды, цены и наличие — в ",
+              ro: "În catalog găsești blândele granivore Messor Structor — cea mai bună alegere pentru prima colonie, rezistentele Lasius Niger, rapidele Lasius Neglectus și impunătoarele Camponotus Fellah. Dacă abia îți alegi primele furnici și vrei să cumperi furnici în Chișinău sau cu livrare în Moldova, începe cu Messor Structor. Toate speciile, prețurile și disponibilitatea — în ",
+              en: "The catalog has the calm seed-eating Messor Structor — the best choice for a first colony, the hardy Lasius Niger, fast-growing Lasius Neglectus and large, striking Camponotus Fellah. If you're choosing your first ants and want to buy ants in Chișinău or with delivery across Moldova, start with Messor Structor. All species, prices and availability are in the ",
+            })}
+            <Link to={`/${lang}/ants`}>{t({ ru: "каталоге муравьёв", ro: "catalogul de furnici", en: "ants catalog" })}</Link>.
+          </p>
+
+          <h3>{t({
+            ru: "Что такое колония и как выбрать первых муравьёв",
+            ro: "Ce este o colonie și cum alegi primele furnici",
+            en: "What a colony is and how to choose your first ants",
+          })}</h3>
+          <p>
+            {t({
+              ru: "Колония — это матка с расплодом, из которого постепенно вырастают рабочие. Новичкам мы советуем начинать с неприхотливого вида и компактного формикария, чтобы уход был простым и понятным. Подобрать дом для будущей семьи можно в ",
+              ro: "O colonie înseamnă o regină cu puiet, din care cresc treptat lucrătoarele. Începătorilor le recomandăm o specie nepretențioasă și un formicariu compact, pentru o îngrijire simplă și clară. Poți alege o casă pentru viitoarea familie în ",
+              en: "A colony is a queen with brood that gradually grows into workers. For beginners we recommend an easy species and a compact formicarium so care stays simple and clear. You can choose a home for the future family in the ",
+            })}
+            <Link to={`/${lang}/formicariums`}>{t({ ru: "каталоге формикариев", ro: "catalogul de formicarii", en: "formicariums catalog" })}</Link>.
+          </p>
+
+          <h3>{t({
+            ru: "Доставка, гарантия и поддержка",
+            ro: "Livrare, garanție și suport",
+            en: "Delivery, guarantee and support",
+          })}</h3>
+          <p>
+            {t({
+              ru: "Колонии упаковываются в утеплённую защиту и безопасно доезжают по Кишинёву и всей Молдове. После покупки мы остаёмся на связи и помогаем запустить муравейник. Остались вопросы по заказу и доставке — напишите нам на странице ",
+              ro: "Coloniile sunt ambalate termic și ajung în siguranță în Chișinău și în toată Moldova. După achiziție rămânem în legătură și te ajutăm să pornești colonia. Ai întrebări despre comandă sau livrare — scrie-ne pe pagina de ",
+              en: "Colonies are packed with insulated protection and arrive safely across Chișinău and all of Moldova. After purchase we stay in touch and help you start the colony. Questions about an order or delivery — write to us on the ",
+            })}
+            <Link to={`/${lang}/contacts`}>{t({ ru: "контактов", ro: "contacte", en: "contacts page" })}</Link>.
+          </p>
+
+          <p className="seo-prose__links">
+            <Link to={`/${lang}/ants`}>{t({ ru: "Купить муравьёв", ro: "Cumpără furnici", en: "Buy ants" })}</Link>
+            <Link to={`/${lang}/formicariums`}>{t({ ru: "Формикарии", ro: "Formicarii", en: "Formicariums" })}</Link>
+            <a href="#popular-products">{t({ ru: "Популярные товары", ro: "Produse populare", en: "Popular products" })}</a>
+            <a href="#faq">{t({ ru: "Частые вопросы", ro: "Întrebări frecvente", en: "FAQ" })}</a>
+          </p>
         </div>
       </section>
 
@@ -405,7 +474,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section faq-wrap">
+      <section className="section faq-wrap" id="faq">
         <h2 className="section-heading">{t({ ru: "Часто задаваемые вопросы", ro: "Întrebări frecvente", en: "Frequently asked questions" })}</h2>
         <div className="faq-wrap__list">
           <details className="faq-wrap__item" open>

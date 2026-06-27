@@ -54,14 +54,14 @@ export const priceValue = (product) => {
 export const pageSeo = {
   home: {
     title: {
-      ru: "Муравьиная ферма для дома в Молдове | GoodAntShop",
-      ro: "Ferma de furnici pentru acasă în Moldova | GoodAntShop",
-      en: "Home Ant Farm in Moldova | GoodAntShop",
+      ru: "Купить муравьёв и формикарии в Молдове | GoodAntShop",
+      ro: "Cumpără furnici și formicarii în Moldova | GoodAntShop",
+      en: "Buy Live Ants & Formicariums in Moldova | GoodAntShop",
     },
     description: {
-      ru: "GoodAntShop продаёт домашние муравьиные фермы, формикарии и живые колонии муравьёв с безопасной доставкой по всей Молдове.",
-      ro: "GoodAntShop vinde ferme de furnici pentru acasă, formicarii și colonii vii cu livrare sigură în toată Moldova.",
-      en: "GoodAntShop sells home ant farms, formicariums and live ant colonies with safe delivery across Moldova.",
+      ru: "Купить живых муравьёв, колонию с маткой и формикарий для домашней муравьиной фермы. Большой выбор видов, гарантия качества и доставка по всей Молдове.",
+      ro: "Cumpără furnici vii, o colonie cu regină și un formicariu pentru ferma ta de acasă. Varietate de specii, calitate garantată și livrare în toată Moldova.",
+      en: "Buy live ants, a queen-right colony and a formicarium for your home ant farm. Wide choice of species, quality guarantee and delivery across Moldova.",
     },
   },
   ants: {
@@ -71,9 +71,9 @@ export const pageSeo = {
       en: "Buy Ant Colonies in Moldova | GoodAntShop",
     },
     description: {
-      ru: "Каталог живых колоний муравьёв для домашних ферм: Messor Structor, Lasius Niger, Camponotus Fellah. Виды для новичков и доставка по Молдове.",
-      ro: "Catalog de colonii vii de furnici pentru ferme de acasă: Messor Structor, Lasius Niger, Camponotus Fellah. Specii pentru începători și livrare în Moldova.",
-      en: "Browse live ant colonies for home ant farms: Messor Structor, Lasius Niger and Camponotus Fellah. Beginner-friendly species with delivery in Moldova.",
+      ru: "Купить живых муравьёв с маткой: Messor Structor, Lasius Niger, Lasius Neglectus и Camponotus Fellah. Колонии для новичков, гарантия и доставка по Молдове.",
+      ro: "Cumpără furnici vii cu regină: Messor Structor, Lasius Niger, Lasius Neglectus și Camponotus Fellah. Colonii pentru începători, garanție și livrare în Moldova.",
+      en: "Buy live queen-right ants: Messor Structor, Lasius Niger, Lasius Neglectus and Camponotus Fellah. Beginner colonies, guarantee and delivery across Moldova.",
     },
   },
   formicariums: {
@@ -130,14 +130,14 @@ export const productSeo = (product, type, lang = "ru") => {
   const title = getText(product.title, lang);
   const typeName = {
     ant: {
-      ru: "колония муравьёв",
-      ro: "colonie de furnici",
-      en: "ant colony",
+      ru: "колонию муравьёв",
+      ro: "o colonie de furnici",
+      en: "an ant colony",
     },
     formicarium: {
       ru: "формикарий",
-      ro: "formicariu",
-      en: "formicarium",
+      ro: "un formicariu",
+      en: "a formicarium",
     },
   };
 

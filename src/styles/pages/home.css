@@ -163,8 +163,50 @@
   margin-bottom: 24px;
 }
 
-#popular-products {
+#popular-products,
+#faq {
   scroll-margin-top: 96px;
+}
+
+/* SEO content block — readable prose, distinct from the card grids */
+.seo-prose__inner {
+  max-width: 860px;
+}
+
+.seo-prose h2 {
+  margin: 0 0 16px;
+}
+
+.seo-prose h3 {
+  margin: 28px 0 10px;
+  font-size: 20px;
+}
+
+.seo-prose p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.seo-prose a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--line);
+  transition: text-decoration-color 0.18s ease;
+}
+
+.seo-prose a:hover {
+  text-decoration-color: var(--accent);
+}
+
+.seo-prose__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin-top: 22px;
 }
 
 .popular-products .popular-grid {

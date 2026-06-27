@@ -12,7 +12,8 @@ const ChevronRight = () => (
   </svg>
 );
 
-export default function ProductGallery({ images, title, badge, zoomLabel = "Zoom" }) {
+export default function ProductGallery({ images, title, imageAlt, badge, zoomLabel = "Zoom" }) {
+  const altText = imageAlt || title;
   const slides = images?.length ? images : ["/placeholder-ant.svg"];
   const [index, setIndex] = useState(0);
   const [zoom, setZoom] = useState(false);
@@ -40,7 +41,7 @@ export default function ProductGallery({ images, title, badge, zoomLabel = "Zoom
         <img
           className="product-gallery__image"
           src={current}
-          alt={title}
+          alt={altText}
           loading="lazy"
           onClick={() => setZoom(true)}
         />
@@ -101,7 +102,7 @@ export default function ProductGallery({ images, title, badge, zoomLabel = "Zoom
           role="dialog"
           aria-modal="true"
         >
-          <img src={current} alt={title} />
+          <img src={current} alt={altText} />
           <button type="button" className="product-gallery__close" aria-label="Close">
             ✕
           </button>

@@ -26,9 +26,9 @@ export default function FormicariumsPage() {
       <section className="section">
         <h1>
           {t({
-            ru: "Формикарии",
-            ro: "Formicarii",
-            en: "Formicariums",
+            ru: "Купить формикарий для муравьиной фермы",
+            ro: "Cumpără un formicariu pentru ferma de furnici",
+            en: "Buy a formicarium for an ant farm",
           })}
         </h1>
 
