@@ -64,12 +64,60 @@ export default function HomePage() {
   ];
 
   const gallerySlides = [
-    { image: messorStructor, label: t({ ru: "Муравьи заботятся о потомстве", ro: "Furnicile îngrijesc puietul", en: "Ants care for their brood" }) },
-    { image: messorSeedStore, label: t({ ru: "Колония хранит запасы зерна", ro: "Colonia păstrează rezerve de grâne", en: "The colony stores grain reserves" }) },
-    { image: messorForagingSeeds, label: t({ ru: "Охота и добыча пищи", ro: "Vânătoare și procurarea hranei", en: "Hunting and foraging for food" }) },
-    { image: messorQueenWithBrood, label: t({ ru: "Личинки будущих рабочих", ro: "Larvele viitoarelor lucrătoare", en: "Larvae of future workers" }) },
-    { image: messorWorkersCloseup, label: t({ ru: "Развитая социальная система", ro: "Un sistem social dezvoltat", en: "A developed social system" }) },
-    { image: "/formicarium-colony.webp", label: t({ ru: "Формикарий дома", ro: "Formicariu acasă", en: "Formicarium at home" }) },
+    {
+      image: messorStructor,
+      label: t({ ru: "Муравьи заботятся о потомстве", ro: "Furnicile îngrijesc puietul", en: "Ants care for their brood" }),
+      lead: t({
+        ru: "Каждый кадр показывает момент из жизни живой колонии: от заботы о расплоде до строительства тоннелей. Листайте, чтобы рассмотреть детали.",
+        ro: "Fiecare cadru este un moment din viața unei colonii vii: de la îngrijirea puietului până la construirea tunelelor. Răsfoiește pentru a vedea detaliile.",
+        en: "Every frame is a moment from a living colony's life: from brood care to tunnel building. Browse through to see the details.",
+      }),
+    },
+    {
+      image: messorSeedStore,
+      label: t({ ru: "Колония хранит запасы зерна", ro: "Colonia păstrează rezerve de grâne", en: "The colony stores grain reserves" }),
+      lead: t({
+        ru: "Рабочие сносят семена в подземные амбары и перерабатывают их в питательный «муравьиный хлеб» для личинок. Так у колонии всегда есть запас еды на любой сезон.",
+        ro: "Lucrătoarele adună semințe în hambare subterane și le transformă în hrănitoarea «pâine a furnicilor» pentru larve. Astfel colonia are mereu provizii pentru orice sezon.",
+        en: "Workers carry seeds into underground granaries and turn them into nourishing \"ant bread\" for the larvae. This keeps the colony fed through any season.",
+      }),
+    },
+    {
+      image: messorForagingSeeds,
+      label: t({ ru: "Охота и добыча пищи", ro: "Vânătoare și procurarea hranei", en: "Hunting and foraging for food" }),
+      lead: t({
+        ru: "Фуражиры уходят далеко от гнезда за зёрнами и мелкой добычей, а по дороге метят тропы феромонами, чтобы вернуться самим и позвать других.",
+        ro: "Culegătoarele se îndepărtează de cuib după semințe și pradă măruntă, marcând poteci cu feromoni ca să revină și să cheme și alte furnici.",
+        en: "Foragers travel far from the nest for grains and small prey, laying pheromone trails so they can find their way back and recruit others.",
+      }),
+    },
+    {
+      image: messorQueenWithBrood,
+      label: t({ ru: "Личинки будущих рабочих", ro: "Larvele viitoarelor lucrătoare", en: "Larvae of future workers" }),
+      lead: t({
+        ru: "Матка непрерывно откладывает яйца, а рабочие переносят и вылизывают расплод, поддерживая нужное тепло и влажность на каждой стадии развития.",
+        ro: "Regina depune neîncetat ouă, iar lucrătoarele mută și curăță puietul, menținând căldura și umiditatea potrivite la fiecare stadiu de dezvoltare.",
+        en: "The queen lays eggs without pause while workers carry and groom the brood, holding the right warmth and humidity at every stage of development.",
+      }),
+    },
+    {
+      image: messorWorkersCloseup,
+      label: t({ ru: "Развитая социальная система", ro: "Un sistem social dezvoltat", en: "A developed social system" }),
+      lead: t({
+        ru: "В колонии чёткое разделение труда: мелкие рабочие ухаживают за расплодом, крупные майоры дробят зёрна и защищают гнездо. Всё держится на общении и запахах.",
+        ro: "Colonia are o diviziune clară a muncii: lucrătoarele mici îngrijesc puietul, majorii mari sparg semințele și apără cuibul. Totul se bazează pe comunicare și mirosuri.",
+        en: "The colony runs on a clear division of labour: small workers tend the brood while large majors crush grains and guard the nest. It all holds together through scent and communication.",
+      }),
+    },
+    {
+      image: "/formicarium-colony.webp",
+      label: t({ ru: "Формикарий дома", ro: "Formicariu acasă", en: "Formicarium at home" }),
+      lead: t({
+        ru: "В прозрачном формикарии вся эта жизнь оказывается прямо у вас на столе: тоннели, камеры и рабочие видны как на ладони, а уход занимает считанные минуты в неделю.",
+        ro: "Într-un formicariu transparent, toată această viață ajunge chiar pe biroul tău: tunelurile, camerele și lucrătoarele se văd ca în palmă, iar îngrijirea ia doar câteva minute pe săptămână.",
+        en: "In a clear formicarium, all of this life sits right on your desk: tunnels, chambers and workers in full view, with care that takes just minutes a week.",
+      }),
+    },
   ];
   const galleryCount = gallerySlides.length;
   const currentSlide = gallerySlides[galleryIndex];
@@ -252,14 +300,8 @@ export default function HomePage() {
           </div>
 
           <div className="gallery-showcase__text">
-            <p className="gallery-showcase__lead">
-              {t({
-                ru: "Каждый кадр показывает момент из жизни живой колонии: от заботы о расплоде до строительства тоннелей. Листайте, чтобы рассмотреть детали.",
-                ro: "Fiecare cadru este un moment din viața unei colonii vii: de la îngrijirea puietului până la construirea tunelelor. Răsfoiește pentru a vedea detaliile.",
-                en: "Every frame is a moment from a living colony's life: from brood care to tunnel building. Browse through to see the details.",
-              })}
-            </p>
             <p className="gallery-showcase__caption">{currentSlide.label}</p>
+            <p className="gallery-showcase__lead">{currentSlide.lead}</p>
           </div>
         </div>
       </section>
