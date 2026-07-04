@@ -71,9 +71,9 @@ export const pageSeo = {
       en: "Buy Ant Colonies in Moldova | GoodAntShop",
     },
     description: {
-      ru: "Купить живых муравьёв с маткой: Messor Structor, Lasius Niger, Lasius Neglectus и Camponotus Fellah. Колонии для новичков, гарантия и доставка по Молдове.",
-      ro: "Cumpără furnici vii cu regină: Messor Structor, Lasius Niger, Lasius Neglectus și Camponotus Fellah. Colonii pentru începători, garanție și livrare în Moldova.",
-      en: "Buy live queen-right ants: Messor Structor, Lasius Niger, Lasius Neglectus and Camponotus Fellah. Beginner colonies, guarantee and delivery across Moldova.",
+      ru: "Купить живых муравьёв с маткой: Messor Structor, Lasius Niger, Lasius Neglectus, Camponotus Fellah, Formica Cunicularia и Formica Rufibarbis. Колонии для новичков и опытных, доставка по Молдове.",
+      ro: "Cumpără furnici vii cu regină: Messor Structor, Lasius Niger, Lasius Neglectus, Camponotus Fellah, Formica Cunicularia și Formica Rufibarbis. Colonii pentru începători și avansați, livrare în Moldova.",
+      en: "Buy live queen-right ants: Messor Structor, Lasius Niger, Lasius Neglectus, Camponotus Fellah, Formica Cunicularia and Formica Rufibarbis. Colonies for beginners and pros, delivery across Moldova.",
     },
   },
   formicariums: {

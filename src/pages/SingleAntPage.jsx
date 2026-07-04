@@ -27,8 +27,11 @@ export default function SingleAntPage() {
     );
   }
 
-  // Cross-sell: the formicarium a colony needs to start
-  const crossSell = formicariums.filter((item) => ant.recommendedFormicariumIds?.includes(item.id));
+  // Cross-sell: formicariums a colony needs to start, in priority order
+  // (the first id in recommendedFormicariumIds is the recommended pick).
+  const crossSell = (ant.recommendedFormicariumIds ?? [])
+    .map((id) => formicariums.find((item) => item.id === id))
+    .filter(Boolean);
   // Similar: other ants only
   const similar = ants.filter((item) => item.slug !== ant.slug);
 
