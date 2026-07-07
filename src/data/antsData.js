@@ -2,6 +2,8 @@
 import lasiusNigerImage from "../assets/images/ants/lasius-niger.webp";
 import lasiusNeglectusImage from "../assets/images/ants/lasius-neglectus.jpg";
 import camponotusFellahImage from "../assets/images/ants/camponotus-fellah.webp";
+import formicaCuniculariaImage from "../assets/images/ants/formica_cunicularia.webp";
+import formicaRufibarbisImage from "../assets/images/ants/formica_rufibarbis.webp";
 
 export const priceOptions = [
   {
@@ -46,6 +48,51 @@ export const camponotusPriceOptions = [
   },
 ];
 
+// Formica species are currently scarce (only a few of each), so they carry a
+// small premium over the base starter price.
+export const formicaPriceOptions = [
+  {
+    label: {
+      ru: "Матка + расплод (стартовая колония)",
+      ro: "Regina + puiet (colonie starter)",
+      en: "Queen + brood (starter colony)",
+    },
+    value: "650 лей",
+    selected: true,
+  },
+  {
+    label: {
+      ru: "Матка + расплод + 10-20 рабочих",
+      ro: "Regina + puiet + 10-20 lucratoare",
+      en: "Queen + brood + 10-20 workers",
+    },
+    value: "750 лей",
+    selected: false,
+  },
+];
+
+// Lasius neglectus is a popular fast-growing super colony, with a small premium.
+export const neglectusPriceOptions = [
+  {
+    label: {
+      ru: "Матка + расплод (стартовая колония)",
+      ro: "Regina + puiet (colonie starter)",
+      en: "Queen + brood (starter colony)",
+    },
+    value: "600 лей",
+    selected: true,
+  },
+  {
+    label: {
+      ru: "Матка + расплод + 10-20 рабочих",
+      ro: "Regina + puiet + 10-20 lucratoare",
+      en: "Queen + brood + 10-20 workers",
+    },
+    value: "700 лей",
+    selected: false,
+  },
+];
+
 export const ants = [
   {
     id: 44,
@@ -61,9 +108,9 @@ export const ants = [
       en: "A calm seed-eating species, great for beginners."
     },
     description: {
-      ru: "Messor structor: зерноядный «жнец» и популярный выбор для старта. Рабочие полиморфны: крупные майоры-солдаты дробят семена мощными челюстями. Нужна сухая арена и умеренная влажность в гнезде.",
-      ro: "Messor structor: o specie granivoră «secerătoare» și o alegere populară pentru start. Lucrătoarele sunt polimorfe: majorii-soldați sparg semințele cu mandibule puternice. Are nevoie de arenă uscată și umiditate moderată în cuib.",
-      en: "Messor structor: a granivorous \"harvester\" and a popular starter species. Workers are polymorphic: large soldier-majors crush seeds with powerful jaws. It needs a dry arena and moderate humidity in the nest."
+      ru: "Messor structor, степной муравей-жнец и один из самых удачных видов для старта. Рабочие разного размера: крупные майоры мощными челюстями дробят зёрна и готовят из них «муравьиный хлеб» для личинок. В природе вид запасает семена в подземных амбарах, поэтому арену держат сухой, а кормят смесью семян и мелких насекомых. Зимой колонии нужен период покоя, тогда матка живёт дольше.",
+      ro: "Messor structor, furnica secerătoare de stepă și una dintre cele mai potrivite specii pentru început. Lucrătoarele au mărimi diferite: majorii cu mandibule puternice sparg semințele și pregătesc din ele «pâinea furnicilor» pentru larve. În natură depozitează semințe în hambare subterane, de aceea arena se ține uscată, iar hrana este un amestec de semințe și insecte mici. Iarna colonia are nevoie de o perioadă de repaus, astfel regina trăiește mai mult.",
+      en: "Messor structor, the steppe harvester ant and one of the best species to begin with. Workers come in different sizes: large majors crush grains with powerful jaws and turn them into \"ant bread\" for the larvae. In the wild it stores seeds in underground granaries, so keep the arena dry and feed a mix of seeds and small insects. In winter the colony needs a rest period, which helps the queen live longer."
     },
     image: messorStructorImage,
     images: [messorStructorImage],
@@ -88,8 +135,102 @@ export const ants = [
         value: { ru: "Низкая", ro: "Redusa", en: "Low" }
       }
     ],
-    recommendedFormicariumIds: [202],
+    recommendedFormicariumIds: [202, 203],
     relatedBlogIds: [401, 402, 404]
+  },
+  {
+    id: 46,
+    slug: "formica-cunicularia",
+    title: {
+      ru: "Formica Cunicularia",
+      ro: "Formica Cunicularia",
+      en: "Formica Cunicularia"
+    },
+    excerpt: {
+      ru: "Быстрый и активный полевой муравей, живая колония для увлечённых наблюдателей.",
+      ro: "Furnică de câmp rapidă și activă, o colonie vie pentru observatori pasionați.",
+      en: "A fast, active field ant, a lively colony for keen observers."
+    },
+    description: {
+      ru: "Formica cunicularia, быстрый полевой муравей серо-бурого цвета из группы Serviformica. Рабочие одного размера, очень подвижные и хорошо заметны в арене, а колония сохраняет активность почти весь день. Вид всеядный: сахарный сироп даёт энергию, насекомые обеспечивают белок. Матка основывает семью сама, а зимой обязателен покой при 5-10 °C. Живой и любопытный вид для тех, кто уже пробовал базовых муравьёв.",
+      ro: "Formica cunicularia, o furnică de câmp rapidă, de culoare cenușiu-brună, din grupul Serviformica. Lucrătoarele au aceeași mărime, sunt foarte active și ușor de observat în arenă, iar colonia rămâne activă aproape toată ziua. Specie omnivoră: siropul de zahăr oferă energie, insectele asigură proteinele. Regina întemeiază familia singură, iar iarna repausul la 5-10 °C este obligatoriu. O specie vie și curioasă pentru cei care au încercat deja furnici de bază.",
+      en: "Formica cunicularia, a fast grey-brown field ant from the Serviformica group. Workers are all one size, very active and easy to watch in the arena, and the colony stays busy for most of the day. An omnivore: sugar syrup gives energy while insects provide protein. The queen founds the colony herself, and in winter a rest at 5-10 °C is mandatory. A lively, curious species for keepers who have already tried the basic ants."
+    },
+    image: formicaCuniculariaImage,
+    images: [formicaCuniculariaImage],
+    queenSize: { ru: "9-11 мм", ro: "9-11 mm", en: "9-11 mm" },
+    workerSize: { ru: "5-7 мм", ro: "5-7 mm", en: "5-7 mm" },
+    colonySize: { ru: "Матка + расплод", ro: "Regină + puiet", en: "Queen + brood" },
+    food: { ru: "Сахарный сироп, насекомые", ro: "Sirop de zahăr, insecte", en: "Sugar syrup, insects" },
+    priceOptions: formicaPriceOptions,
+    availability: "inStock",
+    characteristics: [
+      {
+        label: { ru: "Температура", ro: "Temperatura", en: "Temperature" },
+        value: { ru: "24-27 C", ro: "24-27 C", en: "24-27 C" }
+      },
+      {
+        label: { ru: "Влажность", ro: "Umiditate", en: "Humidity" },
+        value: { ru: "Низкая/Средняя", ro: "Redusă/Medie", en: "Low/Medium" }
+      },
+      {
+        label: { ru: "Сложность", ro: "Dificultate", en: "Difficulty" },
+        value: { ru: "Средняя", ro: "Medie", en: "Medium" }
+      },
+      {
+        label: { ru: "Зимовка", ro: "Hibernare", en: "Hibernation" },
+        value: { ru: "Обязательна, 5–10 °C", ro: "Obligatorie, 5–10 °C", en: "Required, 5–10 °C" }
+      }
+    ],
+    recommendedFormicariumIds: [203, 202],
+    relatedBlogIds: [401, 403]
+  },
+  {
+    id: 47,
+    slug: "formica-rufibarbis",
+    title: {
+      ru: "Formica Rufibarbis",
+      ro: "Formica Rufibarbis",
+      en: "Formica Rufibarbis"
+    },
+    excerpt: {
+      ru: "Красногрудый муравей-охотник: стремительная и выразительная колония с контрастной окраской.",
+      ro: "Furnică vânătoare cu toracele roșcat: o colonie rapidă și expresivă, cu colorit contrastant.",
+      en: "The red-barbed hunter ant: a swift, striking colony with contrasting colours."
+    },
+    description: {
+      ru: "Formica rufibarbis, эффектный муравей с контрастной окраской: тёмные голова и брюшко, рыжая грудка. Рабочие одного размера, очень быстрые и азартные охотники, поэтому в рационе много белка, а сахарный сироп поддерживает энергию. Матка основывает колонию сама, зимой обязателен покой при 5-10 °C. Вид любит тепло и свет и славится прытью, так что арену держат надёжно закрытой от побега.",
+      ro: "Formica rufibarbis, o furnică spectaculoasă cu colorit contrastant: cap și abdomen închise la culoare, torace roșcat. Lucrătoarele au aceeași mărime, sunt vânători foarte rapizi și entuziaști, de aceea dieta conține multe proteine, iar siropul de zahăr menține energia. Regina întemeiază colonia singură, iar iarna repausul la 5-10 °C este obligatoriu. Specia iubește căldura și lumina și este renumită pentru viteză, așa că arena se ține bine închisă împotriva evadării.",
+      en: "Formica rufibarbis, a striking ant with contrasting colours: a dark head and gaster with a reddish mesosoma. Workers are all one size and are very fast, eager hunters, so the diet is rich in protein while sugar syrup keeps the energy up. The queen founds the colony herself, and in winter a rest at 5-10 °C is mandatory. This species loves warmth and light and is famous for its speed, so keep the arena well sealed against escapes."
+    },
+    image: formicaRufibarbisImage,
+    images: [formicaRufibarbisImage],
+    queenSize: { ru: "9-11 мм", ro: "9-11 mm", en: "9-11 mm" },
+    workerSize: { ru: "6-9 мм", ro: "6-9 mm", en: "6-9 mm" },
+    colonySize: { ru: "Матка + расплод", ro: "Regină + puiet", en: "Queen + brood" },
+    food: { ru: "Насекомые, сахарный сироп", ro: "Insecte, sirop de zahăr", en: "Insects, sugar syrup" },
+    priceOptions: formicaPriceOptions,
+    availability: "inStock",
+    characteristics: [
+      {
+        label: { ru: "Температура", ro: "Temperatura", en: "Temperature" },
+        value: { ru: "23-28 C", ro: "23-28 C", en: "23-28 C" }
+      },
+      {
+        label: { ru: "Влажность", ro: "Umiditate", en: "Humidity" },
+        value: { ru: "Низкая/Средняя", ro: "Redusă/Medie", en: "Low/Medium" }
+      },
+      {
+        label: { ru: "Сложность", ro: "Dificultate", en: "Difficulty" },
+        value: { ru: "Средняя", ro: "Medie", en: "Medium" }
+      },
+      {
+        label: { ru: "Зимовка", ro: "Hibernare", en: "Hibernation" },
+        value: { ru: "Обязательна, 5–10 °C", ro: "Obligatorie, 5–10 °C", en: "Required, 5–10 °C" }
+      }
+    ],
+    recommendedFormicariumIds: [203, 202],
+    relatedBlogIds: [401, 403]
   },
   {
     id: 45,
@@ -105,9 +246,9 @@ export const ants = [
       en: "The fastest-growing species: a hardy multi-queen \"super colony\"."
     },
     description: {
-      ru: "Lasius neglectus: выносливый полигинный вид, образующий быстрорастущие суперколонии с несколькими матками. Неприхотлив, хорошо развивается при комнатной температуре, любит сахарный сироп и белковый корм. Зимой нужен короткий период покоя. Один из самых динамичных видов для наблюдения.",
-      ro: "Lasius neglectus este o specie poligină rezistentă, care formează supercolonii cu creștere rapidă și mai multe regine. Nepretențioasă, se dezvoltă bine la temperatura camerei, preferă siropul de zahăr și hrana proteică. Iarna are nevoie de o scurtă perioadă de repaus. Una dintre cele mai dinamice specii pentru observație.",
-      en: "Lasius neglectus is a hardy polygynous species that forms fast-growing super colonies with multiple queens. Undemanding, it thrives at room temperature and enjoys sugar syrup and protein food. It needs a short winter rest. One of the most dynamic species to observe."
+      ru: "Lasius neglectus, выносливый вид с несколькими матками, который образует быстрорастущие «суперколонии». Развивается при комнатной температуре, охотно берёт сахарный сироп и белковый корм, а численность растёт заметно быстрее, чем у большинства видов. Зимой достаточно короткого периода покоя. Один из самых динамичных видов, за считанные месяцы колония преображается на глазах.",
+      ro: "Lasius neglectus, o specie rezistentă cu mai multe regine, care formează «supercolonii» cu creștere rapidă. Se dezvoltă la temperatura camerei, acceptă cu plăcere siropul de zahăr și hrana proteică, iar numărul crește vizibil mai repede decât la majoritatea speciilor. Iarna este suficientă o scurtă perioadă de repaus. Una dintre cele mai dinamice specii, colonia se transformă vizibil în doar câteva luni.",
+      en: "Lasius neglectus, a hardy multi-queen species that forms fast-growing \"super colonies\". It develops at room temperature, happily takes sugar syrup and protein food, and its numbers grow noticeably faster than most species. In winter a short rest period is enough. One of the most dynamic species, the colony transforms before your eyes within a few months."
     },
     image: lasiusNeglectusImage,
     images: [lasiusNeglectusImage],
@@ -115,7 +256,7 @@ export const ants = [
     workerSize: { ru: "2-3 мм", ro: "2-3 mm", en: "2-3 mm" },
     colonySize: { ru: "Матка + расплод", ro: "Regină + puiet", en: "Queen + brood" },
     food: { ru: "Сахарный сироп, насекомые", ro: "Sirop de zahăr, insecte", en: "Sugar syrup, insects" },
-    priceOptions,
+    priceOptions: neglectusPriceOptions,
     availability: "inStock",
     characteristics: [
       {
@@ -135,7 +276,7 @@ export const ants = [
         value: { ru: "Полигинная (много маток)", ro: "Poligină (mai multe regine)", en: "Polygynous (multiple queens)" }
       }
     ],
-    recommendedFormicariumIds: [202],
+    recommendedFormicariumIds: [202, 203],
     relatedBlogIds: [401, 403]
   },
   {
@@ -152,9 +293,9 @@ export const ants = [
       en: "A hardy and low-maintenance species for daily observation."
     },
     description: {
-      ru: "Lasius niger легко адаптируется и хорошо развивается в базовых условиях, отлично подходит для первого формикария. Важно: зимой колонии нужна спячка при 5-10 °C, иначе матка истощается.",
-      ro: "Lasius niger se adaptează ușor și se dezvoltă bine în condiții de bază, fiind o alegere excelentă pentru primul formicariu. Important: iarna colonia are nevoie de hibernare la 5-10 °C, altfel regina se epuizează.",
-      en: "Lasius niger adapts easily and grows well in basic conditions, a great choice for a first formicarium. Important: in winter the colony needs hibernation at 5-10 °C, otherwise the queen burns out."
+      ru: "Lasius niger, чёрный садовый муравей и классический выбор для первого формикария. Вид очень вынослив, прощает колебания температуры и влажности, поэтому идеально подходит новичкам. Матка основывает семью сама и первый месяц обходится без корма. Зимой обязательна спячка при 5-10 °C, иначе матка быстро истощается.",
+      ro: "Lasius niger, furnica neagră de grădină și alegerea clasică pentru primul formicariu. Specia este foarte rezistentă, tolerează variațiile de temperatură și umiditate, fiind ideală pentru începători. Regina întemeiază familia singură și se descurcă fără hrană în prima lună. Iarna este obligatorie hibernarea la 5-10 °C, altfel regina se epuizează rapid.",
+      en: "Lasius niger, the black garden ant and the classic choice for a first formicarium. The species is very hardy and forgives swings in temperature and humidity, which makes it ideal for beginners. The queen founds the colony on her own and needs no food for the first month. In winter hibernation at 5-10 °C is mandatory, otherwise the queen wears out quickly."
     },
     image: lasiusNigerImage,
     images: [lasiusNigerImage],
@@ -178,7 +319,7 @@ export const ants = [
         value: { ru: "Низкая", ro: "Redusa", en: "Low" }
       }
     ],
-    recommendedFormicariumIds: [202],
+    recommendedFormicariumIds: [203, 202],
     relatedBlogIds: [401, 403]
   },
   {
@@ -195,9 +336,9 @@ export const ants = [
       en: "A large and striking species for those who want a standout colony."
     },
     description: {
-      ru: "Camponotus fellah: крупный «карпентер» из засушливых регионов. Полиморфный вид с большими майорами-солдатами. Требует стабильных условий и регулярного белкового корма; зимовка не обязательна.",
-      ro: "Camponotus fellah: o specie mare de „dulgher” din regiuni aride. Polimorfă, cu majori-soldați mari. Necesită condiții stabile și hrană proteică regulată; hibernarea nu este obligatorie.",
-      en: "Camponotus fellah: a large \"carpenter\" ant from arid regions. A polymorphic species with big soldier-majors. It needs stable conditions and regular protein feeding; hibernation is not required."
+      ru: "Camponotus fellah, гигантский муравей-древоточец из засушливых регионов и один из самых зрелищных видов. Сильно полиморфный: рядом с мелкими рабочими живут крупные майоры с массивными головами. Любит тепло и сухость, регулярно нуждается в белке и сахарном сиропе, а холодная зимовка не обязательна. Вид активный и любопытный, поэтому лучше раскрывается у кипера с небольшим опытом.",
+      ro: "Camponotus fellah, furnica dulgher uriașă din regiuni aride și una dintre cele mai spectaculoase specii. Puternic polimorfă: alături de lucrătoarele mici trăiesc majori mari, cu capete masive. Iubește căldura și mediul uscat, are nevoie regulat de proteine și sirop de zahăr, iar hibernarea rece nu este obligatorie. Specie activă și curioasă, care se dezvăluie cel mai bine la un crescător cu puțină experiență.",
+      en: "Camponotus fellah, a giant carpenter ant from arid regions and one of the most spectacular species. Strongly polymorphic: tiny workers live alongside large majors with massive heads. It loves warmth and a dry setup, needs regular protein and sugar syrup, and cold hibernation is not required. An active, curious species that shines best with a keeper who already has a little experience."
     },
     image: camponotusFellahImage,
     images: [camponotusFellahImage],
@@ -222,7 +363,7 @@ export const ants = [
         value: { ru: "Средняя", ro: "Medie", en: "Medium" }
       }
     ],
-    recommendedFormicariumIds: [202],
+    recommendedFormicariumIds: [202, 203],
     relatedBlogIds: [402, 403]
   }
 ];
