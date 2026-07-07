@@ -77,8 +77,17 @@ function Layout() {
 
   const cartCount = cartIds.length;
 
+  // Don't let the browser restore the previous scroll position on reload/back:
+  // together with the scroll-to-top below it produced a visible jump on open
+  // (page loaded scrolled down, then animated up, flashing the next section).
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
   }, [location.pathname]);
 
   return (

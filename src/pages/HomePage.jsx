@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
@@ -7,10 +7,12 @@ import SEO, { breadcrumbSchema, faqSchema, pageSeo } from "../components/SEO";
 import Stars from "../components/Stars";
 import { featuredReviews, reviewStatsAll, SELLER_999_URL } from "../data/reviewsData";
 import messorForagingSeeds from "../assets/images/ants/messor-foraging-seeds.webp";
-import messorSeedStore from "../assets/images/ants/messor-seed-store.webp";
-import messorStructor from "../assets/images/ants/messor-structor.webp";
 import messorWorkersCloseup from "../assets/images/ants/messor-workers-closeup.webp";
 import messorQueenWithBrood from "../assets/images/ants/messor-queen-with-brood.webp";
+
+// Hero background carousel: leads with the shot that used to sit in the
+// "what-is" block, followed by a few strong colony close-ups.
+const heroSlides = [messorForagingSeeds];
 
 export default function HomePage() {
   const { t, addToCart } = useOutletContext();
@@ -21,6 +23,14 @@ export default function HomePage() {
   const homeReviews = featuredReviews();
 
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const [heroIndex, setHeroIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroIndex((i) => (i + 1) % heroSlides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
 
   const addStarterKit = () => {
     addToCart(starterAnt.id);
@@ -64,12 +74,42 @@ export default function HomePage() {
   ];
 
   const gallerySlides = [
-    { image: messorStructor, label: t({ ru: "Муравьи заботятся о потомстве", ro: "Furnicile îngrijesc puietul", en: "Ants care for their brood" }) },
-    { image: messorSeedStore, label: t({ ru: "Колония хранит запасы зерна", ro: "Colonia păstrează rezerve de grâne", en: "The colony stores grain reserves" }) },
-    { image: messorForagingSeeds, label: t({ ru: "Охота и добыча пищи", ro: "Vânătoare și procurarea hranei", en: "Hunting and foraging for food" }) },
-    { image: messorQueenWithBrood, label: t({ ru: "Личинки будущих рабочих", ro: "Larvele viitoarelor lucrătoare", en: "Larvae of future workers" }) },
-    { image: messorWorkersCloseup, label: t({ ru: "Развитая социальная система", ro: "Un sistem social dezvoltat", en: "A developed social system" }) },
-    { image: "/formicarium-colony.webp", label: t({ ru: "Формикарий дома", ro: "Formicariu acasă", en: "Formicarium at home" }) },
+    {
+      image: messorForagingSeeds,
+      label: t({ ru: "Охота и добыча пищи", ro: "Vânătoare și procurarea hranei", en: "Hunting and foraging for food" }),
+      text: t({
+        ru: "Фуражиры уходят далеко от гнезда за семенами и мелкой добычей, отмечая дорогу феромонами для остальных.",
+        ro: "Culegătoarele se îndepărtează de cuib după semințe și pradă mică, marcând drumul cu feromoni pentru celelalte.",
+        en: "Foragers travel far from the nest for seeds and small prey, marking the trail with pheromones for the others.",
+      }),
+    },
+    {
+      image: messorQueenWithBrood,
+      label: t({ ru: "Личинки будущих рабочих", ro: "Larvele viitoarelor lucrătoare", en: "Larvae of future workers" }),
+      text: t({
+        ru: "Рядом с маткой развивается расплод: из яиц появляются личинки, а из них - новые рабочие растущей колонии.",
+        ro: "Lângă regină se dezvoltă puietul: din ouă apar larvele, iar din ele - noi lucrătoare pentru colonia în creștere.",
+        en: "Beside the queen the brood develops: eggs become larvae, and larvae become new workers for the growing colony.",
+      }),
+    },
+    {
+      image: messorWorkersCloseup,
+      label: t({ ru: "Развитая социальная система", ro: "Un sistem social dezvoltat", en: "A developed social system" }),
+      text: t({
+        ru: "У каждого муравья своя роль - от няньки до фуражира. Вместе они действуют как единый живой организм.",
+        ro: "Fiecare furnică are rolul său - de la doică la culegătoare. Împreună funcționează ca un singur organism viu.",
+        en: "Every ant has its role, from nurse to forager. Together they act as a single living organism.",
+      }),
+    },
+    {
+      image: "/formicarium-colony.webp",
+      label: t({ ru: "Формикарий дома", ro: "Formicariu acasă", en: "Formicarium at home" }),
+      text: t({
+        ru: "Всё это происходит прямо у вас дома - за прозрачными стенками формикария наблюдать удобно в любой момент.",
+        ro: "Toate acestea se întâmplă chiar la tine acasă - prin pereții transparenți ai formicariului poți urmări oricând.",
+        en: "All of this happens right in your home - through the clear walls of the formicarium you can watch anytime.",
+      }),
+    },
   ];
   const galleryCount = gallerySlides.length;
   const currentSlide = gallerySlides[galleryIndex];
@@ -114,56 +154,99 @@ export default function HomePage() {
           faqSchema(lang, homeFaq),
         ]}
       />
-      <section className="store-hero">
-        <div className="store-hero__content">
-          <p className="kicker">{t({ ru: "Магазин муравьёв и формикариев", ro: "Magazin de furnici și formicarii", en: "Ant & formicarium shop" })}</p>
-          <h1 className="store-hero__title">
-            {t({
-              ru: <>Живые муравьи и формикарии<br />для вашего дома</>,
-              ro: <>Furnici vii și formicarii<br />pentru casa ta</>,
-              en: <>Live ants and formicariums<br />for your home</>,
-            })}
-          </h1>
-          <p className="store-hero__lead">
-            {t({ ru: "Колонии с маткой, формикарии и всё для старта муравьиной фермы. Наблюдайте за настоящим подземным городом прямо у себя дома — с доставкой по всей Молдове.", ro: "Colonii cu regină, formicarii și tot ce trebuie pentru a porni o fermă de furnici. Urmărește un oraș subteran adevărat chiar la tine acasă — cu livrare în toată Moldova.", en: "Queen-right colonies, formicariums and everything to start an ant farm. Watch a real underground city right at home — with delivery across Moldova." })}
-          </p>
-          <ul className="hero-benefits">
-            {[
-              t({ ru: "Для новичков", ro: "Pentru începători", en: "For beginners" }),
-              t({ ru: "Не шумит", ro: "Fără zgomot", en: "No noise" }),
-              t({ ru: "Не пахнет", ro: "Fără miros", en: "No smell" }),
-              t({ ru: "Прост в уходе", ro: "Ușor de îngrijit", en: "Easy to care for" }),
-              t({ ru: "Доставка по всей Молдове", ro: "Livrare în toată Moldova", en: "Delivery across Moldova" }),
-            ].map((benefit) => (
-              <li key={benefit}>{benefit}</li>
-            ))}
-          </ul>
-          <div className="actions store-hero__actions">
-            <a className="btn btn-primary" href="#popular-products">
-              {t({ ru: "Выбрать стартовый набор", ro: "Alege kitul de start", en: "Choose starter kit" })}
-            </a>
-          </div>
+      <div className="home-hero-band">
+        <div className="home-hero-band__bg" aria-hidden="true">
+          {heroSlides.map((image, i) => (
+            <div
+              key={image}
+              className={`store-hero__slide${i === heroIndex ? " is-active" : ""}`}
+              style={{ backgroundImage: `url(${image})` }}
+            />
+          ))}
+          <div className="store-hero__scrim" />
         </div>
-        <div className="store-hero__media">
-          <img
-            className="store-hero__image"
-            src="/formicarium-colony.webp"
-            alt={t({ ru: "Формикарий с живой колонией муравьёв и маткой", ro: "Formicariu cu colonie vie de furnici și regină", en: "Formicarium with a live ant colony and queen" })}
-            loading="eager"
-            fetchpriority="high"
-          />
+
+        <div className="home-hero-band__inner">
+          <section className="store-hero">
+            <div className="store-hero__content">
+              <p className="kicker">{t({ ru: "Магазин муравьёв и формикариев", ro: "Magazin de furnici și formicarii", en: "Ant & formicarium shop" })}</p>
+              <h1 className="store-hero__title">
+                {t({
+                  ru: <>Живые муравьи и формикарии<br />для вашего дома</>,
+                  ro: <>Furnici vii și formicarii<br />pentru casa ta</>,
+                  en: <>Live ants and formicariums<br />for your home</>,
+                })}
+              </h1>
+              <p className="store-hero__lead">
+                {t({ ru: "Колонии с маткой, формикарии и всё для старта муравьиной фермы. Наблюдайте за настоящим подземным городом прямо у себя дома - с доставкой по всей Молдове.", ro: "Colonii cu regină, formicarii și tot ce trebuie pentru a porni o fermă de furnici. Urmărește un oraș subteran adevărat chiar la tine acasă - cu livrare în toată Moldova.", en: "Queen-right colonies, formicariums and everything to start an ant farm. Watch a real underground city right at home - with delivery across Moldova." })}
+              </p>
+              <ul className="hero-benefits">
+                {[
+                  t({ ru: "Для новичков", ro: "Pentru începători", en: "For beginners" }),
+                  t({ ru: "Не шумит", ro: "Fără zgomot", en: "No noise" }),
+                  t({ ru: "Не пахнет", ro: "Fără miros", en: "No smell" }),
+                  t({ ru: "Прост в уходе", ro: "Ușor de îngrijit", en: "Easy to care for" }),
+                  t({ ru: "Доставка по всей Молдове", ro: "Livrare în toată Moldova", en: "Delivery across Moldova" }),
+                ].map((benefit) => (
+                  <li key={benefit}>{benefit}</li>
+                ))}
+              </ul>
+              <div className="actions store-hero__actions">
+                <a className="btn btn-primary" href="#popular-products">
+                  {t({ ru: "Выбрать стартовый набор", ro: "Alege kitul de start", en: "Choose starter kit" })}
+                </a>
+              </div>
+              {heroSlides.length > 1 && (
+                <div className="store-hero__dots">
+                  {heroSlides.map((image, i) => (
+                    <button
+                      key={image}
+                      type="button"
+                      className={`store-hero__dot${i === heroIndex ? " is-active" : ""}`}
+                      onClick={() => setHeroIndex(i)}
+                      aria-label={`${t({ ru: "Слайд", ro: "Slide", en: "Slide" })} ${i + 1}`}
+                      aria-current={i === heroIndex}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
         </div>
-      </section>
+      </div>
 
       <section className="hero-trust">
-        <ul className="hero-trust__strip">
+        <ul className="hero-trust__grid">
           {[
-            t({ ru: "5+ лет опыта", ro: "Peste 5 ani de experiență", en: "5+ years of experience" }),
-            t({ ru: "500+ отправленных колоний", ro: "Peste 500 de colonii trimise", en: "500+ colonies shipped" }),
-            t({ ru: "Поддержка после покупки", ro: "Suport după achiziție", en: "Support after purchase" }),
-            t({ ru: "Консультация каждому клиенту", ro: "Consultanță pentru fiecare client", en: "Consultation for every customer" }),
-          ].map((item) => (
-            <li key={item}>{item}</li>
+            {
+              // Clock - years of experience
+              icon: <><circle cx="12" cy="12" r="9" /><path d="M12 7.5V12l3.5 2" /></>,
+              label: t({ ru: "5+ лет опыта", ro: "Peste 5 ani de experiență", en: "5+ years of experience" }),
+            },
+            {
+              // Truck - shipped colonies (same as why-buy-us)
+              icon: <><path d="M3 7h11v8H3zM14 10h3.4L21 13v2h-7z" /><circle cx="7" cy="17" r="1.7" /><circle cx="17" cy="17" r="1.7" /></>,
+              label: t({ ru: "500+ отправленных колоний", ro: "Peste 500 de colonii trimise", en: "500+ colonies shipped" }),
+            },
+            {
+              // Chat bubble - support after purchase (same as why-buy-us)
+              icon: <path d="M20 15a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" />,
+              label: t({ ru: "Поддержка после покупки", ro: "Suport după achiziție", en: "Support after purchase" }),
+            },
+            {
+              // Person - consultation for every client
+              icon: <><circle cx="12" cy="8" r="3.5" /><path d="M5.5 20a6.5 6.5 0 0 1 13 0" /></>,
+              label: t({ ru: "Консультация каждому клиенту", ro: "Consultanță pentru fiecare client", en: "Consultation for every customer" }),
+            },
+          ].map(({ icon, label }) => (
+            <li className="hero-trust-card" key={label}>
+              <span className="hero-trust-card__icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  {icon}
+                </svg>
+              </span>
+              <span className="hero-trust-card__label">{label}</span>
+            </li>
           ))}
         </ul>
       </section>
@@ -180,8 +263,8 @@ export default function HomePage() {
         <div className="what-is__inner">
           <div className="what-is__image">
             <img
-              src={messorForagingSeeds}
-              alt={t({ ru: "Рабочие Messor Structor у входа в гнездо несут семена", ro: "Lucrătoare Messor Structor la intrarea în cuib cărând semințe", en: "Messor Structor workers carrying seeds at the nest entrance" })}
+              src="/formicarium-colony.webp"
+              alt={t({ ru: "Формикарий с живой колонией муравьёв и маткой", ro: "Formicariu cu colonie vie de furnici și regină", en: "Formicarium with a live ant colony and queen" })}
               loading="lazy"
             />
           </div>
@@ -252,14 +335,8 @@ export default function HomePage() {
           </div>
 
           <div className="gallery-showcase__text">
-            <p className="gallery-showcase__lead">
-              {t({
-                ru: "Каждый кадр показывает момент из жизни живой колонии: от заботы о расплоде до строительства тоннелей. Листайте, чтобы рассмотреть детали.",
-                ro: "Fiecare cadru este un moment din viața unei colonii vii: de la îngrijirea puietului până la construirea tunelelor. Răsfoiește pentru a vedea detaliile.",
-                en: "Every frame is a moment from a living colony's life: from brood care to tunnel building. Browse through to see the details.",
-              })}
-            </p>
             <p className="gallery-showcase__caption">{currentSlide.label}</p>
+            <p className="gallery-showcase__lead">{currentSlide.text}</p>
           </div>
         </div>
       </section>
@@ -285,7 +362,7 @@ export default function HomePage() {
           })}</h2>
 
           <p>{t({
-            ru: "GoodAntShop — специализированный магазин для мирмекипинга: у нас можно купить живых муравьёв, колонии с маткой, формикарии и товары для содержания муравьёв дома. Мы сами разводим и проверяем колонии перед отправкой, поэтому подскажем, какой вид и формикарий подойдут под ваш опыт, бюджет и условия в квартире. Домашняя муравьиная ферма — спокойное и наглядное хобби: за колонией интересно наблюдать и детям, и взрослым, она не шумит и почти не занимает места.",
+            ru: "GoodAntShop - специализированный магазин для мирмекипинга: у нас можно купить живых муравьёв, колонии с маткой, формикарии и товары для содержания муравьёв дома. Мы сами разводим и проверяем колонии перед отправкой, поэтому подскажем, какой вид и формикарий подойдут под ваш опыт, бюджет и условия в квартире. Домашняя муравьиная ферма - спокойное и наглядное хобби: за колонией интересно наблюдать и детям, и взрослым, она не шумит и почти не занимает места.",
             ro: "GoodAntShop este un magazin specializat pentru mirmecologie: aici poți cumpăra furnici vii, colonii cu regină, formicarii și produse pentru creșterea furnicilor acasă. Creștem și verificăm coloniile înainte de expediere, așa că te ajutăm să alegi specia și formicariul potrivite experienței, bugetului și condițiilor din locuință. O fermă de furnici acasă este un hobby liniștit și captivant: colonia e interesantă atât pentru copii, cât și pentru adulți, nu face zgomot și ocupă foarte puțin loc.",
             en: "GoodAntShop is a specialized ant-keeping shop: here you can buy live ants, queen-right colonies, formicariums and supplies for keeping ants at home. We raise and check the colonies before shipping, so we help you pick the species and formicarium that match your experience, budget and home conditions. A home ant farm is a calm, visual hobby: the colony is fascinating for both kids and adults, it makes no noise and takes up very little space.",
           })}</p>
@@ -297,9 +374,9 @@ export default function HomePage() {
           })}</h3>
           <p>
             {t({
-              ru: "В каталоге есть спокойные зерноядные Messor Structor — лучший выбор для первой колонии, выносливые Lasius Niger, быстрорастущие Lasius Neglectus и крупные эффектные Camponotus Fellah. Если вы только выбираете первых питомцев и хотите купить муравьёв в Кишинёве или с доставкой по Молдове, начните с Messor Structor. Все виды, цены и наличие — в ",
-              ro: "În catalog găsești blândele granivore Messor Structor — cea mai bună alegere pentru prima colonie, rezistentele Lasius Niger, rapidele Lasius Neglectus și impunătoarele Camponotus Fellah. Dacă abia îți alegi primele furnici și vrei să cumperi furnici în Chișinău sau cu livrare în Moldova, începe cu Messor Structor. Toate speciile, prețurile și disponibilitatea — în ",
-              en: "The catalog has the calm seed-eating Messor Structor — the best choice for a first colony, the hardy Lasius Niger, fast-growing Lasius Neglectus and large, striking Camponotus Fellah. If you're choosing your first ants and want to buy ants in Chișinău or with delivery across Moldova, start with Messor Structor. All species, prices and availability are in the ",
+              ru: "В каталоге есть спокойные зерноядные Messor Structor - лучший выбор для первой колонии, выносливые Lasius Niger, быстрорастущие Lasius Neglectus и крупные эффектные Camponotus Fellah. Если вы только выбираете первых питомцев и хотите купить муравьёв в Кишинёве или с доставкой по Молдове, начните с Messor Structor. Все виды, цены и наличие - в ",
+              ro: "În catalog găsești blândele granivore Messor Structor - cea mai bună alegere pentru prima colonie, rezistentele Lasius Niger, rapidele Lasius Neglectus și impunătoarele Camponotus Fellah. Dacă abia îți alegi primele furnici și vrei să cumperi furnici în Chișinău sau cu livrare în Moldova, începe cu Messor Structor. Toate speciile, prețurile și disponibilitatea - în ",
+              en: "The catalog has the calm seed-eating Messor Structor - the best choice for a first colony, the hardy Lasius Niger, fast-growing Lasius Neglectus and large, striking Camponotus Fellah. If you're choosing your first ants and want to buy ants in Chișinău or with delivery across Moldova, start with Messor Structor. All species, prices and availability are in the ",
             })}
             <Link to={`/${lang}/ants`}>{t({ ru: "каталоге муравьёв", ro: "catalogul de furnici", en: "ants catalog" })}</Link>.
           </p>
@@ -311,7 +388,7 @@ export default function HomePage() {
           })}</h3>
           <p>
             {t({
-              ru: "Колония — это матка с расплодом, из которого постепенно вырастают рабочие. Новичкам мы советуем начинать с неприхотливого вида и компактного формикария, чтобы уход был простым и понятным. Подобрать дом для будущей семьи можно в ",
+              ru: "Колония - это матка с расплодом, из которого постепенно вырастают рабочие. Новичкам мы советуем начинать с неприхотливого вида и компактного формикария, чтобы уход был простым и понятным. Подобрать дом для будущей семьи можно в ",
               ro: "O colonie înseamnă o regină cu puiet, din care cresc treptat lucrătoarele. Începătorilor le recomandăm o specie nepretențioasă și un formicariu compact, pentru o îngrijire simplă și clară. Poți alege o casă pentru viitoarea familie în ",
               en: "A colony is a queen with brood that gradually grows into workers. For beginners we recommend an easy species and a compact formicarium so care stays simple and clear. You can choose a home for the future family in the ",
             })}
@@ -325,9 +402,9 @@ export default function HomePage() {
           })}</h3>
           <p>
             {t({
-              ru: "Колонии упаковываются в утеплённую защиту и безопасно доезжают по Кишинёву и всей Молдове. После покупки мы остаёмся на связи и помогаем запустить муравейник. Остались вопросы по заказу и доставке — напишите нам на странице ",
-              ro: "Coloniile sunt ambalate termic și ajung în siguranță în Chișinău și în toată Moldova. După achiziție rămânem în legătură și te ajutăm să pornești colonia. Ai întrebări despre comandă sau livrare — scrie-ne pe pagina de ",
-              en: "Colonies are packed with insulated protection and arrive safely across Chișinău and all of Moldova. After purchase we stay in touch and help you start the colony. Questions about an order or delivery — write to us on the ",
+              ru: "Колонии упаковываются в утеплённую защиту и безопасно доезжают по Кишинёву и всей Молдове. После покупки мы остаёмся на связи и помогаем запустить муравейник. Остались вопросы по заказу и доставке - напишите нам на странице ",
+              ro: "Coloniile sunt ambalate termic și ajung în siguranță în Chișinău și în toată Moldova. După achiziție rămânem în legătură și te ajutăm să pornești colonia. Ai întrebări despre comandă sau livrare - scrie-ne pe pagina de ",
+              en: "Colonies are packed with insulated protection and arrive safely across Chișinău and all of Moldova. After purchase we stay in touch and help you start the colony. Questions about an order or delivery - write to us on the ",
             })}
             <Link to={`/${lang}/contacts`}>{t({ ru: "контактов", ro: "contacte", en: "contacts page" })}</Link>.
           </p>

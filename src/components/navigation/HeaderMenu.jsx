@@ -9,6 +9,32 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
   const langLabel = curLang.toUpperCase();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  // Home is the index route: only the language segment in the path (or nothing).
+  const isHome = location.pathname.split("/").filter(Boolean).length <= 1;
+
+  // On the homepage the header floats transparently over the hero photo, then
+  // turns solid once the hero band has scrolled past it.
+  useEffect(() => {
+    if (!isHome) {
+      setScrolled(false);
+      return;
+    }
+    const band = document.querySelector(".home-hero-band");
+    const onScroll = () => {
+      if (!band) {
+        setScrolled(window.scrollY > 10);
+        return;
+      }
+      setScrolled(band.getBoundingClientRect().bottom <= 64);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isHome, location.pathname]);
+
+  const transparent = isHome && !scrolled;
 
   // Close the mobile menu on navigation.
   useEffect(() => {
@@ -29,7 +55,7 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
   };
 
   return (
-    <header className="site-header">
+    <header className={`site-header${transparent ? " is-transparent" : ""}`}>
       <div className="container header-inner">
         <NavLink className="brand" to={`/${curLang}`}>
           <img src="/logo.webp" alt="GoodAnt" />
