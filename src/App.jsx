@@ -53,12 +53,13 @@ function Layout() {
 
   const t = (map) => map[curLang] ?? map.ru ?? map.ro ?? map.en;
 
-  const addToCart = (id) => {
+  const addToCart = (id, option) => {
     setcartIds((prev) => [
       ...prev,
       {
         uid: crypto.randomUUID(),
         id,
+        option: option || null,
       },
     ]);
   };

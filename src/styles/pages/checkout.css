@@ -87,6 +87,11 @@
   font-size: 14px;
   line-height: 1.5;
 }
+.checkout-item__info p.checkout-item__variant {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 13px;
+}
 .checkout-item__meta {
   display: flex;
   flex-wrap: wrap;

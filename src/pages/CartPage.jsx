@@ -11,10 +11,13 @@ const getText = (value, lang) => {
   return value ?? "";
 };
 
-const priceNumber = (product) => {
-  const option = product.priceOptions?.find((o) => o.selected) || product.priceOptions?.[0];
-  return parseInt(String(option?.value || "").replace(/[^\d]/g, ""), 10) || 0;
-};
+const optionPriceNumber = (option) =>
+  parseInt(String(option?.value || "").replace(/[^\d]/g, ""), 10) || 0;
+
+// A cart line may carry the exact variant chosen on the product page; otherwise
+// fall back to the product's default (selected / first) option.
+const resolveOption = (product, lineOption) =>
+  lineOption || product.priceOptions?.find((o) => o.selected) || product.priceOptions?.[0] || null;
 
 const countWord = (count, lang) => {
   if (lang === "ro") return count === 1 ? "produs" : "produse";
@@ -44,8 +47,9 @@ export default function CartPage() {
   cartIds.forEach((line) => {
     const product = catalog.find((entry) => String(entry.id) === String(line.id));
     if (!product) return;
-    const key = String(line.id);
-    if (!groupsMap.has(key)) groupsMap.set(key, { product, qty: 0, uids: [] });
+    const option = resolveOption(product, line.option);
+    const key = `${line.id}__${option?.value || ""}`;
+    if (!groupsMap.has(key)) groupsMap.set(key, { product, option, qty: 0, uids: [] });
     const group = groupsMap.get(key);
     group.qty += 1;
     group.uids.push(line.uid);
@@ -53,7 +57,7 @@ export default function CartPage() {
   const groups = [...groupsMap.values()];
 
   const totalQty = groups.reduce((sum, group) => sum + group.qty, 0);
-  const itemsTotal = groups.reduce((sum, group) => sum + priceNumber(group.product) * group.qty, 0);
+  const itemsTotal = groups.reduce((sum, group) => sum + optionPriceNumber(group.option) * group.qty, 0);
   const currency = t({ ru: "лей", ro: "lei", en: "lei" });
   const fmt = (value) => `${value} ${currency}`;
 
@@ -83,9 +87,10 @@ export default function CartPage() {
     setStatus({ type: "", text: "" });
 
     const orderItems = groups.map((group) => {
-      const unit = priceNumber(group.product);
+      const unit = optionPriceNumber(group.option);
       return {
         title: getText(group.product.title, lang),
+        variant: group.option ? getText(group.option.label, lang) : "",
         qty: group.qty,
         price: fmt(unit),
         lineTotal: fmt(unit * group.qty),
@@ -178,15 +183,18 @@ export default function CartPage() {
           <>
             <div className="checkout-items">
               {groups.map((group) => {
-                const unit = priceNumber(group.product);
+                const unit = optionPriceNumber(group.option);
                 const image = group.product.images?.[0] || group.product.image || "/placeholder-ant.svg";
                 return (
-                  <article className="checkout-item" key={group.product.id}>
+                  <article className="checkout-item" key={`${group.product.id}-${group.option?.value || ""}`}>
                     <div className="checkout-item__media">
                       <img src={image} alt={getText(group.product.title, lang)} loading="lazy" />
                     </div>
                     <div className="checkout-item__info">
                       <h3>{getText(group.product.title, lang)}</h3>
+                      {group.option && (
+                        <p className="checkout-item__variant">{getText(group.option.label, lang)}</p>
+                      )}
                       <p>{getText(group.product.excerpt, lang)}</p>
                       <div className="checkout-item__meta">
                         <span>

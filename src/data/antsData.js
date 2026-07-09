@@ -5,6 +5,8 @@ import camponotusFellahImage from "../assets/images/ants/camponotus-fellah.webp"
 import formicaCuniculariaImage from "../assets/images/ants/formica_cunicularia.webp";
 import formicaRufibarbisImage from "../assets/images/ants/formica_rufibarbis.webp";
 
+// Each species is sold in three colony-size tiers. Prices are written out per
+// tier so they can be edited individually per species.
 export const priceOptions = [
   {
     label: {
@@ -17,11 +19,20 @@ export const priceOptions = [
   },
   {
     label: {
-      ru: "Матка + расплод + 10-20 рабочих",
-      ro: "Regina + puiet + 10-20 lucratoare",
-      en: "Queen + brood + 10-20 workers",
+      ru: "Матка + 5-15 муравьёв",
+      ro: "Regina + 5-15 furnici",
+      en: "Queen + 5-15 ants",
     },
     value: "650 лей",
+    selected: false,
+  },
+  {
+    label: {
+      ru: "Матка + 15-30 муравьёв",
+      ro: "Regina + 15-30 furnici",
+      en: "Queen + 15-30 ants",
+    },
+    value: "750 лей",
     selected: false,
   },
 ];
@@ -39,17 +50,25 @@ export const camponotusPriceOptions = [
   },
   {
     label: {
-      ru: "Матка + расплод + 10-20 рабочих",
-      ro: "Regina + puiet + 10-20 lucratoare",
-      en: "Queen + brood + 10-20 workers",
+      ru: "Матка + 5-15 муравьёв",
+      ro: "Regina + 5-15 furnici",
+      en: "Queen + 5-15 ants",
     },
     value: "850 лей",
     selected: false,
   },
+  {
+    label: {
+      ru: "Матка + 15-30 муравьёв",
+      ro: "Regina + 15-30 furnici",
+      en: "Queen + 15-30 ants",
+    },
+    value: "950 лей",
+    selected: false,
+  },
 ];
 
-// Formica species are currently scarce (only a few of each), so they carry a
-// small premium over the base starter price.
+// Formica species are currently scarce (only a few of each), small premium.
 export const formicaPriceOptions = [
   {
     label: {
@@ -62,16 +81,25 @@ export const formicaPriceOptions = [
   },
   {
     label: {
-      ru: "Матка + расплод + 10-20 рабочих",
-      ro: "Regina + puiet + 10-20 lucratoare",
-      en: "Queen + brood + 10-20 workers",
+      ru: "Матка + 5-15 муравьёв",
+      ro: "Regina + 5-15 furnici",
+      en: "Queen + 5-15 ants",
     },
     value: "750 лей",
     selected: false,
   },
+  {
+    label: {
+      ru: "Матка + 15-30 муравьёв",
+      ro: "Regina + 15-30 furnici",
+      en: "Queen + 15-30 ants",
+    },
+    value: "850 лей",
+    selected: false,
+  },
 ];
 
-// Lasius neglectus is a popular fast-growing super colony, with a small premium.
+// Lasius neglectus is a popular fast-growing super colony, small premium.
 export const neglectusPriceOptions = [
   {
     label: {
@@ -84,11 +112,20 @@ export const neglectusPriceOptions = [
   },
   {
     label: {
-      ru: "Матка + расплод + 10-20 рабочих",
-      ro: "Regina + puiet + 10-20 lucratoare",
-      en: "Queen + brood + 10-20 workers",
+      ru: "Матка + 5-15 муравьёв",
+      ro: "Regina + 5-15 furnici",
+      en: "Queen + 5-15 ants",
     },
     value: "700 лей",
+    selected: false,
+  },
+  {
+    label: {
+      ru: "Матка + 15-30 муравьёв",
+      ro: "Regina + 15-30 furnici",
+      en: "Queen + 15-30 ants",
+    },
+    value: "800 лей",
     selected: false,
   },
 ];

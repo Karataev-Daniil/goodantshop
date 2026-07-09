@@ -40,6 +40,11 @@ export default function ProductCard({ item, linkTo, onAddToCart }) {
   const primaryPrice = item.priceOptions?.[0];
   const isPreorder = item.availability === "preorder";
   const isOutOfStock = item.availability === "outOfStock";
+  // Preorder means it's not in stock right now but can still be ordered — spell
+  // that out on the badge instead of the vague "Предзаказ".
+  const badgeAria = isPreorder
+    ? getText({ ru: "Нет в наличии, предзаказ", ro: "Nu este în stoc, precomandă", en: "Out of stock, pre-order" }, lang)
+    : availabilityTitle;
 
   const handleProductHoverMove = (event) => {
     if (previewImages.length < 2) return;
@@ -69,10 +74,21 @@ export default function ProductCard({ item, linkTo, onAddToCart }) {
         {item.availability && (
           <span
             className={`product-card__status product-card__status--${item.availability}`}
-            title={availabilityTitle}
-            aria-label={availabilityTitle}
+            title={badgeAria}
+            aria-label={badgeAria}
           >
-            {availabilityTitle}
+            {isPreorder ? (
+              <>
+                <span className="product-card__status-main">
+                  {getText({ ru: "Нет в наличии", ro: "Nu este în stoc", en: "Out of stock" }, lang)}
+                </span>
+                <span className="product-card__status-note">
+                  {getText({ ru: "предзаказ", ro: "precomandă", en: "pre-order" }, lang)}
+                </span>
+              </>
+            ) : (
+              availabilityTitle
+            )}
           </span>
         )}
         <span className="product-card__hover-delivery">

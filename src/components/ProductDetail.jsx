@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import ProductGallery from "./ProductGallery";
 import ProductCard from "./ProductCard";
@@ -73,6 +73,13 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
   const [qty, setQty] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
   const [showAllReviews, setShowAllReviews] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(
+    () => item.priceOptions?.find((o) => o.selected) || item.priceOptions?.[0] || null
+  );
+  // Reset the chosen colony size when navigating to another product.
+  useEffect(() => {
+    setSelectedOption(item.priceOptions?.find((o) => o.selected) || item.priceOptions?.[0] || null);
+  }, [item.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const productReviews = reviewsFor(type);
   const reviewStats = reviewStatsFor(type);
@@ -88,7 +95,7 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
       : { ru: "формикарий для домашней муравьиной фермы", ro: "formicariu pentru ferma de furnici de acasă", en: "formicarium for a home ant farm" },
     lang
   )}`;
-  const primaryPrice = item.priceOptions?.[0];
+  const options = item.priceOptions || [];
   const isOutOfStock = item.availability === "outOfStock";
   const isPreorder = item.availability === "preorder";
 
@@ -98,7 +105,7 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
   };
 
   const addItem = (id, count = 1) => {
-    for (let n = 0; n < count; n += 1) addToCart(id);
+    for (let n = 0; n < count; n += 1) addToCart(id, selectedOption);
   };
 
   const handleAddToCart = () => addItem(item.id, qty);
@@ -268,7 +275,18 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
           badge={
             item.availability ? (
               <span className={`product-badge product-badge--${item.availability}`}>
-                {getText(availabilityLabel[item.availability], lang)}
+                {isPreorder ? (
+                  <>
+                    <span className="product-badge__main">
+                      {getText({ ru: "Нет в наличии", ro: "Nu este în stoc", en: "Out of stock" }, lang)}
+                    </span>
+                    <span className="product-badge__note">
+                      {getText({ ru: "предзаказ", ro: "precomandă", en: "pre-order" }, lang)}
+                    </span>
+                  </>
+                ) : (
+                  getText(availabilityLabel[item.availability], lang)
+                )}
               </span>
             ) : null
           }
@@ -291,14 +309,39 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
             </a>
           )}
 
-          {primaryPrice && (
+          {selectedOption && (
             <div className="product-buy__price">
-              <strong>{primaryPrice.value}</strong>
-              <span>{getText(primaryPrice.label, lang)}</span>
+              <strong>{selectedOption.value}</strong>
+              <span>{getText(selectedOption.label, lang)}</span>
             </div>
           )}
 
           <p className="product-buy__excerpt">{getText(item.excerpt, lang)}</p>
+
+          {options.length > 1 && (
+            <div
+              className="product-buy__options"
+              role="radiogroup"
+              aria-label={getText({ ru: "Размер колонии", ro: "Mărimea coloniei", en: "Colony size" }, lang)}
+            >
+              {options.map((option) => {
+                const active = option === selectedOption;
+                return (
+                  <button
+                    type="button"
+                    key={option.value}
+                    role="radio"
+                    aria-checked={active}
+                    className={`product-option${active ? " is-active" : ""}`}
+                    onClick={() => setSelectedOption(option)}
+                  >
+                    <span className="product-option__label">{getText(option.label, lang)}</span>
+                    <span className="product-option__price">{option.value}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
           <div className="product-buy__cart">
             <div className="qty-stepper" aria-label={getText({ ru: "Количество", ro: "Cantitate", en: "Quantity" }, lang)}>
@@ -310,7 +353,7 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
               {addLabel}
             </button>
             <button type="button" className="btn btn-secondary" onClick={handleBuyNow} disabled={isOutOfStock}>
-              {getText({ ru: "Купить сейчас", ro: "Cumpără acum", en: "Buy now" }, lang)}
+              {getText({ ru: "Оформить заказ", ro: "Finalizează comanda", en: "Place order" }, lang)}
             </button>
           </div>
         </div>
