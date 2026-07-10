@@ -21,6 +21,10 @@
 .product-section {
   margin-top: 56px;
 }
+/* Offset for the sticky header when jumping to #reviews */
+#reviews {
+  scroll-margin-top: 96px;
+}
 .product-section > h2 {
   font-size: 26px;
 }

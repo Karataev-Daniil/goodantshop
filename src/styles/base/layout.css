@@ -94,6 +94,17 @@
   .site-header.is-transparent .lang-dropdown__trigger {
     color: #fff;
   }
+
+  /* Over the hero photo the default cream hover looks like a white box —
+     use the same translucent hover as the nav links, and lighten the chevron. */
+  .site-header.is-transparent .lang-dropdown__trigger:hover,
+  .site-header.is-transparent .lang-dropdown[open] .lang-dropdown__trigger {
+    background: rgba(255, 255, 255, 0.14);
+  }
+
+  .site-header.is-transparent .lang-dropdown__chevron {
+    color: rgba(255, 255, 255, 0.7);
+  }
 }
 
 .header-inner {
@@ -382,7 +393,8 @@
   color: inherit;
 }
 
-.lang-dropdown__trigger:hover {
+.lang-dropdown__trigger:hover,
+.lang-dropdown[open] .lang-dropdown__trigger {
   background: #f1eadf;
 }
 
