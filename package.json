@@ -7,7 +7,7 @@
     "dev": "vite",
     "api": "node api-server.js",
     "dev:full": "concurrently \"npm run api\" \"npm run dev\"",
-    "build": "vite build",
+    "build": "vite build && node scripts/prerender.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -21,6 +21,8 @@
   "devDependencies": {
     "@vitejs/plugin-react": "^4.5.0",
     "concurrently": "^10.0.0",
+    "esbuild": "^0.28.1",
+    "sharp": "^0.35.3",
     "vite": "^5.4.19"
   }
 }
