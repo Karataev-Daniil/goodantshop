@@ -8,6 +8,7 @@ const footerText = {
     ants: "Муравьи",
     formicariums: "Формикарий",
     about: "О нас",
+    blog: "Блог",
     contacts: "Контакты",
     contactTitle: "Связаться",
     hours: "Звонки и сообщения 10:00–22:00",
@@ -21,6 +22,7 @@ const footerText = {
     ants: "Furnici",
     formicariums: "Formicariu",
     about: "Despre noi",
+    blog: "Blog",
     contacts: "Contacte",
     contactTitle: "Contact",
     hours: "Apeluri și mesaje 10:00–22:00",
@@ -34,6 +36,7 @@ const footerText = {
     ants: "Ants",
     formicariums: "Formicarium",
     about: "About",
+    blog: "Blog",
     contacts: "Contacts",
     contactTitle: "Get in touch",
     hours: "Calls and messages 10:00–22:00",
@@ -73,6 +76,7 @@ export default function FooterMenu({ curLang }) {
           <h3 className="footer-col__title">{copy.navTitle}</h3>
           <Link to={`/${curLang}/ants`}>{copy.ants}</Link>
           <Link to={`/${curLang}/formicariums`}>{copy.formicariums}</Link>
+          <Link to={`/${curLang}/blog`}>{copy.blog}</Link>
           <Link to={`/${curLang}/about`}>{copy.about}</Link>
           <Link to={`/${curLang}/contacts`}>{copy.contacts}</Link>
         </nav>

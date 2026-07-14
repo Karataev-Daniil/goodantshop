@@ -5,8 +5,8 @@ import AntsPage from "./pages/AntsPage";
 import SingleAntPage from "./pages/SingleAntPage";
 import FormicariumsPage from "./pages/FormicariumsPage";
 import FormicPage from "./pages/SingleFormicPage";
-// import BlogPage from "./pages/BlogPage";
-// import SingleBlogPage from "./pages/SingleBlogPage";
+import BlogPage from "./pages/BlogPage";
+import SingleBlogPage from "./pages/SingleBlogPage";
 import ContactsPage from "./pages/ContactsPage";
 import AboutPage from "./pages/AboutPage";
 import CartPage from "./pages/CartPage";
@@ -113,8 +113,8 @@ export default function App() {
           <Route path="ants/:slug" element={<SingleAntPage />} />
           <Route path="formicariums" element={<FormicariumsPage />} />
           <Route path="formic/:slug" element={<FormicPage />} />
-          {/* <Route path="blog" element={<BlogPage />} /> */}
-          {/* <Route path="blog/:slug" element={<SingleBlogPage />} /> */}
+          <Route path="blog" element={<BlogPage />} />
+          <Route path="blog/:slug" element={<SingleBlogPage />} />
           <Route path="contacts" element={<ContactsPage />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="cart" element={<CartPage />} />

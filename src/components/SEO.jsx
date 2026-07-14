@@ -11,6 +11,10 @@ export const SUPPORTED_LANGS = ["ru", "ro", "en"];
 export const SITE_PHONE = "+37360983052";
 export const SITE_PHONE_DISPLAY = "060 983 052";
 
+// Instagram нельзя «поделиться ссылкой» из веба — кнопка ведёт на профиль.
+// TODO: заменить на реальный аккаунт GoodAntShop.
+export const SITE_INSTAGRAM = "https://www.instagram.com/";
+
 const LOCALES = {
   ru: "ru_MD",
   ro: "ro_MD",
@@ -86,6 +90,18 @@ export const pageSeo = {
       ru: "Акриловые формикарии для домашних муравьиных ферм: арена, вентиляция, система увлажнения и удобный обзор камер. Доставка по всей Молдове.",
       ro: "Formicarii pentru ferme de furnici acasă: arenă, ventilație, sistem de umidificare și vizibilitate bună a camerelor. Livrare în Moldova.",
       en: "Formicariums for home ant farms: arena, ventilation, humidity system and clear chamber view. Delivery across Moldova.",
+    },
+  },
+  blog: {
+    title: {
+      ru: "Блог о муравьях: уход, виды и запуск колонии | GoodAntShop",
+      ro: "Blog despre furnici: îngrijire, specii și pornire | GoodAntShop",
+      en: "Ant-Keeping Blog: care, species and colony start | GoodAntShop",
+    },
+    description: {
+      ru: "Полезные статьи о муравьях: как выбрать первую колонию и формикарий, график кормления, уход за колонией и обзоры видов. Советы для новичков и опытных киперов.",
+      ro: "Articole utile despre furnici: cum alegi prima colonie și formicarul, programul de hrănire, îngrijirea coloniei și prezentări de specii. Sfaturi pentru începători și avansați.",
+      en: "Helpful ant-keeping articles: how to choose your first colony and formicarium, feeding schedule, colony care and species guides. Tips for beginners and pros.",
     },
   },
   contacts: {
@@ -295,6 +311,51 @@ export const faqSchema = (lang = "ru", items = []) => ({
     },
   })),
 });
+
+// VideoObject — даёт видео шанс попасть в Google Видео и в rich-результаты.
+export const videoSchema = (video, lang = "ru") => {
+  if (!video) return null;
+  return {
+    "@type": "VideoObject",
+    name: getText(video.name, lang),
+    description: getText(video.description, lang),
+    thumbnailUrl: video.thumbnail ? [absoluteUrl(video.thumbnail)] : [DEFAULT_IMAGE],
+    uploadDate: video.uploadDate,
+    ...(video.duration ? { duration: video.duration } : {}),
+    ...(video.embedUrl ? { embedUrl: video.embedUrl } : {}),
+    ...(video.contentUrl ? { contentUrl: video.contentUrl } : {}),
+  };
+};
+
+// BlogPosting — статья блога. Включает автора, даты и (при наличии) вложенное
+// видео, чтобы одна разметка описывала весь пост.
+export const articleSchema = (post, lang = "ru", path = "/") => {
+  const images = post.cover?.src ? [absoluteUrl(post.cover.src)] : [DEFAULT_IMAGE];
+  const url = localizedUrl(lang, path);
+
+  return {
+    "@type": "BlogPosting",
+    headline: getText(post.title, lang),
+    description: getText(post.seoDescription || post.excerpt, lang),
+    image: images,
+    datePublished: post.datePublished,
+    dateModified: post.dateModified || post.datePublished,
+    inLanguage: lang,
+    author: {
+      "@type": "Organization",
+      name: post.author?.name || SITE_NAME,
+      url: SITE_URL,
+    },
+    publisher: {
+      "@id": `${SITE_URL}/#organization`,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": url,
+    },
+    ...(post.video ? { video: videoSchema(post.video, lang) } : {}),
+  };
+};
 
 export default function SEO({
   lang = "ru",

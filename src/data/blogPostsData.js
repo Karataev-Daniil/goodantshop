@@ -1,126 +1,355 @@
+// ============================================================================
+// БЛОГ - данные постов
+// ----------------------------------------------------------------------------
+// Первый пост заполнен полностью и показывает разные типы блоков (см. рендер в
+// SingleBlogPage.jsx). Ниже - три пустых ШАБЛОНА: раскомментируйте и заполните
+// (достаточно русского поля `ru` - ro/en автоматически подставят русский, пока
+// вы не переведёте).
+//
+// Тексты мультиязычные: { ru: "…", ro: "…", en: "…" }. Можно заполнять только ru.
+// ============================================================================
+
+// Иллюстрации лежат в src/assets/images/blog/ (webp). Замените на свои при
+// необходимости; обложка желательно ~1200×630 - под превью в соцсетях.
+import imgNestEntrance from "../assets/images/blog/ant-colony-nest-entrance-ground.webp";
+import imgTrail from "../assets/images/blog/ants-trail-on-ground.webp";
+import imgSoldier from "../assets/images/blog/ant-head-mandibles-front-macro.webp";
+import imgHunt from "../assets/images/blog/ants-feeding-on-fly-leaf.webp";
+import imgAphids from "../assets/images/blog/ant-tending-aphids-branch.webp";
+import imgQueen from "../assets/images/blog/winged-queen-ant-on-wood.webp";
+import imgWaterDrop from "../assets/images/blog/red-ants-drinking-water-drop.webp";
+import imgNestHole from "../assets/images/blog/ant-emerging-from-nest-hole.webp";
+
+// Рубрики блога. Список расширяемый - добавляйте новые разделы сюда, и они
+// автоматически появятся в фильтре архива и в хлебных крошках статьи.
+export const blogCategories = [
+  { slug: "beginners", label: { ru: "Новичкам", ro: "Începători", en: "Beginners" } },
+  { slug: "care", label: { ru: "Уход и содержание", ro: "Îngrijire", en: "Care" } },
+  { slug: "species", label: { ru: "Виды муравьёв", ro: "Specii de furnici", en: "Ant species" } },
+  { slug: "formicariums", label: { ru: "Формикарии", ro: "Formicarii", en: "Formicariums" } },
+];
+
+export const getBlogCategory = (slug) =>
+  blogCategories.find((category) => category.slug === slug) || null;
+
 export const blogPosts = [
+  // ==========================================================================
+  // ПОСТ №1 - «манифест» для тех, кто ещё не знает о хобби.
+  // ==========================================================================
   {
     id: 401,
-    slug: "first-steps-with-ants",
+    slug: "why-ants-are-fascinating",
+    category: "beginners",
+
     title: {
-      ru: "Первые шаги в мире муравьёв",
-      ro: "Primii pași în lumea furnicilor",
-      en: "First Steps in the Ant-Keeping World"
+      ru: "Муравьи - единый механизм, где каждый винтик делает колонию сильнее",
     },
     excerpt: {
-      ru: "Как выбрать первую колонию и подготовить дом для муравьиной семьи.",
-      ro: "Cum să alegi prima colonie și să pregătești casa pentru familia de furnici.",
-      en: "How to choose your first colony and prepare a home for your ant family."
+      ru: "Тысячи крошечных насекомых складываются в один живой организм, где каждый на своём месте. Рассказываем, чем муравьиная колония так восхищает и почему за ней можно наблюдать часами.",
     },
+    seoTitle: {
+      ru: "Чем удивительны муравьи: жизнь колонии изнутри | GoodAntShop",
+    },
+    seoDescription: {
+      ru: "Муравьи как сверхорганизм: роли и профессии в колонии, охота, «скот» из тли, обучение молодняка, язык феромонов и почему королева не главная. Гид для новичков.",
+    },
+
+    cover: {
+      src: imgNestEntrance,
+      alt: { ru: "Колония муравьёв у входа в гнездо в земле" },
+      width: 1200,
+      height: 630,
+    },
+
+    datePublished: "2026-07-14",
+    dateModified: "2026-07-14",
+    author: { name: "GoodAntShop", url: "/about" },
+    readingTime: 7,
+
     content: [
       {
-        ru: "Выбирайте вид по уровню опыта: если вы новичок, берите неприхотливый вид с низкой температурой и влажностью.",
-        ro: "Alegeți o specie după nivelul de experiență: dacă sunteți începător, optați pentru o specie nepretențioasă cu temperatură și umiditate scăzute.",
-        en: "Choose a species by your experience level: if you are new, pick a low-maintenance species with modest humidity requirements."
+        type: "lead",
+        text: {
+          ru: "Мало кто задумывается, насколько удивительные создания эти муравьи. По отдельности они крошечные и почти беспомощные, но сообща складываются в слаженный живой механизм, который строит подземные города, ведёт войны, пасёт «скот» и даже обучает молодёжь. Каждый занят своим делом, а вместе они способны на то, что немыслимо в одиночку. Заглянем в этот мир поближе, а в конце покажем, как наблюдать за ним прямо у себя дома.",
+        },
       },
       {
-        ru: "Перед покупкой проверьте, что в комплекте есть матка, расплод и достаточное количество рабочих муравьёв. Это обеспечит набор силы колонии на старте.",
-        ro: "Înainte de cumpărare, verificați dacă pachetul include regina, puietul și un număr suficient de muncitoare. Acest lucru asigură o creștere sănătoasă a coloniei.",
-        en: "Before buying, check that the package includes the queen, brood, and enough workers. This ensures a healthy start for the colony."
+        type: "heading",
+        level: 2,
+        text: { ru: "Пример идеального социума" },
       },
       {
-        ru: "Начните с простого ухода: регулярная подача воды, контрол температуры и кормление раз в несколько дней.",
-        ro: "Începeți cu o îngrijire simplă: apă regulată, controlul temperaturii și hrănirea la câteva zile.",
-        en: "Start with simple care: regular water, temperature control, and feeding every few days."
-      }
-    ]
+        type: "paragraph",
+        text: {
+          ru: "Муравьи - один из ярчайших примеров коллективного интеллекта в природе. Одна особь знает немного, но тысячи вместе решают, где заложить гнездо, куда идти за едой и кого отправить на охоту. Колонию даже называют «сверхорганизмом», ведь она действует как одно большое существо, а отдельные муравьи в ней словно клетки одного тела.",
+        },
+      },
+      {
+        type: "image",
+        src: imgTrail,
+        alt: { ru: "Муравьиная тропа по земле" },
+        caption: { ru: "Колонна тянется от гнезда к добыче, а вся колония действует как единое целое." },
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: { ru: "У каждого своя роль в механизме" },
+      },
+      {
+        type: "paragraph",
+        text: {
+          ru: "В муравейнике нет безработных. Каждый муравей появляется на свет под свою задачу, а у крупных видов есть даже отдельные «касты» со своей внешностью и обязанностями. Вот лишь несколько профессий, которые можно встретить в колонии.",
+        },
+      },
+      {
+        type: "image",
+        src: imgSoldier,
+        alt: { ru: "Голова муравья с мощными челюстями крупным планом" },
+        caption: { ru: "Солдаты вооружены мощными челюстями - ими можно и защищаться, и дробить твёрдую пищу." },
+      },
+      {
+        type: "deflist",
+        items: [
+          {
+            q: { ru: "Солдаты - защитники границ" },
+            a: { ru: "Крупные особи с массивными челюстями. У одних видов они охраняют гнездо и границы, у других той же силой дробят твёрдые семена." },
+          },
+          {
+            q: { ru: "Жнецы - пекари муравейника" },
+            a: { ru: "Собирают семена и перемалывают их в «муравьиный хлеб» - питательную массу, которой выкармливают личинок." },
+          },
+          {
+            q: { ru: "Живые бочки - хранилища еды" },
+            a: { ru: "У некоторых видов есть муравьи-хранилища, которые запасают еду прямо в собственном теле и делятся ею с колонией в голодные дни." },
+          },
+          {
+            q: { ru: "Скотоводы - пастухи тли" },
+            a: { ru: "Многие муравьи «пасут» тлю, защищая её от врагов ради сладкой жидкости, которую она выделяет, совсем как фермеры со своим стадом." },
+          },
+          {
+            q: { ru: "Няньки и разведчики" },
+            a: { ru: "Няньки ухаживают за яйцами и личинками, а разведчики находят еду и приводят к ней остальных." },
+          },
+        ],
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: { ru: "Организм, идеально приспособленный к суровым условиям" },
+      },
+      {
+        type: "paragraph",
+        text: {
+          ru: "Жизнь колонии куда сложнее, чем кажется. Муравьи охотятся сообща и нападают даже на добычу гораздо больше себя. А ещё они поддерживают в гнезде порядок и с умом распределяют камеры, отводя сухие под запасы еды, а влажные оставляя для расплода.",
+        },
+      },
+      {
+        type: "row",
+        images: [
+          {
+            src: imgHunt,
+            alt: { ru: "Муравьи всей группой одолевают крупную добычу на листе" },
+            caption: { ru: "Вместе муравьи одолевают добычу в десятки раз крупнее себя." },
+          },
+          {
+            src: imgAphids,
+            alt: { ru: "Муравей ухаживает за тлёй на ветке" },
+            caption: { ru: "Тлю муравьи охраняют, как домашний скот, ради сладкой жидкости, которую она выделяет." },
+          },
+        ],
+      },
+      {
+        type: "callout",
+        variant: "note",
+        title: { ru: "Знаете ли вы?" },
+        text: {
+          ru: "Молодых охотников муравьи учат прямо в деле. Взрослые придерживают полумёртвую добычу и дают новичкам её добить - так молодёжь набирается боевого опыта, ничем не рискуя.",
+        },
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: { ru: "Никакой диктатуры" },
+      },
+      {
+        type: "paragraph",
+        text: {
+          ru: "Вопреки названию, королева не управляет муравейником. Её задача - откладывать яйца и давать жизнь новым поколениям. А куда переселяться, где искать еду, когда нападать, а когда обороняться, колония решает вместе, без командиров. Власть здесь не у одного, а у всех сразу.",
+        },
+      },
+      {
+        type: "image",
+        src: imgQueen,
+        alt: { ru: "Крылатая молодая королева муравья на дереве" },
+        caption: { ru: "Молодая крылатая королева. После брачного полёта она сбросит крылья и основает новую колонию." },
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: { ru: "Язык прикосновений" },
+      },
+      {
+        type: "paragraph",
+        text: {
+          ru: "Муравьи «разговаривают» без слов, запахами-феромонами и лёгкими постукиваниями усиками. Так они поднимают тревогу, зовут на помощь и метят дорогу к еде. Никакого голосования у них нет - обычно инициативу берут самые активные особи, а удачный след быстро подхватывает вся колония, выходя на лучший маршрут.",
+        },
+      },
+      {
+        type: "image",
+        src: imgWaterDrop,
+        alt: { ru: "Муравьи пьют каплю воды" },
+        caption: { ru: "Даже за глотком воды муравьи приходят вместе." },
+      },
+      {
+        type: "quote",
+        text: {
+          ru: "В муравейнике интересы колонии всегда выше собственных. При опасности рабочие без колебаний закрывают собой королеву и потомство.",
+        },
+        author: "GoodAntShop",
+      },
+      {
+        type: "heading",
+        level: 2,
+        text: { ru: "И всё это можно наблюдать дома" },
+      },
+      {
+        type: "paragraph",
+        text: {
+          ru: "Самое удивительное - за этой жизнью можно следить прямо у себя дома, за прозрачными стенками формикария. Колония не шумит, не пахнет и занимает совсем немного места, а наблюдать за ней интересно и детям, и взрослым. На ваших глазах семья из одной матки постепенно разрастётся до настоящего города, и вы застанете весь этот путь своими глазами. Это как маленький живой мир на вашем столе.",
+        },
+      },
+      {
+        type: "image",
+        src: imgNestHole,
+        alt: { ru: "Муравей выходит из входа в подземное гнездо" },
+        caption: { ru: "Вход в гнездо - отсюда начинается целый подземный мир." },
+      },
+      {
+        type: "keytakeaways",
+        title: { ru: "Почему это затягивает" },
+        items: [
+          { ru: "Целый живой «сверхорганизм» прямо у вас дома." },
+          { ru: "Тихо, чисто и компактно." },
+          { ru: "Захватывает и детей, и взрослых." },
+          { ru: "За колонией можно следить годами - она растёт и меняется на глазах." },
+        ],
+      },
+      {
+        type: "cta",
+        text: {
+          ru: "Хотите увидеть это вживую? Начните с простой колонии с маткой, а мы поддержим вас на старте и подскажем каждый шаг.",
+        },
+        buttonLabel: { ru: "Выбрать колонию" },
+        to: "/ants",
+      },
+    ],
+
+    faq: [
+      {
+        q: { ru: "Муравьи опасны для дома?" },
+        a: { ru: "Нет. Колония живёт в закрытом формикарии, откуда муравьи не выбираются. Виды для новичков не агрессивны и не пахнут." },
+      },
+      {
+        q: { ru: "С какого вида лучше начать?" },
+        a: { ru: "Новичку подойдёт Messor Structor - спокойный зерноядный вид, за которым удобно наблюдать и просто ухаживать." },
+      },
+    ],
+
+    relatedProductIds: [],
+    relatedPostIds: [], // напр. [402] - заполнится, когда появятся другие посты
   },
-  {
-    id: 402,
-    slug: "how-to-pick-a-formicarium",
-    title: {
-      ru: "Как выбрать первый формикарий",
-      ro: "Cum alegi primul formicar",
-      en: "How to Choose Your First Formicarium"
-    },
-    excerpt: {
-      ru: "Выбор формы, размера и вентиляции — что важно на старте.",
-      ro: "Alegerea formei, dimensiunii și ventilației - ce contează la început.",
-      en: "Choosing shape, size, and ventilation — what matters when starting out."
-    },
-    content: [
-      {
-        ru: "Лучше начать с компактного формикария, в котором легко контролировать влажность и температурный режим.",
-        ro: "Este mai bine să începeți cu un formicar compact, în care este ușor să controlați umiditatea și temperatura.",
-        en: "It is better to start with a compact formicarium that is easy to control for humidity and temperature."
-      },
-      {
-        ru: "Обратите внимание на вентиляцию: достаточный приток воздуха снижает риск плесени, но не должен пересушивать гнездо.",
-        ro: "Acordați atenție ventilației: un flux de aer adecvat reduce riscul de mucegai, dar nu trebuie să usuce hrana.",
-        en: "Pay attention to ventilation: enough airflow reduces mold risk, but should not overdry the nest."
-      },
-      {
-        ru: "Наличие нескольких камер и прозрачных стенок делает за колонией интереснее наблюдать и облегчает уход.",
-        ro: "Prezența mai multor camere și a pereților transparenți face observarea coloniei mai interesantă și îngrijirea mai ușoară.",
-        en: "Having multiple chambers and transparent walls makes colony viewing more interesting and care easier."
-      }
-    ]
-  },
-  {
-    id: 403,
-    slug: "feeding-schedule-basics",
-    title: {
-      ru: "Базовый график кормления",
-      ro: "Program de hrănire de bază",
-      en: "Basic Feeding Schedule"
-    },
-    excerpt: {
-      ru: "Как правильно распределить белки, сахар и воду для молодой колонии.",
-      ro: "Cum să distribui corect proteinele, zahărul și apa pentru o colonie tânără.",
-      en: "How to properly divide proteins, sugars, and water for a young colony."
-    },
-    content: [
-      {
-        ru: "В первые недели кормите муравьёв 2-3 раза в неделю: небольшие порции белка и сладкого сиропа помогут колонии вырасти.",
-        ro: "În primele săptămâni hrăniți furnicile de 2-3 ori pe săptămână: porții mici de proteine și sirop dulce ajută colonia să crească.",
-        en: "In the first weeks feed the ants 2-3 times per week: small portions of protein and sweet syrup will help the colony grow."
-      },
-      {
-        ru: "Следите за водой: увлажнитель или влажная пробка в формикарии позволяют поддерживать комфортный уровень без перелива.",
-        ro: "Urmăriți apa: un umidificator sau un dop umed în formicar permit menținerea unui nivel confortabil fără prea multă apă.",
-        en: "Watch the water: a humidifier or damp plug in the formicarium keeps the level comfortable without over-wetting."
-      },
-      {
-        ru: "Если муравьи не съедают корм за два дня, уменьшите порцию и меняйте содержимое, чтобы не допустить плесени.",
-        ro: "Dacă furnicile nu consumă hrana în două zile, reduceți porția și schimbați conținutul pentru a evita mucegaiul.",
-        en: "If the ants do not eat the food within two days, reduce the portion and replace it to avoid mold."
-      }
-    ]
-  },
-  {
-    id: 404,
-    slug: "messor-structor-guide",
-    title: {
-      ru: "Почему Messor Structor — лучший выбор",
-      ro: "De ce Messor Structor este cea mai bună alegere",
-      en: "Why Messor Structor is the best choice"
-    },
-    excerpt: {
-      ru: "Особенности ухода, темперамент и советы для тех, кто берет первую колонию.",
-      ro: "Caracteristici de îngrijire, temperament și sfaturi pentru cei care iau prima colonie.",
-      en: "Care tips, temperament, and advice for those taking their first colony."
-    },
-    content: [
-      {
-        ru: "Messor Structor — спокойный и зрелищный вид, идеально подходит для начала и наблюдения за колонией.",
-        ro: "Messor Structor este o specie calmă și spectaculoasă, ideală pentru început și pentru observarea coloniei.",
-        en: "Messor Structor is a calm and striking species, ideal for beginners and watching the colony."
-      },
-      {
-        ru: "Для него важна сухая арена и умеренная влажность в гнездовой зоне — это делает его удобным для новичков.",
-        ro: "Are nevoie de o arenă uscată și o umiditate moderată în zona cuibului, ceea ce îl face potrivit pentru începători.",
-        en: "It needs a dry arena and moderate humidity in the nest area, which makes it beginner-friendly."
-      },
-      {
-        ru: "Мы рекомендуем начинать с простого комплекта и обращаться к нам за советом по кормлению и температуре.",
-        ro: "Recomandăm să începeți cu un kit simplu și să ne contactați pentru sfaturi despre hrănire și temperatură.",
-        en: "We recommend starting with a simple kit and contacting us for feeding and temperature advice."
-      }
-    ]
-  }
+
+  // ==========================================================================
+  // ШАБЛОНЫ ДЛЯ НОВЫХ ПОСТОВ
+  // Раскомментируйте объект, поменяйте id/slug/category, впишите тексты (можно
+  // только `ru:`), подставьте свои картинки и добавьте URL поста в public/sitemap.xml.
+  //
+  // Типы блоков content: lead · heading(level 2/3) · paragraph · image ·
+  // row (фото в ряд) · list(ordered?) · steps · deflist · accordion ·
+  // callout(tip/note/warning) · quote · keytakeaways · video · cta(to: "/ants").
+  // ==========================================================================
+
+  // --- Шаблон 1: рубрика «Уход и содержание» ---
+  // {
+  //   id: 402,
+  //   slug: "",                    // латиницей через дефис, напр. "feeding-basics"
+  //   category: "care",
+  //   tags: [],
+  //   title: { ru: "" },
+  //   excerpt: { ru: "" },
+  //   seoTitle: { ru: "" },        // можно оставить пустым - возьмётся title
+  //   seoDescription: { ru: "" },  // можно оставить пустым - возьмётся excerpt
+  //   cover: { src: imgTrail, alt: { ru: "" }, width: 1200, height: 630 },
+  //   datePublished: "2026-07-14",
+  //   dateModified: "2026-07-14",
+  //   author: { name: "GoodAntShop", url: "/about" },
+  //   readingTime: 5,
+  //   // video: { embedUrl: "https://www.youtube.com/embed/…", thumbnail: imgTrail, name: { ru: "" }, description: { ru: "" }, uploadDate: "2026-07-14", duration: "PT3M00S" },
+  //   content: [
+  //     { type: "lead", text: { ru: "" } },
+  //     { type: "heading", level: 2, text: { ru: "" } },
+  //     { type: "paragraph", text: { ru: "" } },
+  //     { type: "image", src: imgSoldier, alt: { ru: "" }, caption: { ru: "" } },
+  //     { type: "list", ordered: false, items: [ { ru: "" }, { ru: "" } ] },
+  //     { type: "callout", variant: "tip", title: { ru: "Совет" }, text: { ru: "" } },
+  //   ],
+  //   faq: [ { q: { ru: "" }, a: { ru: "" } } ],
+  //   relatedProductIds: [44],
+  //   relatedPostIds: [401],
+  // },
+
+  // --- Шаблон 2: рубрика «Виды муравьёв» ---
+  // {
+  //   id: 403,
+  //   slug: "",
+  //   category: "species",
+  //   tags: [],
+  //   title: { ru: "" },
+  //   excerpt: { ru: "" },
+  //   seoTitle: { ru: "" },
+  //   seoDescription: { ru: "" },
+  //   cover: { src: imgSoldier, alt: { ru: "" }, width: 1200, height: 630 },
+  //   datePublished: "2026-07-14",
+  //   dateModified: "2026-07-14",
+  //   author: { name: "GoodAntShop", url: "/about" },
+  //   readingTime: 6,
+  //   content: [
+  //     { type: "lead", text: { ru: "" } },
+  //     { type: "heading", level: 2, text: { ru: "" } },
+  //     { type: "paragraph", text: { ru: "" } },
+  //     { type: "row", images: [ { src: imgHunt, alt: { ru: "" } }, { src: imgAphids, alt: { ru: "" } } ] },
+  //     { type: "quote", text: { ru: "" }, author: "GoodAntShop" },
+  //     { type: "keytakeaways", title: { ru: "Коротко" }, items: [ { ru: "" }, { ru: "" } ] },
+  //     { type: "cta", text: { ru: "" }, buttonLabel: { ru: "Смотреть в каталоге" }, to: "/ants" },
+  //   ],
+  //   relatedProductIds: [],
+  //   relatedPostIds: [401],
+  // },
+
+  // --- Шаблон 3: рубрика «Формикарии» ---
+  // {
+  //   id: 404,
+  //   slug: "",
+  //   category: "formicariums",
+  //   tags: [],
+  //   title: { ru: "" },
+  //   excerpt: { ru: "" },
+  //   seoTitle: { ru: "" },
+  //   seoDescription: { ru: "" },
+  //   cover: { src: imgNestHole, alt: { ru: "" }, width: 1200, height: 630 },
+  //   datePublished: "2026-07-14",
+  //   dateModified: "2026-07-14",
+  //   author: { name: "GoodAntShop", url: "/about" },
+  //   readingTime: 5,
+  //   content: [
+  //     { type: "lead", text: { ru: "" } },
+  //     { type: "heading", level: 2, text: { ru: "" } },
+  //     { type: "paragraph", text: { ru: "" } },
+  //     { type: "steps", items: [ { title: { ru: "" }, text: { ru: "" } } ] },
+  //     { type: "accordion", items: [ { q: { ru: "" }, a: { ru: "" } } ] },
+  //     { type: "cta", text: { ru: "" }, buttonLabel: { ru: "Выбрать формикарий" }, to: "/formicariums" },
+  //   ],
+  //   relatedProductIds: [202, 203],
+  //   relatedPostIds: [401],
+  // },
 ];

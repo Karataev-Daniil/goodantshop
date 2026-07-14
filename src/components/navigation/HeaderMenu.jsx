@@ -92,9 +92,9 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
             <NavLink to={`/${curLang}/about`}>
               {t({ ru: "О нас", ro: "Despre noi", en: "About" })}
             </NavLink>
-            {/* <NavLink to={`/${curLang}/blog`}>
+            <NavLink to={`/${curLang}/blog`}>
               {t({ ru: "Блог", ro: "Blog", en: "Blog" })}
-            </NavLink> */}
+            </NavLink>
 
             {/* Language picker — shown only inside the mobile menu (CSS) */}
             <div className="nav-lang">
