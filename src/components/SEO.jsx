@@ -300,14 +300,18 @@ export const productSchema = (product, type, lang = "ru", path = "/") => {
   };
 };
 
+// Убираем инлайн-ссылки [текст](/путь) из строк для JSON-LD (там нужен чистый текст).
+const stripLinks = (value) =>
+  typeof value === "string" ? value.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") : value;
+
 export const faqSchema = (lang = "ru", items = []) => ({
   "@type": "FAQPage",
   mainEntity: items.map((item) => ({
     "@type": "Question",
-    name: getText(item.q, lang),
+    name: stripLinks(getText(item.q, lang)),
     acceptedAnswer: {
       "@type": "Answer",
-      text: getText(item.a, lang),
+      text: stripLinks(getText(item.a, lang)),
     },
   })),
 });

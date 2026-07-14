@@ -361,9 +361,9 @@ export const blogPosts = [
       {
         type: "paragraph",
         text: {
-          ru: "Самое удивительное - за этой жизнью можно следить прямо у себя дома, за прозрачными стенками формикария. Колония не шумит, не пахнет и занимает совсем немного места, а наблюдать за ней интересно и детям, и взрослым. На ваших глазах семья из одной матки постепенно разрастётся до настоящего города, и вы застанете весь этот путь своими глазами. Это как маленький живой мир на вашем столе.",
-          ro: "Cel mai uimitor e că poți urmări această viață chiar la tine acasă, prin pereții transparenți ai formicariului. Colonia nu face zgomot, nu miroase și ocupă foarte puțin loc, iar urmărirea ei e interesantă și pentru copii, și pentru adulți. Sub ochii tăi, o familie pornită de la o singură regină crește treptat până la un oraș adevărat, și vei prinde tot acest drum cu ochii tăi. E ca o mică lume vie pe masa ta.",
-          en: "The most amazing part is that you can follow this life right at home, through the clear walls of a formicarium. The colony makes no noise, has no smell and takes up very little space, and watching it is interesting for kids and adults alike. Before your eyes, a family started from a single queen gradually grows into a real city, and you'll witness the whole journey yourself. It's like a tiny living world on your desk.",
+          ru: "Самое удивительное - за этой жизнью можно следить прямо у себя дома, за прозрачными стенками [формикария](/formicariums). Колония не шумит, не пахнет и занимает совсем немного места, а наблюдать за ней интересно и детям, и взрослым. На ваших глазах семья из [одной матки](/ants) постепенно разрастётся до настоящего города, и вы застанете весь этот путь своими глазами. Это как маленький живой мир на вашем столе.",
+          ro: "Cel mai uimitor e că poți urmări această viață chiar la tine acasă, prin pereții transparenți ai [formicariului](/formicariums). Colonia nu face zgomot, nu miroase și ocupă foarte puțin loc, iar urmărirea ei e interesantă și pentru copii, și pentru adulți. Sub ochii tăi, o familie pornită de la [o singură regină](/ants) crește treptat până la un oraș adevărat, și vei prinde tot acest drum cu ochii tăi. E ca o mică lume vie pe masa ta.",
+          en: "The most amazing part is that you can follow this life right at home, through the clear walls of a [formicarium](/formicariums). The colony makes no noise, has no smell and takes up very little space, and watching it is interesting for kids and adults alike. Before your eyes, a family started from [a single queen](/ants) gradually grows into a real city, and you'll witness the whole journey yourself. It's like a tiny living world on your desk.",
         },
       },
       {
@@ -446,9 +446,9 @@ export const blogPosts = [
           en: "Which species is best to start with?",
         },
         a: {
-          ru: "Новичку подойдёт Messor Structor - спокойный зерноядный вид, за которым удобно наблюдать и просто ухаживать.",
-          ro: "Începătorului i se potrivește Messor Structor - o specie granivoră liniștită, ușor de urmărit și de îngrijit.",
-          en: "A good choice for beginners is Messor Structor - a calm seed-eating species that's easy to watch and care for.",
+          ru: "Новичку подойдёт [Messor Structor](/ants/messor-structor) - спокойный зерноядный вид, за которым удобно наблюдать и просто ухаживать.",
+          ro: "Începătorului i se potrivește [Messor Structor](/ants/messor-structor) - o specie granivoră liniștită, ușor de urmărit și de îngrijit.",
+          en: "A good choice for beginners is [Messor Structor](/ants/messor-structor) - a calm seed-eating species that's easy to watch and care for.",
         },
       },
     ],

@@ -12,11 +12,38 @@ import BlogImage from "../components/BlogImage";
 import { blogPosts, getBlogCategory } from "../data/blogPostsData";
 import { formatBlogDate } from "./BlogPage";
 
+// Инлайн-ссылки в тексте: синтаксис [подпись](/путь) -> внутренняя ссылка.
+const LINK_RE = /\[([^\]]+)\]\((\/[^)]+)\)/g;
+function RichText({ value, lang }) {
+  const text = getText(value, lang);
+  if (!text.includes("](")) return text;
+  const nodes = [];
+  let last = 0;
+  let key = 0;
+  let match;
+  LINK_RE.lastIndex = 0;
+  while ((match = LINK_RE.exec(text)) !== null) {
+    if (match.index > last) nodes.push(text.slice(last, match.index));
+    nodes.push(
+      <Link key={key++} to={`/${lang}${match[2]}`}>
+        {match[1]}
+      </Link>
+    );
+    last = match.index + match[0].length;
+  }
+  if (last < text.length) nodes.push(text.slice(last));
+  return <>{nodes}</>;
+}
+
 // Рендер одного блока контента. См. список типов в blogPostsData.js.
 function ContentBlock({ block, lang, headingId }) {
   switch (block.type) {
     case "lead":
-      return <p className="blog-lead">{getText(block.text, lang)}</p>;
+      return (
+        <p className="blog-lead">
+          <RichText value={block.text} lang={lang} />
+        </p>
+      );
 
     case "heading": {
       const Tag = block.level === 3 ? "h3" : "h2";
@@ -24,7 +51,11 @@ function ContentBlock({ block, lang, headingId }) {
     }
 
     case "paragraph":
-      return <p>{getText(block.text, lang)}</p>;
+      return (
+        <p>
+          <RichText value={block.text} lang={lang} />
+        </p>
+      );
 
     case "image":
       return <BlogImage image={{ src: block.src, alt: block.alt, caption: block.caption }} lang={lang} />;
@@ -81,7 +112,9 @@ function ContentBlock({ block, lang, headingId }) {
           {block.items.map((item, i) => (
             <div className="blog-deflist__item" key={i}>
               <dt>{getText(item.q, lang)}</dt>
-              <dd>{getText(item.a, lang)}</dd>
+              <dd>
+                <RichText value={item.a} lang={lang} />
+              </dd>
             </div>
           ))}
         </dl>
@@ -93,7 +126,9 @@ function ContentBlock({ block, lang, headingId }) {
           {block.items.map((item, i) => (
             <details className="faq-wrap__item" key={i}>
               <summary>{getText(item.q, lang)}</summary>
-              <p>{getText(item.a, lang)}</p>
+              <p>
+                <RichText value={item.a} lang={lang} />
+              </p>
             </details>
           ))}
         </div>
@@ -103,7 +138,9 @@ function ContentBlock({ block, lang, headingId }) {
       return (
         <aside className={`blog-callout blog-callout--${block.variant || "note"}`}>
           {block.title && <strong>{getText(block.title, lang)}</strong>}
-          <p>{getText(block.text, lang)}</p>
+          <p>
+            <RichText value={block.text} lang={lang} />
+          </p>
         </aside>
       );
 
@@ -417,7 +454,9 @@ export default function SingleBlogPage() {
                 {post.faq.map((item) => (
                   <details className="faq-wrap__item" key={getText(item.q, lang)}>
                     <summary>{getText(item.q, lang)}</summary>
-                    <p>{getText(item.a, lang)}</p>
+                    <p>
+                      <RichText value={item.a} lang={lang} />
+                    </p>
                   </details>
                 ))}
               </div>
