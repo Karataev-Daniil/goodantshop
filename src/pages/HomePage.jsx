@@ -8,7 +8,7 @@ import Stars from "../components/Stars";
 import { featuredReviews, reviewStatsAll, SELLER_999_URL } from "../data/reviewsData";
 import messorForagingSeeds from "../assets/images/ants/messor-foraging-seeds.webp";
 import messorWorkersCloseup from "../assets/images/ants/messor-workers-closeup.webp";
-import messorQueenWithBrood from "../assets/images/ants/messor-queen-with-brood.webp";
+import { antTendingAphids, woodAntsCarryingBeetle } from "../assets/images/library";
 
 // Hero background carousel: leads with the shot that used to sit in the
 // "what-is" block, followed by a few strong colony close-ups.
@@ -84,12 +84,21 @@ export default function HomePage() {
       }),
     },
     {
-      image: messorQueenWithBrood,
-      label: t({ ru: "Личинки будущих рабочих", ro: "Larvele viitoarelor lucrătoare", en: "Larvae of future workers" }),
+      image: antTendingAphids,
+      label: t({ ru: "Муравьиное скотоводство", ro: "Creșterea afidelor", en: "Ant husbandry" }),
       text: t({
-        ru: "Рядом с маткой развивается расплод: из яиц появляются личинки, а из них - новые рабочие растущей колонии.",
-        ro: "Lângă regină se dezvoltă puietul: din ouă apar larvele, iar din ele - noi lucrătoare pentru colonia în creștere.",
-        en: "Beside the queen the brood develops: eggs become larvae, and larvae become new workers for the growing colony.",
+        ru: "Многие муравьи «пасут» тлю, защищая её от врагов ради сладкой жидкости, совсем как фермеры со своим стадом.",
+        ro: "Multe furnici «pasc» afide, apărându-le de dușmani pentru un lichid dulce, ca fermierii cu turma lor.",
+        en: "Many ants «herd» aphids, protecting them from enemies for a sweet liquid, just like farmers with their herd.",
+      }),
+    },
+    {
+      image: woodAntsCarryingBeetle,
+      label: t({ ru: "Сила в команде", ro: "Puterea echipei", en: "Strength in teamwork" }),
+      text: t({
+        ru: "Вместе муравьи одолевают и переносят добычу в десятки раз крупнее себя - то, что одиночке не под силу.",
+        ro: "Împreună furnicile înving și transportă pradă de zeci de ori mai mare decât ele - imposibil pentru una singură.",
+        en: "Together ants overpower and carry prey dozens of times their size - impossible for a single ant.",
       }),
     },
     {
