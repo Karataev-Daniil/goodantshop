@@ -96,30 +96,35 @@ const template = await readFile(path.join(dist, "index.html"), "utf8");
 const esc = (s) =>
   String(s ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 
-// Заменяем весь тег целиком - устойчиво к многострочному форматированию
-// (в index.html часть мета-тегов записаны на нескольких строках).
-function replaceMeta(html, attr, key, value) {
-  const re = new RegExp(`<meta\\s+${attr}="${key}"\\s+content="[^"]*"\\s*/>`, "i");
-  return html.replace(re, `<meta ${attr}="${key}" content="${esc(value)}" />`);
-}
-
+// index.html больше не содержит статических мета-тегов (иначе react-helmet
+// дублировал бы их в рантайме). Поэтому здесь мы не заменяем теги, а вписываем
+// полный набор на каждый маршрут - сразу после <title>. Константы (robots,
+// og:type, og:site_name, twitter:card) одинаковы для всех пререндеренных
+// страниц; per-route значения - title/description/url/image.
 function applyMeta(html, { title, description, url, image }) {
-  html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(title)}</title>`);
-  html = replaceMeta(html, "name", "description", description);
-  html = replaceMeta(html, "property", "og:title", title);
-  html = replaceMeta(html, "property", "og:description", description);
-  html = replaceMeta(html, "property", "og:url", url);
-  html = html.replace(
-    /<meta\s+property="og:image"\s+content="[^"]*"\s*\/>/i,
-    `<meta property="og:image" content="${esc(image)}" />\n` +
-      `    <meta property="og:image:width" content="1200" />\n` +
-      `    <meta property="og:image:height" content="630" />\n` +
-      `    <meta property="og:image:alt" content="${esc(title)}" />`
-  );
-  html = replaceMeta(html, "name", "twitter:title", title);
-  html = replaceMeta(html, "name", "twitter:description", description);
-  html = replaceMeta(html, "name", "twitter:image", image);
-  return html;
+  const t = esc(title);
+  const d = esc(description);
+  const block = [
+    `<meta name="description" content="${d}" />`,
+    `<meta name="robots" content="index, follow" />`,
+    `<meta property="og:type" content="website" />`,
+    `<meta property="og:site_name" content="GoodAntShop" />`,
+    `<meta property="og:title" content="${t}" />`,
+    `<meta property="og:description" content="${d}" />`,
+    `<meta property="og:url" content="${esc(url)}" />`,
+    `<meta property="og:image" content="${esc(image)}" />`,
+    `<meta property="og:image:width" content="1200" />`,
+    `<meta property="og:image:height" content="630" />`,
+    `<meta property="og:image:alt" content="${t}" />`,
+    `<meta name="twitter:card" content="summary_large_image" />`,
+    `<meta name="twitter:title" content="${t}" />`,
+    `<meta name="twitter:description" content="${d}" />`,
+    `<meta name="twitter:image" content="${esc(image)}" />`,
+  ]
+    .map((tag) => `    ${tag}`)
+    .join("\n");
+
+  return html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${t}</title>\n${block}`);
 }
 
 let count = 0;

@@ -84,9 +84,9 @@ export const blogPosts = [
       {
         type: "lead",
         text: {
-          ru: "Мало кто задумывается, насколько удивительные создания эти муравьи. По отдельности они крошечные и почти беспомощные, но сообща складываются в слаженный живой механизм, который строит подземные города, ведёт войны, пасёт «скот» и даже обучает молодёжь. Каждый занят своим делом, а вместе они способны на то, что немыслимо в одиночку. Заглянем в этот мир поближе, а в конце покажем, как наблюдать за ним прямо у себя дома.",
-          ro: "Puțini se gândesc cât de uimitoare sunt furnicile. Separat sunt minuscule și aproape neajutorate, dar împreună formează un mecanism viu bine pus la punct, care construiește orașe subterane, poartă războaie, crește «animale» și chiar învață tinerele. Fiecare își face treaba, iar împreună reușesc ceea ce e de neconceput pentru una singură. Hai să privim mai atent această lume, iar la final îți arătăm cum s-o urmărești chiar la tine acasă.",
-          en: "Few people realize how amazing ants are. On their own they are tiny and almost helpless, but together they form a well-tuned living mechanism that builds underground cities, wages wars, keeps «livestock» and even teaches the young. Each one does its job, and together they achieve what is unthinkable alone. Let's take a closer look at this world, and at the end we'll show how to watch it right at home.",
+          ru: "Представьте муравья, который всю жизнь неподвижно висит под потолком гнезда, раздувшись от запасов еды, - живая кладовая для всей семьи. И это лишь одна деталь из жизни существ, которые поодиночке почти беспомощны, а сообща строят подземные города, ведут войны, пасут «скот» и даже обучают молодёжь. Каждый занят своим делом, а вместе они способны на то, что немыслимо в одиночку. Заглянем в этот мир поближе, а в конце покажем, как наблюдать за ним прямо у себя дома.",
+          ro: "Imaginează-ți o furnică ce își petrece toată viața atârnând nemișcată de tavanul cuibului, umflată de rezerve de hrană - o cămară vie pentru toată familia. Și e doar un detaliu din viața unor ființe aproape neajutorate de unele singure, dar care împreună construiesc orașe subterane, poartă războaie, pasc «animale» și chiar își învață tinerele. Fiecare își face treaba lui, iar împreună reușesc ceea ce e de neconceput pentru una singură. Hai să privim mai atent această lume, iar la final îți arătăm cum s-o urmărești chiar la tine acasă.",
+          en: "Picture an ant that spends its whole life hanging motionless from the ceiling of the nest, swollen with stores of food - a living pantry for the whole family. And that's just one detail from the lives of creatures that are almost helpless on their own, yet together build underground cities, wage wars, herd «livestock» and even teach the young. Each one does its job, and together they achieve what is unthinkable alone. Let's take a closer look at this world, and at the end we'll show how to watch it right at home.",
         },
       },
       {
@@ -115,9 +115,9 @@ export const blogPosts = [
           en: "Ant trail on the ground",
         },
         caption: {
-          ru: "Колонна тянется от гнезда к добыче, а вся колония действует как единое целое.",
-          ro: "Coloana se întinde de la cuib spre pradă, iar întreaga colonie acționează ca un tot unitar.",
-          en: "The column stretches from the nest to the prey, while the whole colony acts as one.",
+          ru: "От гнезда к добыче тянется живая дорога - по ней муравьи идут плотным потоком туда и обратно.",
+          ro: "De la cuib spre pradă se întinde un drum viu - furnicile curg pe el într-un flux des, dus și întors.",
+          en: "A living road stretches from the nest to the prey - ants stream along it in a dense flow, there and back.",
         },
       },
       {
@@ -220,9 +220,9 @@ export const blogPosts = [
         type: "heading",
         level: 2,
         text: {
-          ru: "Организм, идеально приспособленный к суровым условиям",
-          ro: "Un organism perfect adaptat la condiții aspre",
-          en: "An organism perfectly adapted to harsh conditions",
+          ru: "Всё продумано до мелочей",
+          ro: "Totul e gândit până la cel mai mic detaliu",
+          en: "Everything thought out to the last detail",
         },
       },
       {
@@ -244,9 +244,9 @@ export const blogPosts = [
               en: "A group of ants overpowering large prey on a leaf",
             },
             caption: {
-              ru: "Вместе муравьи одолевают добычу в десятки раз крупнее себя.",
-              ro: "Împreună, furnicile doboară pradă de zeci de ori mai mare decât ele.",
-              en: "Together, ants overpower prey dozens of times their own size.",
+              ru: "Ни команды, ни сигнала - муравьи наваливаются разом и общими силами тащат добычу к гнезду.",
+              ro: "Nicio comandă, niciun semnal - furnicile se năpustesc toate deodată și târăsc prada spre cuib cu forțe unite.",
+              en: "No command, no signal - the ants pile on all at once and haul the prey back to the nest together.",
             },
           },
           {
@@ -257,9 +257,9 @@ export const blogPosts = [
               en: "An ant tending aphids on a branch",
             },
             caption: {
-              ru: "Тлю муравьи охраняют, как домашний скот, ради сладкой жидкости, которую она выделяет.",
-              ro: "Furnicile păzesc afidele ca pe niște animale de casă, pentru lichidul dulce pe care îl secretă.",
-              en: "Ants guard aphids like livestock, for the sweet liquid they secrete.",
+              ru: "За защиту от хищников тля отдаёт муравьям капли сладкой пади - их любимое лакомство.",
+              ro: "În schimbul protecției față de prădători, afidele dau furnicilor picături dulci de roua-de-miere - delicatesa lor preferată.",
+              en: "In return for protection from predators, aphids give the ants drops of sweet honeydew - their favorite treat.",
             },
           },
         ],
@@ -273,9 +273,9 @@ export const blogPosts = [
           en: "Did you know?",
         },
         text: {
-          ru: "Молодых охотников муравьи учат прямо в деле. Взрослые придерживают полумёртвую добычу и дают новичкам её добить - так молодёжь набирается боевого опыта, ничем не рискуя.",
-          ro: "Furnicile își învață tinerii vânători direct în acțiune. Adultele țin prada pe jumătate moartă și le lasă pe cele tinere s-o termine - așa capătă experiență de luptă fără niciun risc.",
-          en: "Ants train their young hunters right in the field. Adults hold down half-dead prey and let the youngsters finish it off - that way the young gain combat experience without any risk.",
+          ru: "У некоторых видов молодых охотников учат прямо в деле: взрослые придерживают уже обессиленную добычу и дают новичкам её добить - так молодёжь набирается боевого опыта, почти ничем не рискуя.",
+          ro: "La unele specii, tinerii vânători sunt învățați direct în acțiune: adultele țin prada deja sleită de puteri și le lasă pe cele tinere s-o termine - așa capătă experiență de luptă aproape fără niciun risc.",
+          en: "In some species, young hunters are trained right on the job: adults hold down already-exhausted prey and let the novices finish it off - so the youngsters gain combat experience at almost no risk.",
         },
       },
       {
@@ -313,9 +313,9 @@ export const blogPosts = [
         type: "heading",
         level: 2,
         text: {
-          ru: "Язык прикосновений",
-          ro: "Limbajul atingerilor",
-          en: "The language of touch",
+          ru: "Язык запахов и касаний",
+          ro: "Limbajul mirosurilor și al atingerilor",
+          en: "The language of scents and touches",
         },
       },
       {
@@ -361,8 +361,8 @@ export const blogPosts = [
       {
         type: "paragraph",
         text: {
-          ru: "Самое удивительное - за этой жизнью можно следить прямо у себя дома, за прозрачными стенками [формикария](/formicariums). Колония не шумит, не пахнет и занимает совсем немного места, а наблюдать за ней интересно и детям, и взрослым. На ваших глазах семья из [одной матки](/ants) постепенно разрастётся до настоящего города, и вы застанете весь этот путь своими глазами. Это как маленький живой мир на вашем столе.",
-          ro: "Cel mai uimitor e că poți urmări această viață chiar la tine acasă, prin pereții transparenți ai [formicariului](/formicariums). Colonia nu face zgomot, nu miroase și ocupă foarte puțin loc, iar urmărirea ei e interesantă și pentru copii, și pentru adulți. Sub ochii tăi, o familie pornită de la [o singură regină](/ants) crește treptat până la un oraș adevărat, și vei prinde tot acest drum cu ochii tăi. E ca o mică lume vie pe masa ta.",
+          ru: "Самое удивительное - за этой жизнью можно следить прямо у себя дома, за прозрачными стенками [формикария](/formicariums). Колония не шумит, не пахнет и занимает совсем немного места, а наблюдать за ней интересно и детям, и взрослым. На ваших глазах семья из [одной королевы](/ants) постепенно разрастётся до настоящего города - и весь этот путь вы застанете сами. Это как маленький живой мир на вашем столе.",
+          ro: "Cel mai uimitor e că poți urmări această viață chiar la tine acasă, prin pereții transparenți ai [formicariului](/formicariums). Colonia nu face zgomot, nu miroase și ocupă foarte puțin loc, iar urmărirea ei e interesantă și pentru copii, și pentru adulți. Sub ochii tăi, o familie pornită de la [o singură regină](/ants) crește treptat până la un oraș adevărat - și vei fi martor la tot acest drum. E ca o mică lume vie pe masa ta.",
           en: "The most amazing part is that you can follow this life right at home, through the clear walls of a [formicarium](/formicariums). The colony makes no noise, has no smell and takes up very little space, and watching it is interesting for kids and adults alike. Before your eyes, a family started from [a single queen](/ants) gradually grows into a real city, and you'll witness the whole journey yourself. It's like a tiny living world on your desk.",
         },
       },
@@ -404,16 +404,16 @@ export const blogPosts = [
             en: "Fascinates kids and adults alike.",
           },
           {
-            ru: "За колонией можно следить годами - она растёт и меняется на глазах.",
-            ro: "Colonia poate fi urmărită ani de zile - crește și se schimbă sub ochii tăi.",
-            en: "You can watch a colony for years - it grows and changes before your eyes.",
+            ru: "За колонией можно следить годами - она растёт и меняется месяц за месяцем.",
+            ro: "Colonia poate fi urmărită ani de zile - crește și se schimbă lună de lună.",
+            en: "You can watch a colony for years - it grows and changes month after month.",
           },
         ],
       },
       {
         type: "cta",
         text: {
-          ru: "Хотите увидеть это вживую? Начните с простой колонии с маткой, а мы поддержим вас на старте и подскажем каждый шаг.",
+          ru: "Хотите увидеть это вживую? Начните с простой колонии с королевой, а мы поддержим вас на старте и подскажем каждый шаг.",
           ro: "Vrei să vezi asta pe viu? Începe cu o colonie simplă cu regină, iar noi te susținem la start și îți spunem fiecare pas.",
           en: "Want to see it live? Start with a simple queen-right colony, and we'll support you at the start and guide every step.",
         },

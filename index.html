@@ -6,34 +6,11 @@
 
     <title>Купить муравьёв и формикарии в Молдове | GoodAntShop</title>
 
-    <meta
-      name="description"
-      content="Купить живых муравьёв, колонию с маткой и формикарий для домашней муравьиной фермы. Большой выбор видов, гарантия качества и доставка по всей Молдове."
-    />
-
-    <meta name="robots" content="index, follow" />
-
     <link rel="icon" href="/favicon.ico" />
-    <!-- Canonical is set per-route by react-helmet (see SEO.jsx). A static one
-         here would apply to every route and conflict with the rendered tag. -->
 
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="GoodAntShop" />
-    <meta property="og:title" content="Купить муравьёв и формикарии в Молдове | GoodAntShop" />
-    <meta
-      property="og:description"
-      content="Живые муравьи, колонии с маткой и формикарии для дома с доставкой по всей Молдове."
-    />
-    <meta property="og:url" content="https://goodantshop.md/ru" />
-    <meta property="og:image" content="https://goodantshop.md/formicarium-colony.webp" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Купить муравьёв и формикарии в Молдове | GoodAntShop" />
-    <meta
-      name="twitter:description"
-      content="Живые муравьи, колонии с маткой и формикарии для дома с доставкой по всей Молдове."
-    />
-    <meta name="twitter:image" content="https://goodantshop.md/formicarium-colony.webp" />
+    <!-- description / robots / og / twitter намеренно не заданы статически:
+         в dev их выставляет react-helmet (SEO.jsx), в prod вписывает
+         scripts/prerender.mjs. Статический тег не менялся бы при смене языка. -->
   </head>
 
   <body>
