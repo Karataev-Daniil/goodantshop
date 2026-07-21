@@ -6,6 +6,7 @@ import { pageSeo, productSeo, getText } from "../src/components/SEO.jsx";
 import { ants } from "../src/data/antsData.js";
 import { formicariums } from "../src/data/formicariumsData.js";
 import { blogPosts } from "../src/data/blogPostsData.js";
+import { accessories } from "../src/data/accessoriesData.js";
 
 const LANGS = ["ru", "ro", "en"];
 
@@ -47,6 +48,16 @@ for (const lang of LANGS) {
       title: getText(seo.title, lang),
       description: getText(seo.description, lang),
       image: (formic.images && formic.images[0]) || formic.image || null,
+    });
+  }
+
+  for (const accessory of accessories) {
+    const seo = productSeo(accessory, "accessory", lang);
+    list.push({
+      path: `/${lang}/accessories/${accessory.slug}`,
+      title: getText(seo.title, lang),
+      description: getText(seo.description, lang),
+      image: (accessory.images && accessory.images[0]) || accessory.image || null,
     });
   }
 

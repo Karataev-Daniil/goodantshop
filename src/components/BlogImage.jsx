@@ -3,7 +3,7 @@ import { getText } from "./SEO";
 
 // Одиночное фото статьи с приближением: клик по снимку (или кнопке-лупе)
 // открывает полноэкранный лайтбокс, где картинку можно ещё раз кликнуть, чтобы
-// увеличить. Закрытие по Esc или клику по фону. Галереи нет — только зум.
+// увеличить. Закрытие по Esc или клику по фону. Галереи нет - только зум.
 export default function BlogImage({ image, lang = "ru" }) {
   const [open, setOpen] = useState(false);
   const [zoomed, setZoomed] = useState(false);

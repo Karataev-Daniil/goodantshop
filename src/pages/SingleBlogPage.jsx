@@ -70,7 +70,7 @@ function ContentBlock({ block, lang, headingId }) {
         </div>
       );
 
-    // Галереи в блоге нет — если блок всё же встретится, рисуем фото по отдельности.
+    // Галереи в блоге нет - если блок всё же встретится, рисуем фото по отдельности.
     case "gallery":
       return (
         <>
@@ -308,7 +308,7 @@ export default function SingleBlogPage() {
         <span style={{ width: `${progress}%` }} />
       </div>
 
-      {/* Компактный full-bleed hero — как на главной, но по высоте контента */}
+      {/* Компактный full-bleed hero - как на главной, но по высоте контента */}
       <header className="blog-hero">
         <div className="blog-hero__band" aria-hidden="true">
           {post.cover?.src && (

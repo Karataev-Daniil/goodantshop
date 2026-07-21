@@ -96,7 +96,7 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
               {t({ ru: "Блог", ro: "Blog", en: "Blog" })}
             </NavLink>
 
-            {/* Language picker — shown only inside the mobile menu (CSS) */}
+            {/* Language picker - shown only inside the mobile menu (CSS) */}
             <div className="nav-lang">
               <span className="nav-lang__label">
                 {t({ ru: "Язык", ro: "Limba", en: "Language" })}
@@ -147,7 +147,7 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
             {cartCount > 0 && <span className="cart-link__badge">{cartCount}</span>}
           </NavLink>
 
-          {/* Desktop language dropdown — hidden on mobile (CSS) */}
+          {/* Desktop language dropdown - hidden on mobile (CSS) */}
           <details className="lang-dropdown">
             <summary className="lang-dropdown__trigger">
               <span className="lang-dropdown__label">{langLabel}</span>

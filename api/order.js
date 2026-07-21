@@ -54,7 +54,7 @@ async function handler(req, res) {
     const orderTotal = String(total || itemsTotal || "").trim();
 
     const itemsHtml = normalizedItems
-      .map((item) => `<li>${escapeHtml(item.title)} × ${item.qty}${item.price ? ` — ${escapeHtml(item.price)}/шт` : ""}${item.lineTotal ? ` = ${escapeHtml(item.lineTotal)}` : ""}</li>`)
+      .map((item) => `<li>${escapeHtml(item.title)} × ${item.qty}${item.price ? ` - ${escapeHtml(item.price)}/шт` : ""}${item.lineTotal ? ` = ${escapeHtml(item.lineTotal)}` : ""}</li>`)
       .join("");
 
     const html = `<h2>Новый заказ</h2>` +

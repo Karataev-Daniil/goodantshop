@@ -1,4 +1,4 @@
-﻿// Фото стандартной модели Terra — папка assets/images/formicariums/terra/.
+﻿// Фото стандартной модели Terra - папка assets/images/formicariums/terra/.
 import formicariumBlueFront from "../assets/images/formicariums/terra/formicarium-blue-front.webp";
 import formicariumBlueBackCorner from "../assets/images/formicariums/terra/formicarium-blue-back-corner.webp";
 import formicariumBlueRear from "../assets/images/formicariums/terra/formicarium-blue-rear.webp";
@@ -7,7 +7,7 @@ import formicariumYellow from "../assets/images/formicariums/terra/formicarium-y
 import formicariumGreen from "../assets/images/formicariums/terra/formicarium-green-back-corner.webp";
 import formicariumBlack from "../assets/images/formicariums/terra/formicarium-black-back-corner.webp";
 
-// Фото маленькой модели Terra Mini — папка assets/images/formicariums/terra-mini/.
+// Фото маленькой модели Terra Mini - папка assets/images/formicariums/terra-mini/.
 import miniBlueFront from "../assets/images/formicariums/terra-mini/formicarium-blue-front.webp";
 import miniBlueFrontTwo from "../assets/images/formicariums/terra-mini/formicarium-blue-front-two.webp";
 import miniBlueBackCorner from "../assets/images/formicariums/terra-mini/formicarium-blue-back-corner.webp";
@@ -26,7 +26,7 @@ const priceOptions = [
   }
 ];
 
-// Terra Mini — компактная младшая модель, дешевле стандартной Terra.
+// Terra Mini - компактная младшая модель, дешевле стандартной Terra.
 const terraMiniPriceOptions = [
   {
     label: {
@@ -48,14 +48,14 @@ export const formicariums = [
       en: "Terra"
     },
     excerpt: {
-      ru: "Стабильная влажность и удобный обзор камер.",
-      ro: "Umiditate stabilă și vizibilitate bună a camerelor.",
-      en: "Stable humidity and a convenient chamber view."
+      ru: "Средний размер: колонии хватит места на 5 лет роста.",
+      ro: "Dimensiune medie: coloniei îi ajunge loc pentru 5 ani de creștere.",
+      en: "Medium size: room for a colony to grow for 5 years."
     },
     description: {
-      ru: "Усиленная конструкция с сетчатой вентиляцией и системой для равномерного увлажнения. Отлично подходит для видов, любящих песчаный грунт.",
-      ro: "Construcție rezistentă cu ventilație din plasă și sistem de umidificare uniformă. Potrivit pentru speciile care preferă substratul nisipos.",
-      en: "Reinforced construction with mesh ventilation and even moisture system. Great for species that prefer sandy substrate."
+      ru: "Усиленная конструкция с сетчатой вентиляцией и системой для равномерного увлажнения. Отлично подходит для видов, любящих песчаный грунт. Объёма хватает колонии Messor или любого другого вида примерно на 5 лет, то есть переселять её всё это время не придётся.",
+      ro: "Construcție rezistentă cu ventilație din plasă și sistem de umidificare uniformă. Potrivit pentru speciile care preferă substratul nisipos. Volumul îi ajunge unei colonii de Messor sau oricărei alte specii circa 5 ani, așa că nu va trebui mutată în tot acest timp.",
+      en: "Reinforced construction with mesh ventilation and even moisture system. Great for species that prefer sandy substrate. The volume lasts a Messor colony, or any other species, about 5 years, so you won't need to rehouse it in all that time."
     },
     images: [
       formicariumBlueBackCorner,
@@ -85,7 +85,9 @@ export const formicariums = [
       { label: { ru: "Прозрачный", ro: "Transparent", en: "Clear" }, value: "clear" }
     ],
     defaultColor: "sand",
-    capacity: { ru: "До средней колонии", ro: "Până la o colonie medie", en: "Up to a medium colony" },
+    // Меряем вместимость сроком, а не числом муравьёв: покупателю понятнее,
+    // а нам не приходится называть цифру, которую нечем подтвердить.
+    capacity: { ru: "5 лет", ro: "5 ani", en: "5 years" },
     humidityType: { ru: "Пассивное увлажнение", ro: "Umidificare pasivă", en: "Passive humidification" },
     sizeCategory: "medium",
     careLevel: "easy",
@@ -104,16 +106,16 @@ export const formicariums = [
       en: "Terra Mini"
     },
     excerpt: {
-      ru: "Стабильная влажность и удобный обзор камер.",
-      ro: "Umiditate stabilă și vizibilitate bună a camerelor.",
-      en: "Stable humidity and a convenient chamber view."
+      ru: "Компактная модель: колонии хватит места на 3 года роста.",
+      ro: "Model compact: coloniei îi ajunge loc pentru 3 ani de creștere.",
+      en: "Compact model: room for a colony to grow for 3 years."
     },
     description: {
-      ru: "Усиленная конструкция с сетчатой вентиляцией и системой для равномерного увлажнения. Отлично подходит для видов, любящих песчаный грунт.",
-      ro: "Construcție rezistentă cu ventilație din plasă și sistem de umidificare uniformă. Potrivit pentru speciile care preferă substratul nisipos.",
-      en: "Reinforced construction with mesh ventilation and even moisture system. Great for species that prefer sandy substrate."
+      ru: "Усиленная конструкция с сетчатой вентиляцией и системой для равномерного увлажнения. Отлично подходит для видов, любящих песчаный грунт. Объёма хватает колонии примерно на 3 года - это удачный вариант для первого опыта, когда не хочется занимать много места на столе.",
+      ro: "Construcție rezistentă cu ventilație din plasă și sistem de umidificare uniformă. Potrivit pentru speciile care preferă substratul nisipos. Volumul îi ajunge unei colonii circa 3 ani - o variantă bună pentru prima experiență, când nu vrei să ocupi mult loc pe masă.",
+      en: "Reinforced construction with mesh ventilation and even moisture system. Great for species that prefer sandy substrate. The volume lasts a colony about 3 years - a good choice for a first try, when you don't want to take up much desk space."
     },
-    // Синие ракурсы идут первыми — главное фото карточки.
+    // Синие ракурсы идут первыми - главное фото карточки.
     images: [
       miniBlueBackCorner,
       miniBlueFront,
@@ -141,9 +143,9 @@ export const formicariums = [
       { label: { ru: "Прозрачный", ro: "Transparent", en: "Clear" }, value: "clear" }
     ],
     defaultColor: "sand",
-    capacity: { ru: "До средней колонии", ro: "Până la o colonie medie", en: "Up to a medium colony" },
+    capacity: { ru: "3 года", ro: "3 ani", en: "3 years" },
     humidityType: { ru: "Пассивное увлажнение", ro: "Umidificare pasivă", en: "Passive humidification" },
-    sizeCategory: "medium",
+    sizeCategory: "small",
     careLevel: "easy",
     feedingType: "seeds",
     availability: "inStock",

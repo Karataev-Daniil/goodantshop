@@ -40,7 +40,7 @@ export default function ProductCard({ item, linkTo, onAddToCart }) {
   const primaryPrice = item.priceOptions?.[0];
   const isPreorder = item.availability === "preorder";
   const isOutOfStock = item.availability === "outOfStock";
-  // Preorder means it's not in stock right now but can still be ordered — spell
+  // Preorder means it's not in stock right now but can still be ordered - spell
   // that out on the badge instead of the vague "Предзаказ".
   const badgeAria = isPreorder
     ? getText({ ru: "Нет в наличии, предзаказ", ro: "Nu este în stoc, precomandă", en: "Out of stock, pre-order" }, lang)

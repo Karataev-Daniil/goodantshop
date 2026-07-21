@@ -54,7 +54,7 @@ function BlogCard({ post, lang }) {
 export default function BlogPage() {
   const { lang = "ru" } = useParams();
 
-  // Первый (новейший) пост показываем крупной featured-карточкой, остальные — сеткой.
+  // Первый (новейший) пост показываем крупной featured-карточкой, остальные - сеткой.
   const featured = blogPosts[0] || null;
   const rest = blogPosts.slice(1);
 
@@ -87,9 +87,9 @@ export default function BlogPage() {
             <p className="blog-archive__lead">
               {getText(
                 {
-                  ru: "Полезные статьи про выбор муравьёв и формикариев, уход за колонией и обзоры видов — для новичков и опытных киперов.",
-                  ro: "Articole utile despre alegerea furnicilor și formicariilor, îngrijirea coloniei și prezentări de specii — pentru începători și avansați.",
-                  en: "Helpful articles on choosing ants and formicariums, colony care and species guides — for beginners and experienced keepers.",
+                  ru: "Полезные статьи про выбор муравьёв и формикариев, уход за колонией и обзоры видов - для новичков и опытных киперов.",
+                  ro: "Articole utile despre alegerea furnicilor și formicariilor, îngrijirea coloniei și prezentări de specii - pentru începători și avansați.",
+                  en: "Helpful articles on choosing ants and formicariums, colony care and species guides - for beginners and experienced keepers.",
                 },
                 lang
               )}

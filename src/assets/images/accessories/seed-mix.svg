@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="800" height="800" role="img" aria-label="Шприц 20 мл с зерновой смесью для муравьёв-жнецов">
+  <!-- Временная иллюстрация вместо фото товара: шприц 20 мл, заполненный 15 г
+       зерна. Когда появится реальный снимок, положите рядом seed-mix.webp и
+       поменяйте импорт в accessoriesData.js. -->
+  <rect width="800" height="800" fill="#f4f0e8"/>
+
+  <!-- мягкая тень под шприцем -->
+  <ellipse cx="400" cy="712" rx="150" ry="22" fill="#e0d6c4"/>
+
+  <!-- шток поршня -->
+  <rect x="332" y="88" width="136" height="26" rx="13" fill="#cbbda3"/>
+  <rect x="386" y="114" width="28" height="96" fill="#d9cdb8"/>
+  <!-- уплотнитель поршня -->
+  <rect x="306" y="206" width="188" height="30" rx="9" fill="#cbbda3"/>
+
+  <!-- бортик колбы -->
+  <rect x="278" y="236" width="244" height="20" rx="10" fill="#d9cdb8"/>
+
+  <!-- колба -->
+  <rect x="302" y="256" width="196" height="380" rx="12" fill="#ffffff"/>
+
+  <!-- зерно внутри колбы -->
+  <clipPath id="barrel">
+    <rect x="302" y="256" width="196" height="380" rx="12"/>
+  </clipPath>
+  <g clip-path="url(#barrel)">
+    <rect x="302" y="318" width="196" height="318" fill="#e6cf9f"/>
+    <g fill="#cba75c">
+      <ellipse cx="342" cy="352" rx="17" ry="10" transform="rotate(-18 342 352)"/>
+      <ellipse cx="404" cy="340" rx="16" ry="9" transform="rotate(14 404 340)"/>
+      <ellipse cx="462" cy="356" rx="17" ry="10" transform="rotate(-6 462 356)"/>
+      <ellipse cx="340" cy="404" rx="16" ry="9" transform="rotate(26 340 404)"/>
+      <ellipse cx="404" cy="396" rx="18" ry="10" transform="rotate(-12 404 396)"/>
+      <ellipse cx="464" cy="410" rx="16" ry="9" transform="rotate(8 464 410)"/>
+      <ellipse cx="338" cy="456" rx="17" ry="10" transform="rotate(16 338 456)"/>
+      <ellipse cx="402" cy="448" rx="15" ry="9" transform="rotate(-24 402 448)"/>
+      <ellipse cx="464" cy="462" rx="17" ry="10" transform="rotate(10 464 462)"/>
+      <ellipse cx="340" cy="508" rx="16" ry="9" transform="rotate(-14 340 508)"/>
+      <ellipse cx="404" cy="500" rx="17" ry="10" transform="rotate(20 404 500)"/>
+      <ellipse cx="462" cy="514" rx="16" ry="9" transform="rotate(-8 462 514)"/>
+      <ellipse cx="342" cy="560" rx="17" ry="10" transform="rotate(8 342 560)"/>
+      <ellipse cx="404" cy="552" rx="16" ry="9" transform="rotate(-22 404 552)"/>
+      <ellipse cx="464" cy="566" rx="17" ry="10" transform="rotate(14 464 566)"/>
+      <ellipse cx="344" cy="610" rx="16" ry="9" transform="rotate(-10 344 610)"/>
+      <ellipse cx="406" cy="602" rx="17" ry="10" transform="rotate(18 406 602)"/>
+      <ellipse cx="462" cy="614" rx="16" ry="9" transform="rotate(-4 462 614)"/>
+    </g>
+    <g fill="#b98f45">
+      <ellipse cx="372" cy="374" rx="11" ry="6.5" transform="rotate(24 372 374)"/>
+      <ellipse cx="436" cy="430" rx="11" ry="6.5" transform="rotate(-16 436 430)"/>
+      <ellipse cx="372" cy="486" rx="11" ry="6.5" transform="rotate(30 372 486)"/>
+      <ellipse cx="436" cy="536" rx="11" ry="6.5" transform="rotate(-12 436 536)"/>
+      <ellipse cx="374" cy="588" rx="11" ry="6.5" transform="rotate(18 374 588)"/>
+    </g>
+    <!-- блик на стекле -->
+    <rect x="318" y="272" width="26" height="352" fill="#ffffff" opacity="0.45"/>
+  </g>
+
+  <!-- контур колбы поверх зерна -->
+  <rect x="302" y="256" width="196" height="380" rx="12" fill="none" stroke="#e0d6c4" stroke-width="7"/>
+
+  <!-- шкала делений: белым, иначе тонет в янтарном зерне -->
+  <g stroke="#ffffff" stroke-width="6" stroke-linecap="round" opacity="0.85">
+    <path d="M468 306h22M468 356h22M468 406h22M468 456h22M468 506h22M468 556h22"/>
+  </g>
+
+  <!-- конус и носик -->
+  <path d="M356 636h88l-20 44h-48z" fill="#e6cf9f"/>
+  <path d="M356 636h88l-20 44h-48z" fill="none" stroke="#e0d6c4" stroke-width="6" stroke-linejoin="round"/>
+  <rect x="386" y="676" width="28" height="42" rx="8" fill="#d9cdb8"/>
+
+  <!-- пара зёрен рядом -->
+  <g fill="#cba75c">
+    <ellipse cx="592" cy="700" rx="16" ry="9" transform="rotate(18 592 700)"/>
+    <ellipse cx="632" cy="714" rx="13" ry="8" transform="rotate(-12 632 714)"/>
+    <ellipse cx="206" cy="702" rx="15" ry="9" transform="rotate(-20 206 702)"/>
+  </g>
+</svg>

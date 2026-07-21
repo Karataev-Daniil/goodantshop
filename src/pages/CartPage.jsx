@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
+import { accessories, foodForAnt, toolKit } from "../data/accessoriesData";
 import SEO, { breadcrumbSchema, pageSeo } from "../components/SEO";
 
 const getText = (value, lang) => {
@@ -14,10 +15,18 @@ const getText = (value, lang) => {
 const optionPriceNumber = (option) =>
   parseInt(String(option?.value || "").replace(/[^\d]/g, ""), 10) || 0;
 
-// A cart line may carry the exact variant chosen on the product page; otherwise
-// fall back to the product's default (selected / first) option.
-const resolveOption = (product, lineOption) =>
-  lineOption || product.priceOptions?.find((o) => o.selected) || product.priceOptions?.[0] || null;
+// В localStorage лежит СНИМОК опции на момент добавления в корзину. Брать цену
+// оттуда нельзя: после изменения прайса корзина показывала бы и отправляла в
+// заказ старую цену сколь угодно долго. Поэтому по сохранённой строке мы лишь
+// узнаём, какой вариант выбрал человек, а сам вариант берём из каталога.
+// Если такого варианта больше нет (градацию убрали из продажи), откатываемся
+// на текущий вариант по умолчанию.
+const resolveOption = (product, lineOption) => {
+  const options = product.priceOptions || [];
+  const savedLabel = lineOption?.label?.ru;
+  const matched = savedLabel ? options.find((option) => option.label?.ru === savedLabel) : null;
+  return matched || options.find((option) => option.selected) || options[0] || null;
+};
 
 const countWord = (count, lang) => {
   if (lang === "ro") return count === 1 ? "produs" : "produse";
@@ -40,9 +49,9 @@ export default function CartPage() {
   const [status, setStatus] = useState({ type: "", text: "" });
   const [loading, setLoading] = useState(false);
 
-  const catalog = [...ants, ...formicariums];
+  const catalog = [...ants, ...formicariums, ...accessories];
 
-  // Group cart lines by product — one line equals one unit
+  // Group cart lines by product - one line equals one unit
   const groupsMap = new Map();
   cartIds.forEach((line) => {
     const product = catalog.find((entry) => String(entry.id) === String(line.id));
@@ -56,8 +65,58 @@ export default function CartPage() {
   });
   const groups = [...groupsMap.values()];
 
+  // --- Правило комплекта ----------------------------------------------------
+  // Каждой колонии нужен свой дом, поэтому считаем именно количество, а не факт
+  // наличия: 3 колонии и 1 формикарий - это ещё не комплект. Проверка мягкая:
+  // положить колонии одни можно, но оформить заказ без домов нельзя.
+  const isAnt = (product) => ants.some((entry) => entry.id === product.id);
+  const isFormicarium = (product) => formicariums.some((entry) => entry.id === product.id);
+  const sumQty = (list) => list.reduce((sum, group) => sum + group.qty, 0);
+
+  const antGroups = groups.filter((group) => isAnt(group.product));
+  const antQty = sumQty(antGroups);
+  const formicariumQty = sumQty(groups.filter((group) => isFormicarium(group.product)));
+  const missingFormicariums = Math.max(0, antQty - formicariumQty);
+  const needsFormicarium = missingFormicariums > 0;
+  const bundleComplete = antQty > 0 && !needsFormicarium;
+
+  // Подарки идут на КАЖДУЮ колонию: набор инструментов и корм под её рацион
+  // (жнецам семена, остальным живой белок). Две колонии - два набора и два корма.
+  const giftLines = [];
+  if (bundleComplete) {
+    const addGift = (product, qty) => {
+      if (!product) return;
+      const found = giftLines.find((entry) => entry.product.id === product.id);
+      if (found) found.qty += qty;
+      else giftLines.push({ product, qty });
+    };
+    const kit = toolKit();
+    antGroups.forEach((group) => {
+      addGift(kit, group.qty);
+      addGift(foodForAnt(group.product), group.qty);
+    });
+  }
+
+  // Сколько единиц каждого товара положено бесплатно.
+  const giftQtyFor = (product) =>
+    giftLines.find((entry) => entry.product.id === product.id)?.qty || 0;
+
+  // В строке корзины бесплатны только положенные единицы: если человек взял три
+  // набора, а комплект даёт один, платит он за два.
+  const freeQtyIn = (group) => Math.min(group.qty, giftQtyFor(group.product));
+  const lineTotal = (group) =>
+    optionPriceNumber(group.option) * (group.qty - freeQtyIn(group));
+
+  // Остаток подарков, который в корзину не клали - добавим к заказу сами.
+  const pendingGifts = giftLines
+    .map((gift) => ({
+      product: gift.product,
+      qty: gift.qty - sumQty(groups.filter((group) => group.product.id === gift.product.id)),
+    }))
+    .filter((gift) => gift.qty > 0);
+
   const totalQty = groups.reduce((sum, group) => sum + group.qty, 0);
-  const itemsTotal = groups.reduce((sum, group) => sum + optionPriceNumber(group.option) * group.qty, 0);
+  const itemsTotal = groups.reduce((sum, group) => sum + lineTotal(group), 0);
   const currency = t({ ru: "лей", ro: "lei", en: "lei" });
   const fmt = (value) => `${value} ${currency}`;
 
@@ -83,19 +142,47 @@ export default function CartPage() {
       return;
     }
 
+    // Колония без формикария - не отказ, а просьба доложить дом.
+    if (needsFormicarium) {
+      setStatus({
+        type: "error",
+        text: t({
+          ru: `Добавьте формикарий, не хватает ${missingFormicariums}. Колонии мы отправляем только вместе с домом, зато набор инструментов и корм идут в подарок.`,
+          ro: `Adaugă un formicariu, lipsesc ${missingFormicariums}. Trimitem coloniile doar împreună cu casa, în schimb setul de instrumente și hrana vin cadou.`,
+          en: `Please add a formicarium, ${missingFormicariums} missing. We ship colonies only together with a home, and in return the tool kit and food come free.`,
+        }),
+      });
+      return;
+    }
+
     setLoading(true);
     setStatus({ type: "", text: "" });
 
-    const orderItems = groups.map((group) => {
-      const unit = optionPriceNumber(group.option);
-      return {
-        title: getText(group.product.title, lang),
-        variant: group.option ? getText(group.option.label, lang) : "",
-        qty: group.qty,
-        price: fmt(unit),
-        lineTotal: fmt(unit * group.qty),
-      };
-    });
+    const giftLabel = t({ ru: "подарок к комплекту", ro: "cadou la set", en: "gift with the set" });
+    const orderItems = [
+      ...groups.map((group) => {
+        const unit = optionPriceNumber(group.option);
+        const free = freeQtyIn(group);
+        // Если часть единиц бесплатна, помечаем это прямо в строке заказа,
+        // чтобы при сборке было видно, за что человек заплатил.
+        const variant = group.option ? getText(group.option.label, lang) : "";
+        return {
+          title: getText(group.product.title, lang),
+          variant: free > 0 ? [variant, `${free} ${giftLabel}`].filter(Boolean).join(", ") : variant,
+          qty: group.qty,
+          price: fmt(unit),
+          lineTotal: fmt(lineTotal(group)),
+        };
+      }),
+      // Подарки, которых не было в корзине, тоже уходят в заказ - нулевой строкой.
+      ...pendingGifts.map((gift) => ({
+        title: getText(gift.product.title, lang),
+        variant: giftLabel,
+        qty: gift.qty,
+        price: fmt(0),
+        lineTotal: fmt(0),
+      })),
+    ];
 
     try {
       const response = await fetch("/api/order", {
@@ -170,6 +257,35 @@ export default function CartPage() {
 
         {status.text && <p className={`checkout-status checkout-status--${status.type}`}>{status.text}</p>}
 
+        {/* Мягкое напоминание: не блокируем корзину, а объясняем и предлагаем дом. */}
+        {needsFormicarium && (
+          <div className="checkout-bundle">
+            <strong>
+              {missingFormicariums > 1
+                ? t({
+                    ru: "Каждой колонии нужен свой дом",
+                    ro: "Fiecare colonie are nevoie de casa ei",
+                    en: "Every colony needs its own home",
+                  })
+                : t({
+                    ru: "Колонии нужен свой дом",
+                    ro: "Colonia are nevoie de casa ei",
+                    en: "Your colony needs its own home",
+                  })}
+            </strong>
+            <p>
+              {t({
+                ru: "Формикарий понадобится в любом случае, поэтому колонии мы отправляем только вместе с ним. Зато к каждой из них набор инструментов и корм идут в подарок.",
+                ro: "Formicariul va fi oricum necesar, de aceea trimitem coloniile doar împreună cu el. În schimb, la fiecare dintre ele setul de instrumente și hrana vin cadou.",
+                en: "You'll need a formicarium anyway, so we ship colonies only together with one. In return, each of them comes with a free tool kit and food.",
+              })}
+            </p>
+            <Link className="btn" to={`/${lang}/formicariums`}>
+              {t({ ru: "Выбрать формикарий", ro: "Alege formicariul", en: "Choose a formicarium" })}
+            </Link>
+          </div>
+        )}
+
         {groups.length === 0 ? (
           <div className="checkout-empty">
             {status.type !== "success" && (
@@ -184,6 +300,7 @@ export default function CartPage() {
             <div className="checkout-items">
               {groups.map((group) => {
                 const unit = optionPriceNumber(group.option);
+                const free = freeQtyIn(group);
                 const image = group.product.images?.[0] || group.product.image || "/placeholder-ant.svg";
                 return (
                   <article className="checkout-item" key={`${group.product.id}-${group.option?.value || ""}`}>
@@ -194,6 +311,13 @@ export default function CartPage() {
                       <h3>{getText(group.product.title, lang)}</h3>
                       {group.option && (
                         <p className="checkout-item__variant">{getText(group.option.label, lang)}</p>
+                      )}
+                      {free > 0 && (
+                        <p className="checkout-item__variant checkout-item__variant--gift">
+                          {free === group.qty
+                            ? t({ ru: "Подарок к комплекту", ro: "Cadou la set", en: "Gift with the set" })
+                            : `${free} ${t({ ru: "шт в подарок", ro: "buc cadou", en: "pcs free" })}`}
+                        </p>
                       )}
                       <p>{getText(group.product.excerpt, lang)}</p>
                       <div className="checkout-item__meta">
@@ -208,11 +332,32 @@ export default function CartPage() {
                         {t({ ru: "Удалить", ro: "Șterge", en: "Remove" })}
                       </button>
                     </div>
-                    <div className="checkout-item__total">{fmt(unit * group.qty)}</div>
+                    <div className="checkout-item__total">{fmt(lineTotal(group))}</div>
                   </article>
                 );
               })}
             </div>
+
+            {pendingGifts.length > 0 && (
+              <div className="checkout-gifts">
+                <strong>
+                  {t({ ru: "Добавим к заказу бесплатно", ro: "Adăugăm gratuit la comandă", en: "We'll add for free" })}
+                </strong>
+                <ul>
+                  {pendingGifts.map((gift) => (
+                    <li key={gift.product.id}>
+                      <img src={gift.product.images?.[0] || gift.product.image} alt="" loading="lazy" />
+                      <span>
+                        {getText(gift.product.title, lang)}
+                        {gift.qty > 1 && ` × ${gift.qty}`}
+                      </span>
+                      <s>{gift.product.priceOptions?.[0]?.value}</s>
+                      <strong>{fmt(0)}</strong>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             <div className="checkout-summary">
               <div className="checkout-summary__row">
@@ -251,7 +396,7 @@ export default function CartPage() {
                 <textarea value={comment} onChange={(e) => setComment(e.target.value)} rows={3} />
               </label>
 
-              <button type="submit" className="btn checkout-submit" disabled={loading}>
+              <button type="submit" className="btn checkout-submit" disabled={loading || needsFormicarium}>
                 {loading
                   ? t({ ru: "Отправка...", ro: "Se trimite...", en: "Sending..." })
                   : t({ ru: "Оформить заказ", ro: "Trimite comanda", en: "Place order" })}

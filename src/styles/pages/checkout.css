@@ -1,4 +1,4 @@
-/* ===== Checkout (cart) — clean, single column, premium minimal ===== */
+/* ===== Checkout (cart) - clean, single column, premium minimal ===== */
 .checkout {
   max-width: 760px;
   margin-left: auto;
@@ -35,6 +35,68 @@
 .checkout-status--error {
   color: #b42318;
   background: rgba(180, 35, 24, 0.08);
+}
+
+/* Напоминание про комплект: колонию не отправляем без формикария.
+   Тон подсказки, а не ошибки - поэтому нейтральный фон, а не красный. */
+.checkout-bundle {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: var(--surface-soft);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.checkout-bundle strong {
+  font-size: 17px;
+}
+.checkout-bundle p {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Подарки, которые доложим к собранному комплекту. */
+.checkout-gifts {
+  display: grid;
+  gap: 12px;
+  padding: 18px 20px;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, var(--line));
+}
+.checkout-gifts ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.checkout-gifts li {
+  display: grid;
+  grid-template-columns: 44px 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+}
+.checkout-gifts img {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+.checkout-gifts s {
+  color: var(--muted);
+}
+.checkout-gifts strong:last-child {
+  color: var(--accent);
+}
+/* Обе модификаторные точки - чтобы правило перебило базовое
+   .checkout-item__info p.checkout-item__variant, которое объявлено ниже. */
+.checkout-item__info p.checkout-item__variant.checkout-item__variant--gift {
+  color: var(--accent);
+  font-weight: 700;
 }
 
 /* Empty state */

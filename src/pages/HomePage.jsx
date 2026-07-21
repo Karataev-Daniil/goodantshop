@@ -41,16 +41,18 @@ export default function HomePage() {
     id: "starter-kit",
     title: { ru: "Стартовый набор", ro: "Set de start", en: "Starter kit" },
     excerpt: {
-      ru: "Формикарий Terra и колония Messor Structor: всё для запуска.",
-      ro: "Formicariu Terra și colonie Messor Structor: tot ce trebuie pentru start.",
-      en: "Terra formicarium and a Messor Structor colony: everything to get started.",
+      ru: "Формикарий Terra и колония Messor Structor из наличия. Набор инструментов и корм в подарок.",
+      ro: "Formicariu Terra și colonie Messor Structor din stoc. Setul de instrumente și hrana vin cadou.",
+      en: "Terra formicarium and a Messor Structor colony from stock. Tool kit and food come as a gift.",
     },
     images: ["/formicarium-colony.webp"],
     availability: "inStock",
+    // Цена = Terra (1300) + Messor (650). Держите её в согласии с priceOptions
+    // в formicariumsData.js и antsData.js, иначе витрина разойдётся с корзиной.
     priceOptions: [
       {
         label: { ru: "Формикарий + колония", ro: "Formicariu + colonie", en: "Formicarium + colony" },
-        value: "1750 лей",
+        value: "1950 лей",
       },
     ],
   };

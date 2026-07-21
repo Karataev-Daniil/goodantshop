@@ -9,7 +9,7 @@
   --accent-dark: #8f1714;
   --container: 1200px;
   /* Must match .header-inner min-height (62px desktop / 56px ≤980px) so the
-     full-bleed hero band lines up exactly with the viewport — a mismatch leaves
+     full-bleed hero band lines up exactly with the viewport - a mismatch leaves
      a gap that lets the next section peek in on load. */
   --header-h: 62px;
   --font-ui: "Manrope", "Inter", "Segoe UI", sans-serif;
@@ -24,7 +24,7 @@
 
 * { box-sizing: border-box; }
 /* Smooth in-page anchor scrolling (reset.css, which also had this, isn't
-   imported — so it lives here where it actually loads). Respect reduced-motion. */
+   imported - so it lives here where it actually loads). Respect reduced-motion. */
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
@@ -294,7 +294,7 @@ img { display: block; max-width: 100%; }
 .product-card__status--inStock { background: #1f8a30; }
 .product-card__status--outOfStock { background: #9f1d1d; }
 
-/* Preorder = out of stock now, but orderable — badge shows both, stacked */
+/* Preorder = out of stock now, but orderable - badge shows both, stacked */
 .product-card__status--preorder {
   flex-direction: column;
   gap: 1px;

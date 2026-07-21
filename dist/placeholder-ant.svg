@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" role="img" aria-label="Изображение товара недоступно">
+  <rect width="400" height="400" fill="#f4f0e8"/>
+  <g fill="none" stroke="#c8bda6" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <!-- силуэт муравья: три сегмента тела -->
+    <ellipse cx="200" cy="140" rx="30" ry="26"/>
+    <ellipse cx="200" cy="199" rx="23" ry="21"/>
+    <ellipse cx="200" cy="268" rx="34" ry="30"/>
+    <!-- усики -->
+    <path d="M186 118c-12-14-22-20-36-22M214 118c12-14 22-20 36-22"/>
+    <!-- лапки -->
+    <path d="M177 186c-22 4-38-4-52-20M223 186c22 4 38-4 52-20"/>
+    <path d="M177 202c-24 8-42 6-58-4M223 202c24 8 42 6 58-4"/>
+    <path d="M180 214c-20 16-36 22-52 22M220 214c20 16 36 22 52 22"/>
+  </g>
+</svg>

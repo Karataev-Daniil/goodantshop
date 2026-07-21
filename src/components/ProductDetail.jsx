@@ -65,7 +65,7 @@ const availabilityLabel = {
   outOfStock: { ru: "Нет в наличии", ro: "Nu este în stoc", en: "Out of stock" },
 };
 
-export default function ProductDetail({ item, type, crossSell = [], similar = [] }) {
+export default function ProductDetail({ item, type, crossSell = [], similar = [], extras = {} }) {
   const { lang = "ru" } = useParams();
   const { addToCart } = useOutletContext();
   const navigate = useNavigate();
@@ -86,10 +86,9 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
   const REVIEWS_PREVIEW = 4;
   const visibleReviews = showAllReviews ? productReviews : productReviews.slice(0, REVIEWS_PREVIEW);
 
-  const crossType = type === "ant" ? "formicarium" : "ant";
   const images = item.images?.length ? item.images : [item.image || "/placeholder-ant.svg"];
-  // Descriptive alt for the main product image (e.g. "Messor Structor — живая колония муравьёв с маткой").
-  const galleryAlt = `${getText(item.title, lang)} — ${getText(
+  // Descriptive alt for the main product image (e.g. "Messor Structor - живая колония муравьёв с маткой").
+  const galleryAlt = `${getText(item.title, lang)} - ${getText(
     type === "ant"
       ? { ru: "живая колония муравьёв с маткой", ro: "colonie vie de furnici cu regină", en: "live ant colony with a queen" }
       : { ru: "формикарий для домашней муравьиной фермы", ro: "formicariu pentru ferma de furnici de acasă", en: "formicarium for a home ant farm" },
@@ -107,6 +106,15 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
   const addItem = (id, count = 1) => {
     for (let n = 0; n < count; n += 1) addToCart(id, selectedOption);
   };
+
+  // Кросс-продажа кладётся со СВОЕЙ ценой: selectedOption относится к текущему
+  // товару, и передавать его чужому продукту нельзя - иначе формикарий попадал
+  // бы в корзину по цене выбранной колонии.
+  const addCrossItem = (product) =>
+    addToCart(
+      product.id,
+      product.priceOptions?.find((o) => o.selected) || product.priceOptions?.[0] || null
+    );
 
   const handleAddToCart = () => addItem(item.id, qty);
   const handleBuyNow = () => {
@@ -135,7 +143,7 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
     : [
         { label: { ru: "Материал", ro: "Material", en: "Material" }, value: findChar("material") },
         { label: { ru: "Размеры", ro: "Dimensiuni", en: "Dimensions" }, value: findChar("size") },
-        { label: { ru: "Вместимость колонии", ro: "Capacitatea coloniei", en: "Colony capacity" }, value: item.capacity },
+        { label: { ru: "Хватит колонии на", ro: "Îi ajunge coloniei", en: "Enough for a colony" }, value: item.capacity },
         { label: { ru: "Тип увлажнения", ro: "Tip de umidificare", en: "Humidity system" }, value: item.humidityType },
         { label: { ru: "Комплектация", ro: "Set inclus", en: "Kit contents" }, value: { ru: "Полный стартовый набор", ro: "Set complet de start", en: "Full starter kit" } },
       ]
@@ -161,9 +169,9 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
   const careText =
     type === "ant"
       ? {
-          ru: "Держите арену сухой, а зону гнезда слегка увлажнённой. Кормите углеводами и белком 2–3 раза в неделю и убирайте остатки. Первые недели не тревожьте колонию, давая ей закрепиться.",
-          ro: "Păstrează arena uscată, iar zona cuibului ușor umedă. Hrănește cu carbohidrați și proteine de 2–3 ori pe săptămână și îndepărtează resturile. Primele săptămâni nu deranja colonia.",
-          en: "Keep the arena dry and the nest area slightly humid. Feed carbohydrates and protein 2–3 times a week and remove leftovers. Don't disturb the colony in the first weeks while it settles.",
+          ru: "Держите арену сухой, а зону гнезда слегка увлажнённой. Кормите углеводами и белком 2-3 раза в неделю и убирайте остатки. Первые недели не тревожьте колонию и не спешите с переездом в формикарий. Маленькая семья плохо переносит стресс, поэтому переселяют её позже, когда она окрепнет и в пробирке станет тесно.",
+          ro: "Păstrează arena uscată, iar zona cuibului ușor umedă. Hrănește cu carbohidrați și proteine de 2-3 ori pe săptămână și îndepărtează resturile. Primele săptămâni nu deranja colonia și nu te grăbi cu mutarea în formicariu. O familie mică suportă greu stresul, de aceea mutarea se face mai târziu, când colonia se întărește și eprubeta devine strâmtă.",
+          en: "Keep the arena dry and the nest area slightly humid. Feed carbohydrates and protein 2-3 times a week and remove leftovers. Don't disturb the colony in the first weeks and don't rush the move into the formicarium. A small family copes badly with stress, so the move is done later, once the colony grows stronger and the test tube gets cramped.",
         }
       : {
           ru: "Поддерживайте влажность через встроенную систему, регулярно проветривайте арену и очищайте её от остатков корма. Конструкция предотвращает побег и сохраняет стабильный микроклимат.",
@@ -212,11 +220,27 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
   ];
 
   // 7. Advantages
+  // Первая карточка зависит от наличия: обещать отправку без ожидания можно
+  // только там, где товар действительно лежит на складе. Для предзаказа
+  // говорим честно, что вида сейчас нет.
   const advantages = [
-    {
-      title: { ru: "Безопасная доставка", ro: "Livrare sigură", en: "Safe delivery" },
-      text: { ru: "Утеплённая упаковка и компенсация рисков в пути.", ro: "Ambalaj termic și compensarea riscurilor pe drum.", en: "Insulated packaging and risk coverage in transit." },
-    },
+    isPreorder
+      ? {
+          title: { ru: "Привозим под заказ", ro: "Aducem la comandă", en: "Brought to order" },
+          text: {
+            ru: "Этого вида сейчас нет. Привезём и напишем, как только колония будет готова к отправке.",
+            ro: "Această specie nu este acum în stoc. O aducem și îți scriem imediat ce colonia e gata de expediere.",
+            en: "This species is out of stock right now. We'll bring it in and message you as soon as the colony is ready to ship.",
+          },
+        }
+      : {
+          title: { ru: "Отправляем из наличия", ro: "Expediem din stoc", en: "Ships from stock" },
+          text: {
+            ru: "Колония уже у нас. Собираем комплект и отправляем в утеплённой упаковке, ждать поставку не нужно.",
+            ro: "Colonia este deja la noi. Pregătim setul și îl trimitem în ambalaj termic, fără să aștepți o livrare.",
+            en: "The colony is already with us. We pack the set and send it in insulated packaging, with no wait for a shipment.",
+          },
+        },
     {
       title: { ru: "Поддержка новичков", ro: "Suport pentru începători", en: "Beginner support" },
       text: { ru: "Помогаем адаптировать колонию на новом месте.", ro: "Te ajutăm să adaptezi colonia la noul loc.", en: "We help you settle the colony in its new home." },
@@ -233,8 +257,46 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
 
   const crossHeading =
     type === "ant"
-      ? { ru: "Для запуска колонии понадобится дом", ro: "Pentru pornirea coloniei e nevoie de o casă", en: "Your colony will need a home to start" }
+      ? { ru: "Что нужно для старта", ro: "De ce ai nevoie la start", en: "What you need to start" }
       : { ru: "Выберите колонию для заселения", ro: "Alege o colonie pentru populare", en: "Choose a colony to move in" };
+
+  // На странице колонии собираем всё, с чем её отправляем: дом (без него не
+  // продаём), корм под рацион вида и набор инструментов - он идёт подарком.
+  // Дом берём из crossSell, остальное (корма и набор) страница передаёт готовым
+  // списком в extras.items - она же решает, что идёт подарком, а что платно.
+  const accessoryPath = (slug) => `/${lang}/accessories/${slug}`;
+  const starterItems =
+    type === "ant"
+      ? [
+          ...crossSell.map((entry) => ({
+            product: entry,
+            to: singlePath("formicarium", lang, entry.slug),
+            role: "home",
+          })),
+          ...(extras.items || []).map((entry) => ({
+            product: entry.product,
+            to: accessoryPath(entry.product.slug),
+            role: entry.role,
+          })),
+        ]
+      : crossSell.map((entry) => ({
+          product: entry,
+          to: singlePath("ant", lang, entry.slug),
+          role: "colony",
+        }));
+
+  const roleBadge = {
+    home: { ru: "Дом для колонии", ro: "Casa coloniei", en: "Home for the colony" },
+    food: { ru: "Корм для этого вида", ro: "Hrană pentru această specie", en: "Food for this species" },
+    gift: { ru: "Подарок к комплекту", ro: "Cadou la set", en: "Free with the set" },
+  };
+
+  // Мягкая формулировка правила: объясняем «почему», а не запрещаем.
+  const bundleNote = {
+    ru: "Формикарий понадобится колонии в любом случае, поэтому мы отправляем их вместе, а набор инструментов и корм к комплекту дарим. С переездом при этом можно не спешить, первое время колония живёт в пробирке и переселяется, когда окрепнет.",
+    ro: "Formicariul îi va fi oricum necesar coloniei, de aceea le trimitem împreună, iar setul de instrumente și hrana le facem cadou. Cu mutarea nu trebuie să te grăbești, la început colonia stă în eprubetă și se mută atunci când se întărește.",
+    en: "Your colony will need a formicarium anyway, so we ship them together and throw in the tool kit and food for free. There's no rush with the move, at first the colony lives in its test tube and is rehoused once it grows stronger.",
+  };
   const seo = productSeo(item, type, lang);
   const productPath = type === "ant" ? `/ants/${item.slug}` : `/formic/${item.slug}`;
   const catalogSeoPath = type === "ant" ? "/ants" : "/formicariums";
@@ -265,7 +327,7 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
         ← {getText({ ru: "Назад в каталог", ro: "Înapoi la catalog", en: "Back to catalog" }, lang)}
       </Link>
 
-      {/* 1–2. Gallery + main info */}
+      {/* 1-2. Gallery + main info */}
       <div className="product-detail__top">
         <ProductGallery
           images={images}
@@ -391,27 +453,84 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
         </ul>
       </section>
 
-      {/* 5. Cross-sell */}
-      {crossSell.length > 0 && (
+      {/* 5. Cross-sell / что нужно для старта */}
+      {starterItems.length > 0 && (
         <section className="product-section">
           <h2>{getText(crossHeading, lang)}</h2>
-          <div className="cross-sell">
-            {crossSell.map((cross) => (
-              <article className="cross-card" key={cross.id}>
-                <Link className="cross-card__media" to={singlePath(crossType, lang, cross.slug)}>
-                  <img src={cross.images?.[0] || cross.image || "/placeholder-ant.svg"} alt={getText(cross.title, lang)} loading="lazy" />
-                </Link>
-                <div className="cross-card__body">
-                  <Link className="cross-card__title" to={singlePath(crossType, lang, cross.slug)}>
-                    {getText(cross.title, lang)}
+          {type === "ant" && (
+            <p className="starter-note">
+              {getText(bundleNote, lang)}
+              {!isPreorder && (
+                <>
+                  {" "}
+                  <strong>
+                    {getText(
+                      {
+                        ru: "Комплект собираем из наличия и отправляем сразу.",
+                        ro: "Setul îl pregătim din stoc și îl trimitem imediat.",
+                        en: "We assemble the set from stock and send it right away.",
+                      },
+                      lang
+                    )}
+                  </strong>
+                </>
+              )}
+            </p>
+          )}
+          <div className={`cross-sell${type === "ant" ? " cross-sell--starter" : ""}`}>
+            {starterItems.map(({ product, to, role }) => {
+              const price = product.priceOptions?.[0]?.value;
+              const isGift = role === "gift";
+              return (
+                <article className={`cross-card${isGift ? " cross-card--gift" : ""}`} key={product.id}>
+                  <Link className="cross-card__media" to={to}>
+                    <img
+                      src={product.images?.[0] || product.image || "/placeholder-ant.svg"}
+                      alt={getText(product.title, lang)}
+                      loading="lazy"
+                    />
                   </Link>
-                  {cross.priceOptions?.[0] && <span className="cross-card__price">{cross.priceOptions[0].value}</span>}
-                  <button type="button" className="btn btn-light" onClick={() => addItem(cross.id)}>
-                    {getText({ ru: "Добавить вместе", ro: "Adaugă împreună", en: "Add together" }, lang)}
-                  </button>
-                </div>
-              </article>
-            ))}
+                  <div className="cross-card__body">
+                    {roleBadge[role] && (
+                      <span className={`cross-card__role${isGift ? " cross-card__role--gift" : ""}`}>
+                        {getText(roleBadge[role], lang)}
+                      </span>
+                    )}
+                    <Link className="cross-card__title" to={to}>
+                      {getText(product.title, lang)}
+                    </Link>
+                    {price && (
+                      <span className="cross-card__price">
+                        {isGift ? (
+                          <>
+                            <s>{price}</s>{" "}
+                            <em>{getText({ ru: "0 лей в комплекте", ro: "0 lei în set", en: "0 lei in the set" }, lang)}</em>
+                          </>
+                        ) : (
+                          price
+                        )}
+                      </span>
+                    )}
+                    {isGift ? (
+                      <p className="cross-card__gift-note">
+                        {getText(
+                          {
+                            ru: "Добавим к заказу сами, когда в нём есть колония и формикарий.",
+                            ro: "Îl adăugăm noi la comandă când conține colonie și formicariu.",
+                            en: "We add it to the order ourselves once it has a colony and a formicarium.",
+                          },
+                          lang
+                        )}
+                      </p>
+                    ) : (
+                      <button type="button" className="btn btn-light" onClick={() => addCrossItem(product)}>
+                        {getText({ ru: "Добавить вместе", ro: "Adaugă împreună", en: "Add together" }, lang)}
+                      </button>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
       )}

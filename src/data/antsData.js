@@ -37,8 +37,56 @@ export const priceOptions = [
   },
 ];
 
+// У Messor сейчас в наличии только одна градация: колоний «матка + расплод» и
+// крупных (15-30 рабочих) пока нет. Отдельный массив нужен потому, что базовый
+// priceOptions делят Messor и Lasius Niger, а ограничение только у Messor.
+export const messorPriceOptions = [
+  {
+    label: {
+      ru: "Матка + 5-15 муравьёв",
+      ro: "Regina + 5-15 furnici",
+      en: "Queen + 5-15 ants",
+    },
+    value: "650 лей",
+    selected: true,
+  },
+];
+
 // Camponotus Fellah is a premium species and is priced higher than the others.
+// Конкурентов по этому виду в Молдове нет (у ближайшего магазина только Messor
+// и Tetramorium), поэтому цена не привязана к чужому прайсу.
 export const camponotusPriceOptions = [
+  {
+    label: {
+      ru: "Матка + расплод (стартовая колония)",
+      ro: "Regina + puiet (colonie starter)",
+      en: "Queen + brood (starter colony)",
+    },
+    value: "900 лей",
+    selected: true,
+  },
+  {
+    label: {
+      ru: "Матка + 5-15 муравьёв",
+      ro: "Regina + 5-15 furnici",
+      en: "Queen + 5-15 ants",
+    },
+    value: "1000 лей",
+    selected: false,
+  },
+  {
+    label: {
+      ru: "Матка + 15-30 муравьёв",
+      ro: "Regina + 15-30 furnici",
+      en: "Queen + 15-30 ants",
+    },
+    value: "1100 лей",
+    selected: false,
+  },
+];
+
+// Formica species are currently scarce (only a few of each), small premium.
+export const formicaPriceOptions = [
   {
     label: {
       ru: "Матка + расплод (стартовая колония)",
@@ -68,8 +116,8 @@ export const camponotusPriceOptions = [
   },
 ];
 
-// Formica species are currently scarce (only a few of each), small premium.
-export const formicaPriceOptions = [
+// Lasius neglectus is a popular fast-growing super colony, small premium.
+export const neglectusPriceOptions = [
   {
     label: {
       ru: "Матка + расплод (стартовая колония)",
@@ -99,37 +147,6 @@ export const formicaPriceOptions = [
   },
 ];
 
-// Lasius neglectus is a popular fast-growing super colony, small premium.
-export const neglectusPriceOptions = [
-  {
-    label: {
-      ru: "Матка + расплод (стартовая колония)",
-      ro: "Regina + puiet (colonie starter)",
-      en: "Queen + brood (starter colony)",
-    },
-    value: "600 лей",
-    selected: true,
-  },
-  {
-    label: {
-      ru: "Матка + 5-15 муравьёв",
-      ro: "Regina + 5-15 furnici",
-      en: "Queen + 5-15 ants",
-    },
-    value: "700 лей",
-    selected: false,
-  },
-  {
-    label: {
-      ru: "Матка + 15-30 муравьёв",
-      ro: "Regina + 15-30 furnici",
-      en: "Queen + 15-30 ants",
-    },
-    value: "800 лей",
-    selected: false,
-  },
-];
-
 export const ants = [
   {
     id: 44,
@@ -154,9 +171,11 @@ export const ants = [
     queenSize: { ru: "10-12 мм", ro: "10-12 mm", en: "10-12 mm" },
     workerSize: { ru: "4-9 мм", ro: "4-9 mm", en: "4-9 mm" },
     soldierSize: { ru: "до 12 мм", ro: "până la 12 mm", en: "up to 12 mm" },
-    colonySize: { ru: "Матка + 10–20 рабочих", ro: "Regină + 10–20 lucrătoare", en: "Queen + 10–20 workers" },
+    colonySize: { ru: "Матка + 5-15 рабочих", ro: "Regină + 5-15 lucrătoare", en: "Queen + 5-15 workers" },
     food: { ru: "Семена и зёрна", ro: "Semințe și grăunțe", en: "Seeds and grains" },
-    priceOptions,
+    // Рацион определяет, какой корм предлагаем к колонии (см. foodForAnt в accessoriesData.js).
+    diet: "seeds",
+    priceOptions: messorPriceOptions,
     availability: "inStock",
     characteristics: [
       {
@@ -199,6 +218,7 @@ export const ants = [
     workerSize: { ru: "5-7 мм", ro: "5-7 mm", en: "5-7 mm" },
     colonySize: { ru: "Матка + расплод", ro: "Regină + puiet", en: "Queen + brood" },
     food: { ru: "Сахарный сироп, насекомые", ro: "Sirop de zahăr, insecte", en: "Sugar syrup, insects" },
+    diet: "insects",
     priceOptions: formicaPriceOptions,
     availability: "inStock",
     characteristics: [
@@ -216,7 +236,7 @@ export const ants = [
       },
       {
         label: { ru: "Зимовка", ro: "Hibernare", en: "Hibernation" },
-        value: { ru: "Обязательна, 5–10 °C", ro: "Obligatorie, 5–10 °C", en: "Required, 5–10 °C" }
+        value: { ru: "Обязательна, 5-10 °C", ro: "Obligatorie, 5-10 °C", en: "Required, 5-10 °C" }
       }
     ],
     recommendedFormicariumIds: [203, 202],
@@ -246,6 +266,7 @@ export const ants = [
     workerSize: { ru: "6-9 мм", ro: "6-9 mm", en: "6-9 mm" },
     colonySize: { ru: "Матка + расплод", ro: "Regină + puiet", en: "Queen + brood" },
     food: { ru: "Насекомые, сахарный сироп", ro: "Insecte, sirop de zahăr", en: "Insects, sugar syrup" },
+    diet: "insects",
     priceOptions: formicaPriceOptions,
     availability: "inStock",
     characteristics: [
@@ -263,7 +284,7 @@ export const ants = [
       },
       {
         label: { ru: "Зимовка", ro: "Hibernare", en: "Hibernation" },
-        value: { ru: "Обязательна, 5–10 °C", ro: "Obligatorie, 5–10 °C", en: "Required, 5–10 °C" }
+        value: { ru: "Обязательна, 5-10 °C", ro: "Obligatorie, 5-10 °C", en: "Required, 5-10 °C" }
       }
     ],
     recommendedFormicariumIds: [203, 202],
@@ -293,6 +314,7 @@ export const ants = [
     workerSize: { ru: "2-3 мм", ro: "2-3 mm", en: "2-3 mm" },
     colonySize: { ru: "Матка + расплод", ro: "Regină + puiet", en: "Queen + brood" },
     food: { ru: "Сахарный сироп, насекомые", ro: "Sirop de zahăr, insecte", en: "Sugar syrup, insects" },
+    diet: "insects",
     priceOptions: neglectusPriceOptions,
     availability: "inStock",
     characteristics: [
@@ -340,6 +362,7 @@ export const ants = [
     workerSize: { ru: "3-5 мм", ro: "3-5 mm", en: "3-5 mm" },
     colonySize: { ru: "Матка + расплод", ro: "Regină + puiet", en: "Queen + brood" },
     food: { ru: "Сахарный сироп, насекомые", ro: "Sirop de zahăr, insecte", en: "Sugar syrup, insects" },
+    diet: "insects",
     priceOptions,
     availability: "preorder",
     characteristics: [
@@ -384,6 +407,7 @@ export const ants = [
     soldierSize: { ru: "14-18 мм", ro: "14-18 mm", en: "14-18 mm" },
     colonySize: { ru: "Матка + расплод", ro: "Regină + puiet", en: "Queen + brood" },
     food: { ru: "Белок и сахарный сироп", ro: "Proteine și sirop de zahăr", en: "Protein and sugar syrup" },
+    diet: "insects",
     priceOptions: camponotusPriceOptions,
     availability: "preorder",
     characteristics: [

@@ -29,8 +29,18 @@ export default function FormicPage() {
 
   // Cross-sell: colonies recommended for this formicarium
   const crossSell = ants.filter((ant) => formic.recommendedAntIds?.includes(ant.id));
-  // Similar: other formicariums only — hidden when the catalog has a single model
+  // Similar: other formicariums only - hidden when the catalog has a single model
   const similar = formicariums.filter((item) => item.slug !== formic.slug);
 
-  return <ProductDetail item={formic} type="formicarium" crossSell={crossSell} similar={similar} />;
+  // key по id - иначе переход между формикариями из «Похожих» сохраняет индекс
+  // галереи, и на товаре с меньшим числом фото показывается заглушка.
+  return (
+    <ProductDetail
+      key={formic.id}
+      item={formic}
+      type="formicarium"
+      crossSell={crossSell}
+      similar={similar}
+    />
+  );
 }

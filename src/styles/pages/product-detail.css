@@ -381,6 +381,14 @@
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 18px;
 }
+/* Блок «Что нужно для старта» - строго 2 колонки: позиций немного, а в широкой
+   карточке помещаются и плашка роли, и зачёркнутая цена, и пояснение к подарку. */
+.cross-sell--starter {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.cross-sell--starter .cross-card {
+  grid-template-columns: 132px 1fr;
+}
 .cross-card {
   display: grid;
   grid-template-columns: 110px 1fr;
@@ -417,6 +425,74 @@
 .cross-card__price {
   color: var(--accent);
   font-weight: 800;
+}
+
+/* Пояснение к комплекту «колония + формикарий» над карточками. */
+.starter-note {
+  max-width: 70ch;
+  margin: -4px 0 18px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* Роль позиции в комплекте: дом / корм / подарок. */
+.cross-card__role {
+  justify-self: start;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+.cross-card__role--gift {
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent-dark);
+}
+.cross-card--gift {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 34%, var(--line));
+}
+.cross-card__price s {
+  color: var(--muted);
+  font-weight: 600;
+}
+.cross-card__price em {
+  color: var(--accent);
+  font-style: normal;
+}
+.cross-card__gift-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Плашка «в подарок» на странице аксессуара. */
+.gift-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin: 4px 0 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: var(--surface-soft);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.gift-note__tag {
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--accent-dark);
+  font-size: 12px;
+  font-weight: 800;
+}
+.gift-note a {
+  color: var(--accent);
+  font-weight: 700;
 }
 
 /* ===== 6. Tabs ===== */
@@ -657,6 +733,12 @@
 }
 
 @media (max-width: 680px) {
+  .cross-sell--starter {
+    grid-template-columns: 1fr;
+  }
+  .cross-sell--starter .cross-card {
+    grid-template-columns: 110px 1fr;
+  }
   .product-gallery__lightbox img {
     width: 100%;
   }

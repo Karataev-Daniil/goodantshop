@@ -95,7 +95,7 @@
     color: #fff;
   }
 
-  /* Over the hero photo the default cream hover looks like a white box —
+  /* Over the hero photo the default cream hover looks like a white box -
      use the same translucent hover as the nav links, and lighten the chevron. */
   .site-header.is-transparent .lang-dropdown__trigger:hover,
   .site-header.is-transparent .lang-dropdown[open] .lang-dropdown__trigger {
@@ -165,7 +165,7 @@
   gap: 6px;
 }
 
-/* Hamburger button — hidden on desktop, shown on mobile (see media query) */
+/* Hamburger button - hidden on desktop, shown on mobile (see media query) */
 .nav-toggle {
   display: none;
   position: relative;
@@ -218,7 +218,7 @@
   transform: translate(-50%, 0) rotate(-45deg);
 }
 
-/* Language picker — lives inside the mobile menu, hidden on desktop */
+/* Language picker - lives inside the mobile menu, hidden on desktop */
 .nav-lang {
   display: none;
   margin-top: 22px;
@@ -601,7 +601,7 @@
   }
 }
 
-/* Narrow desktop / tablet — collapse the phone to an icon-only tap target so
+/* Narrow desktop / tablet - collapse the phone to an icon-only tap target so
    the header doesn't crowd; the full number stays on the contacts page. */
 @media (max-width: 880px) {
   .header-phone__number {
@@ -640,7 +640,7 @@
     display: none;
   }
 
-  /* Full-screen menu below the 56px header — no overlap with the header
+  /* Full-screen menu below the 56px header - no overlap with the header
      controls, so no z-index juggling is needed. */
   .main-nav {
     position: fixed;
@@ -693,7 +693,7 @@
   }
 }
 
-/* Very small phones (< 412px) — drop the ".md" suffix and the "• Корм" tail of
+/* Very small phones (< 412px) - drop the ".md" suffix and the "• Корм" tail of
    the subtitle so the logo lockup stays compact ("Муравьи • Формикарии" stays). */
 @media (max-width: 412px) {
   .brand strong span:last-child, /* ".md" */

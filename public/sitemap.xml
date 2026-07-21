@@ -308,4 +308,96 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/blog/why-ants-are-fascinating"/>
   </url>
   <!-- Добавляйте сюда новые статьи блога (по 3 языка), когда публикуете. -->
+
+  <!-- Дополнительные товары: набор инструментов, корм, живой корм. -->
+  <url>
+    <loc>https://goodantshop.md/ru/accessories/tool-kit</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/accessories/tool-kit"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/accessories/tool-kit"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/accessories/tool-kit"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/accessories/tool-kit"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/ro/accessories/tool-kit</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/accessories/tool-kit"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/accessories/tool-kit"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/accessories/tool-kit"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/accessories/tool-kit"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/en/accessories/tool-kit</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/accessories/tool-kit"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/accessories/tool-kit"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/accessories/tool-kit"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/accessories/tool-kit"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/ru/accessories/seed-mix</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/accessories/seed-mix"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/accessories/seed-mix"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/accessories/seed-mix"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/accessories/seed-mix"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/ro/accessories/seed-mix</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/accessories/seed-mix"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/accessories/seed-mix"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/accessories/seed-mix"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/accessories/seed-mix"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/en/accessories/seed-mix</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/accessories/seed-mix"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/accessories/seed-mix"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/accessories/seed-mix"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/accessories/seed-mix"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/ru/accessories/feeder-beetle</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/accessories/feeder-beetle"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/accessories/feeder-beetle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/accessories/feeder-beetle"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/accessories/feeder-beetle"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/ro/accessories/feeder-beetle</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/accessories/feeder-beetle"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/accessories/feeder-beetle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/accessories/feeder-beetle"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/accessories/feeder-beetle"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/en/accessories/feeder-beetle</loc>
+    <lastmod>2026-07-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/accessories/feeder-beetle"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/accessories/feeder-beetle"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/accessories/feeder-beetle"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/accessories/feeder-beetle"/>
+  </url>
 </urlset>

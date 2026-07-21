@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import ProductDetail from "../components/ProductDetail";
 import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
+import { foodForAnt, foodsForAnt, toolKit } from "../data/accessoriesData";
 
 const getText = (value, lang) => {
   if (value && typeof value === "object") {
@@ -35,5 +36,32 @@ export default function SingleAntPage() {
   // Similar: other ants only
   const similar = ants.filter((item) => item.slug !== ant.slug);
 
-  return <ProductDetail item={ant} type="ant" crossSell={crossSell} similar={similar} />;
+  // Что показываем к колонии: все подходящие корма (жнецам - семена и живой
+  // белок, остальным - только живой) и набор инструментов. Подарком к комплекту
+  // идут набор и ОСНОВНОЙ корм вида; второй корм - платное дополнение.
+  const giftFood = foodForAnt(ant);
+  const kit = toolKit();
+  const extras = {
+    items: [
+      ...foodsForAnt(ant).map((food) => ({
+        product: food,
+        role: food.id === giftFood?.id ? "gift" : "food",
+      })),
+      ...(kit ? [{ product: kit, role: "gift" }] : []),
+    ],
+  };
+
+  // key по id: переход из блока «Похожие товары» не меняет маршрут, поэтому без
+  // него компонент не перемонтируется и тащит на новый товар индекс галереи,
+  // выбранную градацию цены и количество от предыдущего.
+  return (
+    <ProductDetail
+      key={ant.id}
+      item={ant}
+      type="ant"
+      crossSell={crossSell}
+      similar={similar}
+      extras={extras}
+    />
+  );
 }

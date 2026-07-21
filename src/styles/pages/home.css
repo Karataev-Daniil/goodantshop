@@ -270,7 +270,7 @@
   scroll-margin-top: 96px;
 }
 
-/* SEO content block — readable prose, distinct from the card grids */
+/* SEO content block - readable prose, distinct from the card grids */
 .seo-prose__inner {
   max-width: 860px;
 }
@@ -471,7 +471,7 @@
   font-weight: 800;
 }
 
-/* USP block — soft panel with icon cards, distinct from the other grids */
+/* USP block - soft panel with icon cards, distinct from the other grids */
 .why-buy-us {
   padding: 44px;
   border-radius: 28px;
@@ -725,7 +725,7 @@
   text-align: center;
 }
 
-/* "Reasons to start" — light, airy checklist instead of heavy cards */
+/* "Reasons to start" - light, airy checklist instead of heavy cards */
 .why-hobby .content-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px 44px;
@@ -761,7 +761,7 @@
   font-weight: 700;
 }
 
-/* "How to start" — numbered timeline instead of cards */
+/* "How to start" - numbered timeline instead of cards */
 .how-it-works .steps-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 28px;
@@ -1294,7 +1294,7 @@
     padding: 0;
   }
 
-  /* Long RU labels don't fit two narrow columns — stack full width on phones */
+  /* Long RU labels don't fit two narrow columns - stack full width on phones */
   .hero-trust__grid {
     grid-template-columns: 1fr;
   }

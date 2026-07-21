@@ -11,7 +11,7 @@ export const SUPPORTED_LANGS = ["ru", "ro", "en"];
 export const SITE_PHONE = "+37360983052";
 export const SITE_PHONE_DISPLAY = "060 983 052";
 
-// Instagram нельзя «поделиться ссылкой» из веба — кнопка ведёт на профиль.
+// Instagram нельзя «поделиться ссылкой» из веба - кнопка ведёт на профиль.
 // TODO: заменить на реальный аккаунт GoodAntShop.
 export const SITE_INSTAGRAM = "https://www.instagram.com/";
 
@@ -144,6 +144,8 @@ export const pageSeo = {
 
 export const productSeo = (product, type, lang = "ru") => {
   const title = getText(product.title, lang);
+  // У аксессуаров типового существительного нет - их название уже describes
+  // сам товар («Набор инструментов…»), поэтому заголовок строим без него.
   const typeName = {
     ant: {
       ru: "колонию муравьёв",
@@ -156,12 +158,15 @@ export const productSeo = (product, type, lang = "ru") => {
       en: "a formicarium",
     },
   };
+  const noun = typeName[type];
+  const buy = (lang_, verb) =>
+    noun ? `${verb} ${getText(noun, lang_)} ` : `${verb} `;
 
   return {
     title: {
-      ru: `${title}: купить ${getText(typeName[type], "ru")} в Молдове | GoodAntShop`,
-      ro: `${title}: cumpără ${getText(typeName[type], "ro")} în Moldova | GoodAntShop`,
-      en: `${title}: buy ${getText(typeName[type], "en")} in Moldova | GoodAntShop`,
+      ru: `${title}: ${buy("ru", "купить")}в Молдове | GoodAntShop`,
+      ro: `${title}: ${buy("ro", "cumpără")}în Moldova | GoodAntShop`,
+      en: `${title}: ${buy("en", "buy")}in Moldova | GoodAntShop`,
     },
     description: {
       ru: `${getText(product.excerpt, "ru")} Цена от ${priceValue(product) || ""} лей. Доставка по всей Молдове и поддержка после покупки.`,
@@ -246,21 +251,30 @@ export const reviewSchema = (review) => ({
   },
 });
 
+const PRODUCT_CATEGORY = {
+  ant: "Ant colony",
+  formicarium: "Formicarium",
+  accessory: "Ant keeping accessory",
+};
+
 export const productSchema = (product, type, lang = "ru", path = "/") => {
   const images = product.images?.length ? product.images : [product.image].filter(Boolean);
+  // AggregateRating без отзывов невалиден - отдаём разметку только когда они есть.
+  const productReviews = reviewsFor(type);
 
   return {
     "@type": "Product",
     name: getText(product.title, lang),
     description: getText(product.description, lang) || getText(product.excerpt, lang),
     image: images.map(absoluteUrl),
-    category: type === "ant" ? "Ant colony" : "Formicarium",
+    category: PRODUCT_CATEGORY[type] || PRODUCT_CATEGORY.accessory,
     brand: {
       "@type": "Brand",
       name: SITE_NAME,
     },
-    aggregateRating: aggregateRatingSchema(type),
-    review: reviewsFor(type).map(reviewSchema),
+    ...(productReviews.length
+      ? { aggregateRating: aggregateRatingSchema(type), review: productReviews.map(reviewSchema) }
+      : {}),
     offers: {
       "@type": "Offer",
       url: localizedUrl(lang, path),
@@ -285,7 +299,7 @@ export const productSchema = (product, type, lang = "ru", path = "/") => {
           addressRegion: "Chișinău",
         },
       },
-      // Sales are final — returns are not offered.
+      // Sales are final - returns are not offered.
       hasMerchantReturnPolicy: {
         "@type": "MerchantReturnPolicy",
         applicableCountry: "MD",
@@ -316,7 +330,7 @@ export const faqSchema = (lang = "ru", items = []) => ({
   })),
 });
 
-// VideoObject — даёт видео шанс попасть в Google Видео и в rich-результаты.
+// VideoObject - даёт видео шанс попасть в Google Видео и в rich-результаты.
 export const videoSchema = (video, lang = "ru") => {
   if (!video) return null;
   return {
@@ -331,7 +345,7 @@ export const videoSchema = (video, lang = "ru") => {
   };
 };
 
-// BlogPosting — статья блога. Включает автора, даты и (при наличии) вложенное
+// BlogPosting - статья блога. Включает автора, даты и (при наличии) вложенное
 // видео, чтобы одна разметка описывала весь пост.
 export const articleSchema = (post, lang = "ru", path = "/") => {
   const images = post.cover?.src ? [absoluteUrl(post.cover.src)] : [DEFAULT_IMAGE];
