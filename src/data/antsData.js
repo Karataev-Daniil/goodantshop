@@ -50,6 +50,15 @@ export const messorPriceOptions = [
     value: "650 лей",
     selected: true,
   },
+  {
+    label: {
+      ru: "Матка + 15-30 муравьёв",
+      ro: "Regina + 15-30 furnici",
+      en: "Queen + 15-30 ants",
+    },
+    value: "750 лей",
+    selected: false,
+  },
 ];
 
 // Camponotus Fellah is a premium species and is priced higher than the others.
