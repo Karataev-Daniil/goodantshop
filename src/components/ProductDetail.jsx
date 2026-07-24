@@ -260,10 +260,11 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
       ? { ru: "Что нужно для старта", ro: "De ce ai nevoie la start", en: "What you need to start" }
       : { ru: "Выберите колонию для заселения", ro: "Alege o colonie pentru populare", en: "Choose a colony to move in" };
 
-  // На странице колонии собираем всё, с чем её отправляем: дом (без него не
-  // продаём), корм под рацион вида и набор инструментов - он идёт подарком.
-  // Дом берём из crossSell, остальное (корма и набор) страница передаёт готовым
-  // списком в extras.items - она же решает, что идёт подарком, а что платно.
+  // На странице колонии собираем комплект: дом, корм под рацион вида и набор
+  // инструментов. Дом не обязателен к покупке, но к комплекту с ним набор и корм
+  // идут подарком - этим он и предлагается. Дом берём из crossSell, остальное
+  // (корма и набор) страница передаёт готовым списком в extras.items - она же
+  // решает, что идёт подарком, а что платно.
   const accessoryPath = (slug) => `/${lang}/accessories/${slug}`;
   const starterItems =
     type === "ant"
@@ -291,11 +292,12 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
     gift: { ru: "Подарок к комплекту", ro: "Cadou la set", en: "Free with the set" },
   };
 
-  // Мягкая формулировка правила: объясняем «почему», а не запрещаем.
+  // Предложение, а не требование: дом можно взять сейчас и получить подарки,
+  // а можно позже - колония пока поживёт в пробирке.
   const bundleNote = {
-    ru: "Формикарий понадобится колонии в любом случае, поэтому мы отправляем их вместе, а набор инструментов и корм к комплекту дарим. С переездом при этом можно не спешить, первое время колония живёт в пробирке и переселяется, когда окрепнет.",
-    ro: "Formicariul îi va fi oricum necesar coloniei, de aceea le trimitem împreună, iar setul de instrumente și hrana le facem cadou. Cu mutarea nu trebuie să te grăbești, la început colonia stă în eprubetă și se mută atunci când se întărește.",
-    en: "Your colony will need a formicarium anyway, so we ship them together and throw in the tool kit and food for free. There's no rush with the move, at first the colony lives in its test tube and is rehoused once it grows stronger.",
+    ru: "Формикарий колонии понадобится в любом случае. Возьмёте его вместе с колонией, и в подарок пойдут набор инструментов с кормом, а доставка по Кишинёву станет бесплатной. С переездом можно не спешить, первое время колония живёт в пробирке и переселяется, когда окрепнет.",
+    ro: "Formicariul îi va fi oricum necesar coloniei. Dacă îl iei împreună cu colonia, primești cadou setul de instrumente și hrana, iar livrarea în Chișinău devine gratuită. Cu mutarea nu trebuie să te grăbești, la început colonia stă în eprubetă și se mută atunci când se întărește.",
+    en: "Your colony will need a formicarium sooner or later. Take it together with the colony and you get the tool kit and food as a gift, plus free delivery in Chișinău. There's no rush with the move, at first the colony lives in its test tube and is rehoused once it grows stronger.",
   };
   const seo = productSeo(item, type, lang);
   const productPath = type === "ant" ? `/ants/${item.slug}` : `/formic/${item.slug}`;

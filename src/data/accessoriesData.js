@@ -44,6 +44,12 @@ export const accessories = [
       ro: "Sunt lucrurile pe care le folosești în fiecare săptămână. Cu penseta scoți resturile de hrană, cu pipeta și seringa dai apă și sirop, iar cârligul te ajută să aranjezi ceva înăuntru fără să desfaci cuibul. Bilele de vată închid intrarea și mențin umiditatea, iar pensula moale mătură furnicile de pe capac fără să le strivească. Separat sunt fleacuri de câțiva lei, pe care apoi le cauți prin toată casa - aici sunt strânse într-o singură cutie.",
       en: "These are the things you reach for every week. Tweezers pull out leftover food, the pipette and syringe deliver water and syrup, and the hook lets you adjust something inside without taking the nest apart. Cotton balls plug the entrance and hold humidity, while the soft brush sweeps ants off the lid without crushing them. Separately these are pennies' worth of odds and ends you then hunt for around the house - here they come in one box.",
     },
+    // Короткая выгода - показывается под названием в поп-апе подарков.
+    benefit: {
+      ru: "Без него ухаживать за колонией тяжело",
+      ro: "Fără el, îngrijirea coloniei devine un chin",
+      en: "Without it, caring for the colony is a pain",
+    },
     image: toolKitFlatlay,
     images: [toolKitFlatlay, toolKitContents],
     includes: [
@@ -74,7 +80,7 @@ export const accessories = [
   },
 
   // ==========================================================================
-  // ЗЕРНОВАЯ СМЕСЬ - корм для жнецов (Messor). 80 лей за шприц 20 мл с 15 г зерна.
+  // ЗЕРНОВАЯ СМЕСЬ - корм для жнецов (Messor). 80 лей за контейнер с 15 г зерна.
   // ==========================================================================
   {
     id: 302,
@@ -88,29 +94,34 @@ export const accessories = [
       en: "Seed mix for harvester ants",
     },
     excerpt: {
-      ru: "Смесь мелких семян, из которых жнецы пекут «муравьиный хлеб». Одного шприца колонии Messor хватает на 2-3 года.",
-      ro: "Un amestec de semințe mici din care secerătoarele fac «pâinea furnicilor». O seringă îi ajunge unei colonii de Messor 2-3 ani.",
-      en: "A mix of small seeds the harvesters turn into «ant bread». One syringe lasts a Messor colony 2-3 years.",
+      ru: "Смесь мелких семян, из которых жнецы пекут «муравьиный хлеб». Одного контейнера хватает колонии Messor на 4-5 лет.",
+      ro: "Un amestec de semințe mici din care secerătoarele fac «pâinea furnicilor». Un recipient îi ajunge unei colonii de Messor 4-5 ani.",
+      en: "A mix of small seeds the harvesters turn into «ant bread». One container lasts a Messor colony 4-5 years.",
     },
     description: {
-      ru: "Жнецы не охотятся. Они собирают семена, дробят их челюстями и превращают в питательную массу для личинок. Смесь подобрана из мелких зёрен, которые колония берёт охотно и может грызть даже небольшими рабочими. Идёт в шприце на 20 мл, заполненном 15 граммами зерна: колонии Messor такого запаса хватает на 2-3 года, ведь едят они граммы в месяц, а сухие семена не портятся. Шприцем удобно отсыпать ровно столько, сколько нужно, не открывая всю упаковку.",
-      ro: "Secerătoarele nu vânează. Adună semințe, le sparg cu mandibulele și le transformă într-o masă hrănitoare pentru larve. Amestecul e ales din boabe mici, pe care colonia le ia cu plăcere și le poate roade chiar și cu lucrătoare mărunte. Vine într-o seringă de 20 ml umplută cu 15 grame de boabe: unei colonii de Messor rezerva îi ajunge 2-3 ani, fiindcă mănâncă grame pe lună, iar semințele uscate nu se strică. Cu seringa dozezi exact cât trebuie, fără să deschizi tot ambalajul.",
-      en: "Harvesters don't hunt. They gather seeds, crush them with their jaws and turn them into a nutritious paste for the larvae. The mix uses small grains the colony takes readily and even little workers can gnaw. It comes in a 20 ml syringe holding 15 grams of grain: that stock lasts a Messor colony 2-3 years, since they eat grams per month and dry seeds don't spoil. The syringe lets you dispense exactly what you need without opening the whole pack.",
+      ru: "Жнецы не охотятся. Они собирают семена, дробят их челюстями и превращают в питательную массу для личинок. Смесь подобрана из мелких зёрен, которые колония берёт охотно и может грызть даже небольшими рабочими. Идёт в удобном контейнере с 15 граммами зерна. Колонии Messor такого запаса хватает на 4-5 лет, ведь едят они граммы в месяц, а сухие семена не портятся. Отсыпать можно ровно столько, сколько нужно, не открывая весь запас.",
+      ro: "Secerătoarele nu vânează. Adună semințe, le sparg cu mandibulele și le transformă într-o masă hrănitoare pentru larve. Amestecul e ales din boabe mici, pe care colonia le ia cu plăcere și le poate roade chiar și cu lucrătoare mărunte. Vine într-un recipient comod cu 15 grame de boabe. Unei colonii de Messor rezerva îi ajunge 4-5 ani, fiindcă mănâncă grame pe lună, iar semințele uscate nu se strică. Poți doza exact cât trebuie, fără să deschizi toată rezerva.",
+      en: "Harvesters don't hunt. They gather seeds, crush them with their jaws and turn them into a nutritious paste for the larvae. The mix uses small grains the colony takes readily and even little workers can gnaw. It comes in a handy container with 15 grams of grain. That stock lasts a Messor colony 4-5 years, since they eat grams per month and dry seeds don't spoil. You can dispense exactly what you need without opening the whole stash.",
+    },
+    benefit: {
+      ru: "Одного контейнера хватит колонии на 4-5 лет",
+      ro: "Un recipient îi ajunge coloniei 4-5 ani",
+      en: "One container lasts the colony 4-5 years",
     },
     image: seedMix,
     images: [seedMix],
     includes: [
-      { ru: "Шприц 20 мл с 15 г зерновой смеси", ro: "Seringă de 20 ml cu 15 g amestec de semințe", en: "20 ml syringe with 15 g of seed mix" },
-      { ru: "Колонии Messor хватает на 2-3 года", ro: "Îi ajunge unei colonii de Messor 2-3 ani", en: "Lasts a Messor colony 2-3 years" },
+      { ru: "Контейнер с 15 г зерновой смеси", ro: "Recipient cu 15 g de amestec de semințe", en: "Container with 15 g of seed mix" },
+      { ru: "Колонии Messor хватает на 4-5 лет", ro: "Îi ajunge unei colonii de Messor 4-5 ani", en: "Lasts a Messor colony 4-5 years" },
     ],
     usage: {
-      ru: "Держите шприц закрытым, а арену сухой, ведь от сырости семена плесневеют. Отсыпайте небольшими порциями, колония сама утащит запас в гнездо.",
-      ro: "Ține seringa închisă, iar arena uscată, fiindcă la umezeală semințele mucegăiesc. Dozează porții mici, colonia își duce singură rezerva în cuib.",
-      en: "Keep the syringe closed and the arena dry, because damp makes seeds mould. Dispense small portions, the colony will carry its own stash into the nest.",
+      ru: "Держите контейнер закрытым, а арену сухой, ведь от сырости семена плесневеют. Отсыпайте небольшими порциями, колония сама утащит запас в гнездо.",
+      ro: "Ține recipientul închis, iar arena uscată, fiindcă la umezeală semințele mucegăiesc. Dozează porții mici, colonia își duce singură rezerva în cuib.",
+      en: "Keep the container closed and the arena dry, because damp makes seeds mould. Dispense small portions, the colony will carry its own stash into the nest.",
     },
     priceOptions: [
       {
-        label: { ru: "Шприц 20 мл, 15 г", ro: "Seringă 20 ml, 15 g", en: "20 ml syringe, 15 g" },
+        label: { ru: "Контейнер, 15 г", ro: "Recipient, 15 g", en: "Container, 15 g" },
         value: "80 лей",
         selected: true,
       },
@@ -142,6 +153,11 @@ export const accessories = [
       ru: "Почти всем видам, кроме жнецов, нужен животный белок. Без него личинки растут медленно, а матка хуже несётся. Удобнее всего держать собственную культуру жуков. Вы получаете контейнер со взрослыми жуками, личинками и субстратом. Личинок даёте муравьям, а культура тем временем восполняет себя сама, ведь жуки продолжают откладывать яйца. Ухода почти нет. Раз в неделю подсыпьте отрубей и положите кусочек моркови или яблока для влаги.",
       ro: "Aproape toate speciile, în afară de secerătoare, au nevoie de proteină animală. Fără ea larvele cresc încet, iar regina depune mai puțin. Cel mai comod e să ții propria cultură de gândaci. Primești un recipient cu adulți, larve și substrat. Larvele le dai furnicilor, iar cultura se reface singură între timp, fiindcă gândacii continuă să depună ouă. Îngrijire aproape că nu are. O dată pe săptămână presară tărâțe și pune o bucată de morcov sau de măr pentru umiditate.",
       en: "Almost every species except harvesters needs animal protein. Without it larvae grow slowly and the queen lays less. The most convenient way is to keep your own beetle culture. You get a container with adults, larvae and substrate. You feed the larvae to the ants while the culture replenishes itself, because the beetles keep laying eggs. Care is minimal. Once a week add bran and drop in a piece of carrot or apple for moisture.",
+    },
+    benefit: {
+      ru: "Разводится сама, покупать больше не нужно",
+      ro: "Se înmulțește singură, nu mai cumperi",
+      en: "Breeds itself, no need to rebuy",
     },
     image: feederBeetleCulture,
     images: [feederBeetleCulture],

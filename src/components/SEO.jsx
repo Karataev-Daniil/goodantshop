@@ -260,7 +260,9 @@ const PRODUCT_CATEGORY = {
 export const productSchema = (product, type, lang = "ru", path = "/") => {
   const images = product.images?.length ? product.images : [product.image].filter(Boolean);
   // AggregateRating без отзывов невалиден - отдаём разметку только когда они есть.
-  const productReviews = reviewsFor(type);
+  // Для аксессуаров рейтинг НЕ отдаём: своих отзывов у них нет, а рейтинг из
+  // общих отзывов магазина Google не считает относящимся к товару (риск санкции).
+  const productReviews = type === "accessory" ? [] : reviewsFor(type);
 
   return {
     "@type": "Product",
@@ -284,13 +286,14 @@ export const productSchema = (product, type, lang = "ru", path = "/") => {
       seller: {
         "@id": `${SITE_URL}/#organization`,
       },
-      // Flat 200 MDL within Chișinău. Out-of-town delivery is variable
-      // (public transport fare + 100 MDL), so it can't be a fixed rate here.
+      // Flat 150 MDL within Chișinău (free when the order includes a
+      // formicarium). Out-of-town delivery is variable (public transport fare +
+      // 100 MDL), so it can't be a fixed rate here.
       shippingDetails: {
         "@type": "OfferShippingDetails",
         shippingRate: {
           "@type": "MonetaryAmount",
-          value: 200,
+          value: 150,
           currency: "MDL",
         },
         shippingDestination: {
