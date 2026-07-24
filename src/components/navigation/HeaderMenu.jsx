@@ -34,7 +34,10 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, [isHome, location.pathname]);
 
-  const transparent = isHome && !scrolled;
+  // Прозрачной шапку держим только поверх героя. Как только на мобилке открыто
+  // бургер-меню, лента лого+бургер должна стать сплошной под цвет белого меню,
+  // иначе верхняя полоса остаётся прозрачной поверх белого списка.
+  const transparent = isHome && !scrolled && !menuOpen;
 
   // Close the mobile menu on navigation.
   useEffect(() => {
