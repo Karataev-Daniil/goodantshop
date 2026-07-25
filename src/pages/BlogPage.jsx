@@ -54,7 +54,9 @@ function BlogCard({ post, lang }) {
 export default function BlogPage() {
   const { lang = "ru" } = useParams();
 
-  // Первый (новейший) пост показываем крупной featured-карточкой, остальные - сеткой.
+  // Порядок берём как есть из blogPostsData.js. Первый пост - крупная
+  // featured-карточка (сейчас вводный «манифест», его логично читать первым),
+  // остальные идут сеткой ниже.
   const featured = blogPosts[0] || null;
   const rest = blogPosts.slice(1);
 

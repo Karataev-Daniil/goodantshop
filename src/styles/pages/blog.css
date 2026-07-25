@@ -540,9 +540,14 @@
   pointer-events: none;
 }
 .blog-figure__btn:hover .blog-figure__zoom,
+.blog-figure__btn:hover .blog-figure__zoom,
 .blog-figure__btn:focus-visible .blog-figure__zoom {
   opacity: 1;
   transform: translateY(0);
+}
+/* Видео-«гифка»: курсор-лупа и никаких системных контролов внутри кнопки. */
+.blog-figure__btn .blog-video {
+  cursor: zoom-in;
 }
 
 /* Several photos in a row (each still zooms individually) */
@@ -585,6 +590,12 @@
   border-radius: 6px;
   cursor: zoom-in;
   transition: transform 0.25s ease;
+}
+.blog-lightbox__video {
+  max-width: 92vw;
+  max-height: 88vh;
+  border-radius: 6px;
+  cursor: default;
 }
 .blog-lightbox__img.is-zoomed {
   transform: scale(1.8);
@@ -828,12 +839,14 @@
   box-shadow: 0 0 0 1px var(--line);
   background: #000;
 }
-.blog-video iframe {
+.blog-video iframe,
+.blog-video video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border: 0;
+  object-fit: cover;
 }
 .blog-video--main {
   margin-bottom: 4px;
@@ -931,6 +944,10 @@
   display: grid;
   gap: 16px;
   margin-top: 12px;
+}
+/* «Читайте дальше» - строго в две колонки (в общей .blog-grid их три). */
+.blog-single__related .blog-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .blog-single__faq h2,
 .blog-single__related h2 {

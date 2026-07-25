@@ -18,6 +18,15 @@ import wingedQueenOnWood from "./blog/winged-queen-ant-on-wood.webp";
 import redAntsDrinkingWater from "./blog/red-ants-drinking-water-drop.webp";
 import woodAntsCarryingBeetle from "./blog/wood-ants-carrying-beetle-log.webp";
 
+// Снимки конкретно Messor structor (лежат рядом с фото товаров в ./ants/) -
+// переиспользуются и в каталоге, и в блоге, поэтому собраны здесь же.
+import messorStructor from "./ants/messor-structor.webp";
+import messorForagingSeeds from "./ants/messor-foraging-seeds.webp";
+import messorWorkersCloseup from "./ants/messor-workers-closeup.webp";
+import messorWorkerOnWood from "./ants/messor-worker-on-wood.webp";
+import messorWorker from "./ants/messor-worker.webp";
+import messorSoldier from "./ants/messor-soldier.webp";
+
 export {
   antColonyNestEntrance,
   antEmergingFromHole,
@@ -28,4 +37,10 @@ export {
   wingedQueenOnWood,
   redAntsDrinkingWater,
   woodAntsCarryingBeetle,
+  messorStructor,
+  messorForagingSeeds,
+  messorWorkersCloseup,
+  messorWorkerOnWood,
+  messorWorker,
+  messorSoldier,
 };

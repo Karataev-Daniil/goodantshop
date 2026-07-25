@@ -9,6 +9,7 @@ import SEO, {
   SITE_INSTAGRAM,
 } from "../components/SEO";
 import BlogImage from "../components/BlogImage";
+import BlogClip from "../components/BlogClip";
 import { blogPosts, getBlogCategory } from "../data/blogPostsData";
 import { formatBlogDate } from "./BlogPage";
 
@@ -177,6 +178,10 @@ function ContentBlock({ block, lang, headingId }) {
         </div>
       );
 
+    // Локальный ролик (mp4 из public/videos) как «живая гифка» с зумом по клику.
+    case "clip":
+      return <BlogClip clip={block} lang={lang} />;
+
     case "cta":
       return (
         <div className="blog-cta">
@@ -268,9 +273,15 @@ export default function SingleBlogPage() {
   const shareUrl =
     typeof window !== "undefined" ? window.location.href : `${SITE_URL}/${lang}${postPath}`;
   const shareTitle = getText(post.title, lang);
-  const relatedPosts = (post.relatedPostIds ?? [])
-    .map((id) => blogPosts.find((item) => item.id === id))
-    .filter(Boolean);
+  // «Читайте дальше»: сначала явно связанные посты, затем добираем остальными,
+  // чтобы блок не пустовал. Максимум два - под сетку в две колонки.
+  const relatedPosts = [
+    ...(post.relatedPostIds ?? []).map((id) => blogPosts.find((item) => item.id === id)),
+    ...blogPosts,
+  ]
+    .filter((item) => item && item.slug !== slug)
+    .filter((item, index, arr) => arr.findIndex((x) => x.id === item.id) === index)
+    .slice(0, 2);
 
   const breadcrumbItems = [
     { name: { ru: "Главная", ro: "Acasă", en: "Home" }, path: "/" },
