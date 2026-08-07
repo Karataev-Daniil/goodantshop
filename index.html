@@ -6,7 +6,13 @@
 
     <title>Купить муравьёв и формикарии в Молдове | GoodAntShop</title>
 
-    <link rel="icon" href="/favicon.ico" />
+    <!-- Круглые иконки собраны из public/logo.webp (круговая маска).
+         .ico оставлен для старых браузеров и ботов, которые дёргают
+         /favicon.ico напрямую, минуя эти теги. -->
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
     <!-- description / robots / og / twitter намеренно не заданы статически:
          в dev их выставляет react-helmet (SEO.jsx), в prod вписывает
