@@ -166,8 +166,8 @@ export const ants = [
       en: "Messor Structor"
     },
     excerpt: {
-      ru: "Спокойный зерноядный вид, отлично подходит новичкам.",
-      ro: "Specie granivora calma, potrivita excelent pentru incepatori.",
+      ru: "Мессор структор, муравьи-жнецы - спокойный зерноядный вид, который отлично подходит новичкам.",
+      ro: "Furnici Messor, o specie granivoră calmă, potrivită excelent pentru începători.",
       en: "A calm seed-eating species, great for beginners."
     },
     description: {

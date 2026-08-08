@@ -101,13 +101,39 @@ const esc = (s) =>
 // полный набор на каждый маршрут - сразу после <title>. Константы (robots,
 // og:type, og:site_name, twitter:card) одинаковы для всех пререндеренных
 // страниц; per-route значения - title/description/url/image.
-function applyMeta(html, { title, description, url, image }) {
+// Языковые версии и og:locale для статической разметки (совпадают с SEO.jsx).
+const LANGS = ["ru", "ro", "en"];
+const OG_LOCALE = { ru: "ru_MD", ro: "ro_MD", en: "en_US" };
+
+// Из пути маршрута (/ru/ants) достаём язык и языконезависимый хвост (/ants),
+// чтобы построить canonical и hreflang-альтернативы.
+function splitLangPath(routePath) {
+  const m = String(routePath).match(/^\/(ru|ro|en)(\/.*)?$/);
+  if (!m) return { lang: "ru", rest: "" };
+  return { lang: m[1], rest: m[2] || "" };
+}
+
+function applyMeta(html, { title, description, url, image, path: routePath }) {
   const t = esc(title);
   const d = esc(description);
+  const { lang, rest } = splitLangPath(routePath);
+
+  const hreflang = [
+    ...LANGS.map(
+      (code) => `<link rel="alternate" hreflang="${code}" href="${SITE_URL}/${code}${rest}" />`
+    ),
+    `<link rel="alternate" hreflang="x-default" href="${SITE_URL}/ru${rest}" />`,
+  ];
+
   const block = [
     `<meta name="description" content="${d}" />`,
     `<meta name="robots" content="index, follow" />`,
+    // canonical + hreflang: раньше их вписывал только react-helmet в рантайме,
+    // из-за чего боты без JS (и до рендера) их не видели - ro/en склеивались с ru.
+    `<link rel="canonical" href="${esc(url)}" />`,
+    ...hreflang,
     `<meta property="og:type" content="website" />`,
+    `<meta property="og:locale" content="${OG_LOCALE[lang] || OG_LOCALE.ru}" />`,
     `<meta property="og:site_name" content="GoodAntShop" />`,
     `<meta property="og:title" content="${t}" />`,
     `<meta property="og:description" content="${d}" />`,
@@ -124,7 +150,11 @@ function applyMeta(html, { title, description, url, image }) {
     .map((tag) => `    ${tag}`)
     .join("\n");
 
-  return html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${t}</title>\n${block}`);
+  // Язык страницы в <html>: в шаблоне всегда ru, проставляем реальный язык
+  // маршрута - иначе Google читает ro/en страницы как русские.
+  const withLang = html.replace(/<html([^>]*)\slang="[^"]*"/i, `<html$1 lang="${lang}"`);
+
+  return withLang.replace(/<title>[\s\S]*?<\/title>/i, `<title>${t}</title>\n${block}`);
 }
 
 let count = 0;
@@ -135,6 +165,7 @@ for (const route of routes) {
     description: route.description,
     url: SITE_URL + route.path,
     image: SITE_URL + ogRel,
+    path: route.path,
   });
   const outDir = path.join(dist, route.path);
   await mkdir(outDir, { recursive: true });

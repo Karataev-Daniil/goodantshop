@@ -15,6 +15,9 @@ export const SITE_PHONE_DISPLAY = "060 983 052";
 // TODO: заменить на реальный аккаунт GoodAntShop.
 export const SITE_INSTAGRAM = "https://www.instagram.com/";
 
+// Основной канал связи: и в разметке организации, и в кнопках на страницах.
+export const SITE_TELEGRAM = "https://t.me/GoodAnt_Shop";
+
 const LOCALES = {
   ru: "ru_MD",
   ro: "ro_MD",
@@ -100,7 +103,7 @@ export const pageSeo = {
     },
     description: {
       ru: "Полезные статьи о муравьях: как выбрать первую колонию и формикарий, график кормления, уход за колонией и обзоры видов. Советы для новичков и опытных киперов.",
-      ro: "Articole utile despre furnici: cum alegi prima colonie și formicarul, programul de hrănire, îngrijirea coloniei și prezentări de specii. Sfaturi pentru începători și avansați.",
+      ro: "Articole utile despre furnici: cum alegi prima colonie și formicariul, programul de hrănire, îngrijirea coloniei și prezentări de specii. Sfaturi pentru începători și avansați.",
       en: "Helpful ant-keeping articles: how to choose your first colony and formicarium, feeding schedule, colony care and species guides. Tips for beginners and pros.",
     },
   },
@@ -188,9 +191,15 @@ export const organizationSchema = (lang = "ru") => ({
     areaServed: "MD",
     availableLanguage: ["ru", "ro", "en"],
     telephone: SITE_PHONE,
-    url: "https://t.me/GoodAnt_Shop",
+    url: SITE_TELEGRAM,
   },
-  sameAs: ["https://t.me/GoodAnt_Shop"],
+  // Реальная зона работы: доставка по Кишинёву и всей Молдове (физического
+  // адреса нет, поэтому PostalAddress не выдумываем - только areaServed).
+  areaServed: [
+    { "@type": "Country", name: "Moldova" },
+    { "@type": "City", name: "Chișinău" },
+  ],
+  sameAs: [SITE_TELEGRAM],
 });
 
 export const websiteSchema = (lang = "ru") => ({
@@ -404,11 +413,9 @@ export default function SEO({
       <title>{titleText}</title>
       <meta name="description" content={descriptionText} />
       <meta name="robots" content={robots} />
-      <link rel="canonical" href={canonical} />
-      {SUPPORTED_LANGS.map((code) => (
-        <link key={code} rel="alternate" hrefLang={code} href={localizedUrl(code, cleanPath || "/")} />
-      ))}
-      <link rel="alternate" hrefLang="x-default" href={localizedUrl("ru", cleanPath || "/")} />
+      {/* canonical + hreflang теперь вписывает scripts/prerender.mjs прямо в
+          статический HTML каждого маршрута (их видят и боты без JS). Здесь их
+          намеренно НЕ дублируем, чтобы в готовом DOM не было двух canonical. */}
 
       <meta property="og:type" content={type} />
       <meta property="og:locale" content={LOCALES[lang] || LOCALES.ru} />

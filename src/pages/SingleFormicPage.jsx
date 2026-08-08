@@ -18,7 +18,7 @@ export default function FormicPage() {
     return (
       <article className="section">
         <div className="panel">
-          <h1>{getText({ ru: "Формикарий не найден", ro: "Formicarul nu a fost găsit", en: "Formicarium not found" }, lang)}</h1>
+          <h1>{getText({ ru: "Формикарий не найден", ro: "Formicariul nu a fost găsit", en: "Formicarium not found" }, lang)}</h1>
           <Link className="btn" to={`/${lang}/formicariums`}>
             {getText({ ru: "Назад в каталог", ro: "Înapoi la catalog", en: "Back to catalog" }, lang)}
           </Link>

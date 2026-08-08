@@ -120,6 +120,33 @@
   text-shadow: 0 1px 14px rgba(0, 0, 0, 0.35);
 }
 
+/* Цена в герое: набрана крупнее лида, чтобы её было видно, но без веса
+   заголовка - иначе спорит с h1 за внимание. */
+.store-hero__price {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 17px;
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.35);
+}
+
+.store-hero__price strong {
+  color: #fff;
+  font-size: 19px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.store-hero__price-sep {
+  width: 5px;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
 .store-hero .hero-benefits li {
   color: rgba(255, 255, 255, 0.92);
 }
@@ -260,11 +287,26 @@
   color: var(--accent);
 }
 
-.hero-trust-card__label {
-  font-size: 15px;
-  font-weight: 700;
-  line-height: 1.3;
+.hero-trust-card__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* Цифра ведёт, подпись объясняет: полоса читается за один взгляд, а не
+   вычитывается построчно. */
+.hero-trust-card__value {
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.1;
   color: var(--text);
+}
+
+.hero-trust-card__label {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--muted);
 }
 
 .popular-products .section-heading {
@@ -332,46 +374,32 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
 }
 
-.what-is-explained .what-is__inner {
-  display: grid;
-  grid-template-columns: minmax(320px, 1fr) minmax(360px, 1fr);
-  gap: 28px;
-  align-items: center;
-}
-
-.what-is-explained .what-is__image img {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  border-radius: 28px;
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
-}
-
-.what-is-explained .what-is__text ul {
+/* Тезисы «что делает колония» переехали сюда из отдельной секции what-is:
+   она показывала те же кадры и объясняла то же самое, только отдельно. */
+.showcase-facts {
   list-style: none;
-  margin: 0;
+  margin: 4px 0 0;
   padding: 0;
   display: grid;
-  gap: 14px;
+  gap: 10px;
 }
 
-.what-is-explained .what-is__text li {
+.showcase-facts li {
   position: relative;
   padding-left: 18px;
-  font-size: 19px;
-  font-weight: 400;
+  font-size: 17px;
   line-height: 1.5;
   color: var(--text);
 }
 
-.what-is-explained .what-is__text li::before {
+.showcase-facts li::before {
   content: "•";
   position: absolute;
   left: 0;
   color: var(--accent);
 }
 
-.gallery-section .gallery-showcase {
+.showcase-section .gallery-showcase {
   display: grid;
   grid-template-columns: minmax(360px, 1fr) minmax(320px, 1fr);
   gap: 28px;
@@ -447,6 +475,47 @@
   right: 14px;
 }
 
+/* Счётчик и точки - единственный сигнал, что кадр не один. Без них галерею
+   принимали за обычную картинку и не листали. */
+.gallery-showcase__counter {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(15, 11, 6, 0.62);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.gallery-showcase__dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gallery-dot {
+  width: 26px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--line);
+  cursor: pointer;
+  transition: background 0.18s ease, width 0.18s ease;
+}
+
+.gallery-dot:hover {
+  background: #d8ccb8;
+}
+
+.gallery-dot.is-active {
+  width: 40px;
+  background: var(--accent);
+}
+
 .categories-grid {
   gap: 20px;
 }
@@ -518,7 +587,8 @@
   margin: 0;
 }
 
-.what-is .section-heading,
+.showcase-section .section-heading,
+.delivery-section .section-heading,
 .why-hobby .section-heading,
 .category-grid .section-heading,
 .categories-section .section-heading,
@@ -688,7 +758,6 @@
   font-weight: 700;
 }
 
-.what-is .section-heading,
 .why-hobby .section-heading,
 .category-grid .section-heading,
 .how-it-works .section-heading,
@@ -738,7 +807,7 @@
 }
 .why-hobby .content-grid > div {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 14px;
   min-height: 0;
   padding: 18px 0;
@@ -752,6 +821,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  margin-top: 1px;
   width: 26px;
   height: 26px;
   border-radius: 999px;
@@ -760,11 +830,23 @@
   font-size: 13px;
   font-weight: 800;
 }
+/* Заголовок + строка пояснения: одни голые h3 читались как заготовка,
+   которую забыли дописать. */
+.why-hobby__text {
+  display: grid;
+  gap: 4px;
+}
 .why-hobby .content-grid > div h3 {
   margin: 0;
   text-align: left;
   font-size: 17px;
   font-weight: 700;
+}
+.why-hobby .content-grid > div p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 /* "How to start" - numbered timeline instead of cards */
@@ -801,6 +883,58 @@
 .how-it-works .steps-grid > div p {
   margin: 0;
   color: var(--muted);
+  line-height: 1.6;
+}
+/* Секция объясняет путь - и тут же даёт по нему пойти. */
+.how-it-works__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+/* ===== Доставка ===== */
+.delivery-section {
+  padding: 44px;
+  border-radius: 28px;
+  background: var(--surface-soft);
+}
+
+.delivery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.delivery-card {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+  padding: 24px;
+  border-radius: 18px;
+  background: #fff;
+}
+
+/* Сумма ведёт: блок должен читаться как прайс, а не как ещё один текст. */
+.delivery-card__value {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--accent);
+}
+
+.delivery-card__label {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.delivery-card__note {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 15px;
   line-height: 1.6;
 }
 
@@ -1082,8 +1216,14 @@
   margin-bottom: 20px;
 }
 
+/* Единственный заголовок на странице, который стоит по центру, поэтому kicker
+   и h2 кладём в колонку - в общий flex со space-between они бы встали в строку
+   друг напротив друга. */
 .faq-wrap .section-heading {
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  gap: 8px;
   text-align: center;
   margin-bottom: 24px;
 }
@@ -1189,10 +1329,22 @@
   font-size: 16px;
   line-height: 1.6;
 }
+/* Автор и дата в одной строке: дата отличает живой отзыв от выдуманного. */
+.home-review-card__meta {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
 .home-review-card__author {
   color: var(--muted);
   font-weight: 800;
   font-size: 14px;
+}
+.home-review-card__date {
+  color: var(--muted);
+  font-size: 13px;
+  opacity: 0.75;
 }
 
 @media (max-width: 980px) {
@@ -1238,10 +1390,17 @@
   }
 
   .popular-products .popular-grid,
-  .gallery-section .gallery-showcase,
-  .what-is-explained .what-is__inner,
+  .showcase-section .gallery-showcase,
   .categories-section .categories-grid {
     grid-template-columns: 1fr;
+  }
+
+  .delivery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .delivery-section {
+    padding: 28px;
   }
 
   .starter-kit__content {
@@ -1322,8 +1481,41 @@
     height: 42px;
   }
 
+  .hero-trust-card__value {
+    font-size: 19px;
+  }
+
   .hero-trust-card__label {
-    font-size: 14px;
+    font-size: 13px;
+  }
+
+  .delivery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .delivery-section {
+    padding: 22px;
+  }
+
+  .store-hero__price {
+    font-size: 16px;
+  }
+
+  .store-hero__price strong {
+    font-size: 18px;
+  }
+
+  /* Кнопки в герое и в «как начать» на телефоне встают в колонку во всю
+     ширину - иначе вторая обрезается по краю. */
+  .store-hero__actions,
+  .how-it-works__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .store-hero__actions .btn,
+  .how-it-works__actions .btn {
+    width: 100%;
   }
 
   .store-hero__content,
