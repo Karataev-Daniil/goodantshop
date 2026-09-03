@@ -295,9 +295,15 @@ export const productSchema = (product, type, lang = "ru", path = "/") => {
       seller: {
         "@id": `${SITE_URL}/#organization`,
       },
-      // Flat 150 MDL within Chișinău (free when the order includes a
-      // formicarium). Out-of-town delivery is variable (public transport fare +
-      // 100 MDL), so it can't be a fixed rate here.
+      // Базовый тариф 150 лей по Кишинёву (бесплатно, если в заказе есть
+      // формикарий); за городом - проезд плюс 100 лей, фиксированной ставкой
+      // это не описать, поэтому в разметке остаётся базовый тариф.
+      //
+      // addressRegion здесь стоял как "Chișinău", и это ломало весь блок:
+      // Google принимает в этом поле только коды регионов (вида "NY"), а
+      // свободный текст обесценивает DefinedRegion целиком. Из-за этого Search
+      // Console отчитывалась «отсутствует поле shippingDetails», хотя поле было.
+      // Страны достаточно: доставка и так работает по всей Молдове.
       shippingDetails: {
         "@type": "OfferShippingDetails",
         shippingRate: {
@@ -308,7 +314,6 @@ export const productSchema = (product, type, lang = "ru", path = "/") => {
         shippingDestination: {
           "@type": "DefinedRegion",
           addressCountry: "MD",
-          addressRegion: "Chișinău",
         },
       },
       // Sales are final - returns are not offered.
