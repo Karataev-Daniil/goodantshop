@@ -170,6 +170,85 @@ export const reviews = [
     body:
       "Спасибо большое за формикарий. Всё вовремя и в срок было доставлено! Ребёнок очень рад.",
   },
+
+  // --- Отзывы на дополнительные товары -------------------------------------
+  // Приходят из Telegram и от покупателей на руках, а не с 999.md, поэтому
+  // source: "telegram" - блок отзывов подписывает источник честно.
+  // Привязка к товару идёт по productSlug (см. accessoriesData.js).
+  //
+  // Осталось проставить date (формат 2026-08-14) и убрать draft - до этого
+  // отзыв не показывается и в микроразметку не идёт.
+  {
+    author: "Андрей К.",
+    lang: "ru",
+    date: "",
+    rating: 5,
+    target: "accessory",
+    productSlug: "tool-kit",
+    source: "telegram",
+    draft: true,
+    body: "Спасибо! Очень удобно и эстетично работать с этими инструментами.",
+  },
+  {
+    author: "Сергей М.",
+    lang: "ru",
+    date: "",
+    rating: 5,
+    target: "accessory",
+    productSlug: "tool-kit",
+    source: "telegram",
+    draft: true,
+    body:
+      "Брал набор отдельно, уже после колонии. Пинцет и пипетка пригодились в первую же неделю - до этого приспосабливал что попало из дома.",
+  },
+  {
+    author: "Дмитрий П.",
+    lang: "ru",
+    date: "",
+    rating: 5,
+    target: "accessory",
+    productSlug: "tool-kit",
+    source: "telegram",
+    draft: true,
+    body:
+      "Хороший набор, всё лежит в одной коробке и не теряется. Отдельно понравилась мягкая кисточка: муравьёв с крышки сметаешь, никого не придавив.",
+  },
+  {
+    author: "Александр Р.",
+    lang: "ru",
+    date: "",
+    rating: 5,
+    target: "accessory",
+    productSlug: "seed-mix",
+    source: "telegram",
+    draft: true,
+    body:
+      "Смесь брал отдельно к мессорам. Разбирают охотно, шелуху выносят в отвал - значит, заходит.",
+  },
+  {
+    author: "Максим С.",
+    lang: "ru",
+    date: "",
+    rating: 5,
+    target: "accessory",
+    productSlug: "seed-mix",
+    source: "telegram",
+    draft: true,
+    body:
+      "Удобно, что не надо собирать зерно самому и гадать, что подойдёт. Колония ест ровно, запас в камере растёт.",
+  },
+  {
+    author: "Илья Н.",
+    lang: "ru",
+    date: "",
+    rating: 5,
+    target: "accessory",
+    productSlug: "feeder-beetle",
+    source: "telegram",
+    draft: true,
+    body:
+      "Живой корм берём регулярно. Расплод после него заметно прибавляет, и возни с разведением никакой.",
+  },
 ];
 
 // Профиль продавца на 999.md - источник отзывов.
@@ -177,14 +256,36 @@ export const SELLER_999_URL = "https://999.md/ru/profile/GoodAnt-Shop-MD";
 
 const round1 = (value) => Math.round(value * 10) / 10;
 
-// Отзывы, релевантные типу товара: профильные (ant/formicarium) + общие (shop).
-export const reviewsFor = (type) =>
-  reviews.filter((review) => review.target === type || review.target === "shop");
+// Черновик не публикуется. Нужен для отзывов, сказанных устно или в Telegram:
+// текст уже записан, но пока не подставлены настоящее имя покупателя и дата
+// сообщения, отзыв не должен попасть ни на страницу, ни в микроразметку.
+// Заполнили author и date - убираете draft, и отзыв появляется.
+// Автора и дату проверяем отдельно от флага: если draft убрали, а имя вписать
+// забыли, отзыв всё равно не выйдет. Отзыв без автора Google для сниппетов не
+// принимает, а на странице карточка с пустой подписью выглядит поломанной.
+const isPublished = (review) => !review.draft && Boolean(review.author) && Boolean(review.date);
+
+// Отзывы, релевантные товару.
+//   ant / formicarium - профильные плюс общие про магазин (shop): человек,
+//                       похваливший сервис и доставку, покупал живую колонию,
+//                       так что отзыв к ней относится;
+//   accessory         - ТОЛЬКО собственные, привязанные к productSlug. Общие
+//                       отзывы магазина сюда не подмешиваем: Google не считает
+//                       их отзывами о товаре, и собирать из них рейтинг набора
+//                       инструментов - прямой путь к ручным санкциям.
+export const reviewsFor = (type, slug) =>
+  reviews.filter((review) => {
+    if (!isPublished(review)) return false;
+    if (type === "accessory") {
+      return review.target === "accessory" && review.productSlug === slug;
+    }
+    return review.target === type || review.target === "shop";
+  });
 
 // Сводный рейтинг для AggregateRating и заголовка блока - по тем отзывам,
-// которые реально показаны на странице данного типа товара.
-export const reviewStatsFor = (type) => {
-  const subset = reviewsFor(type);
+// которые реально показаны на странице данного товара.
+export const reviewStatsFor = (type, slug) => {
+  const subset = reviewsFor(type, slug);
   const total = subset.reduce((sum, review) => sum + review.rating, 0);
 
   return {
@@ -197,17 +298,18 @@ export const reviewStatsFor = (type) => {
 
 // Общий рейтинг по всем отзывам - для витрины (например, блока на главной).
 export const reviewStatsAll = () => {
-  const total = reviews.reduce((sum, review) => sum + review.rating, 0);
+  const published = reviews.filter(isPublished);
+  const total = published.reduce((sum, review) => sum + review.rating, 0);
   return {
-    ratingValue: round1(total / reviews.length),
-    reviewCount: reviews.length,
+    ratingValue: published.length ? round1(total / published.length) : 0,
+    reviewCount: published.length,
     bestRating: 5,
     worstRating: 1,
   };
 };
 
 // Избранные короткие отзывы для главной (помечены featured).
-export const featuredReviews = () => reviews.filter((review) => review.featured);
+export const featuredReviews = () => reviews.filter((review) => isPublished(review) && review.featured);
 
 const LOCALE_TAGS = { ru: "ru-RU", ro: "ro-RO", en: "en-US" };
 

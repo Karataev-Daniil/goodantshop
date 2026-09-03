@@ -1,12 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import ProductGallery from "../components/ProductGallery";
+import ProductReviews from "../components/ProductReviews";
 import SEO, { breadcrumbSchema, productSchema, productSeo, getText } from "../components/SEO";
 import { getAccessory } from "../data/accessoriesData";
+import { reviewsFor, reviewStatsFor } from "../data/reviewsData";
 
 // Страница дополнительного товара - намеренно короткая: галерея, цена,
-// описание, состав и памятка по использованию. Без табов, отзывов и блока
-// «похожие» - аксессуару этого не нужно, а длинная страница только мешает.
+// описание, состав и памятка по использованию. Без табов и блока «похожие» -
+// аксессуару этого не нужно, а длинная страница только мешает.
+//
+// Отзывы показываем, но только собственные, привязанные к этому товару: набор
+// инструментов и корм покупают отдельно, и людям важно мнение именно о них.
 export default function SingleAccessoryPage() {
   const { slug, lang = "ru" } = useParams();
   const { addToCart } = useOutletContext();
@@ -32,6 +37,8 @@ export default function SingleAccessoryPage() {
   const images = item.images?.length ? item.images : [item.image];
   const productPath = `/accessories/${item.slug}`;
   const seo = productSeo(item, "accessory", lang);
+  const itemReviews = reviewsFor("accessory", item.slug);
+  const reviewStats = reviewStatsFor("accessory", item.slug);
 
   const addItem = () => {
     for (let n = 0; n < qty; n += 1) addToCart(item.id, option);
@@ -165,6 +172,10 @@ export default function SingleAccessoryPage() {
           <p>{getText(item.usage, lang)}</p>
         </section>
       )}
+
+      {/* Источник telegram: отзывы на аксессуары приходят из переписки и от
+          покупателей на руках, а не с профиля на 999.md. */}
+      <ProductReviews reviews={itemReviews} stats={reviewStats} lang={lang} source="telegram" />
     </article>
   );
 }

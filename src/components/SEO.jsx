@@ -257,8 +257,8 @@ export const itemListSchema = (lang = "ru", items = [], pathFactory) => ({
   })),
 });
 
-export const aggregateRatingSchema = (type) => {
-  const stats = reviewStatsFor(type);
+export const aggregateRatingSchema = (type, slug) => {
+  const stats = reviewStatsFor(type, slug);
   return {
     "@type": "AggregateRating",
     ratingValue: stats.ratingValue,
@@ -293,9 +293,10 @@ const PRODUCT_CATEGORY = {
 export const productSchema = (product, type, lang = "ru", path = "/") => {
   const images = product.images?.length ? product.images : [product.image].filter(Boolean);
   // AggregateRating без отзывов невалиден - отдаём разметку только когда они есть.
-  // Для аксессуаров рейтинг НЕ отдаём: своих отзывов у них нет, а рейтинг из
-  // общих отзывов магазина Google не считает относящимся к товару (риск санкции).
-  const productReviews = type === "accessory" ? [] : reviewsFor(type);
+  // У аксессуаров учитываются ТОЛЬКО собственные отзывы, привязанные к товару:
+  // подмешивать общие отзывы магазина нельзя, Google не считает их отзывами о
+  // товаре. Фильтрация живёт в reviewsFor, здесь просто передаём slug.
+  const productReviews = reviewsFor(type, product.slug);
 
   return {
     "@type": "Product",
@@ -308,7 +309,10 @@ export const productSchema = (product, type, lang = "ru", path = "/") => {
       name: SITE_NAME,
     },
     ...(productReviews.length
-      ? { aggregateRating: aggregateRatingSchema(type), review: productReviews.map(reviewSchema) }
+      ? {
+          aggregateRating: aggregateRatingSchema(type, product.slug),
+          review: productReviews.map(reviewSchema),
+        }
       : {}),
     offers: {
       "@type": "Offer",

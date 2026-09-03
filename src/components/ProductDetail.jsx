@@ -1,10 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import ProductGallery from "./ProductGallery";
 import ProductCard from "./ProductCard";
+import ProductReviews from "./ProductReviews";
 import SEO, { breadcrumbSchema, productSchema, productSeo } from "./SEO";
 import Stars from "./Stars";
-import { reviewsFor, reviewStatsFor, formatReviewDate, SELLER_999_URL } from "../data/reviewsData";
+import { reviewsFor, reviewStatsFor } from "../data/reviewsData";
 
 const getText = (value, lang) => {
   if (value && typeof value === "object") {
@@ -12,46 +13,6 @@ const getText = (value, lang) => {
   }
   return value ?? "";
 };
-
-// Карточка отзыва: текст обрезается до 3 строк, длинные разворачиваются по кнопке.
-function ReviewCard({ review, lang }) {
-  const bodyRef = useRef(null);
-  const [expanded, setExpanded] = useState(false);
-  const [isClamped, setIsClamped] = useState(false);
-
-  useLayoutEffect(() => {
-    const el = bodyRef.current;
-    if (el) setIsClamped(el.scrollHeight > el.clientHeight + 1);
-  }, [review.body, lang]);
-
-  return (
-    <article className="review-card">
-      <div className="review-card__top">
-        <span className="review-card__author">{review.author}</span>
-        <Stars value={review.rating} />
-      </div>
-      <p ref={bodyRef} className={`review-card__body ${expanded ? "is-expanded" : ""}`}>
-        {review.body}
-      </p>
-      <div className="review-card__footer">
-        <time className="review-card__date" dateTime={review.date}>
-          {formatReviewDate(review.date, lang)}
-        </time>
-        {(isClamped || expanded) && (
-          <button
-            type="button"
-            className="review-card__toggle"
-            onClick={() => setExpanded((value) => !value)}
-          >
-            {expanded
-              ? getText({ ru: "Свернуть", ro: "Restrânge", en: "Show less" }, lang)
-              : getText({ ru: "Читать полностью", ro: "Citește tot", en: "Read more" }, lang)}
-          </button>
-        )}
-      </div>
-    </article>
-  );
-}
 
 const singlePath = (type, lang, slug) =>
   type === "ant" ? `/${lang}/ants/${slug}` : `/${lang}/formic/${slug}`;
@@ -72,7 +33,6 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
 
   const [qty, setQty] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
-  const [showAllReviews, setShowAllReviews] = useState(false);
   const [selectedOption, setSelectedOption] = useState(
     () => item.priceOptions?.find((o) => o.selected) || item.priceOptions?.[0] || null
   );
@@ -81,10 +41,8 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
     setSelectedOption(item.priceOptions?.find((o) => o.selected) || item.priceOptions?.[0] || null);
   }, [item.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const productReviews = reviewsFor(type);
-  const reviewStats = reviewStatsFor(type);
-  const REVIEWS_PREVIEW = 4;
-  const visibleReviews = showAllReviews ? productReviews : productReviews.slice(0, REVIEWS_PREVIEW);
+  const productReviews = reviewsFor(type, item.slug);
+  const reviewStats = reviewStatsFor(type, item.slug);
 
   const images = item.images?.length ? item.images : [item.image || "/placeholder-ant.svg"];
   // Descriptive alt for the main product image (e.g. "Messor Structor - живая колония муравьёв с маткой").
@@ -586,51 +544,7 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
       </section>
 
       {/* 7.5 Customer reviews */}
-      {productReviews.length > 0 && (
-        <section className="product-section product-reviews" id="reviews">
-          <div className="product-reviews__head">
-            <h2>{getText({ ru: "Отзывы покупателей", ro: "Recenziile clienților", en: "Customer reviews" }, lang)}</h2>
-            <div className="product-reviews__summary">
-              <span className="product-reviews__score">{reviewStats.ratingValue.toFixed(1)}</span>
-              <Stars value={reviewStats.ratingValue} />
-              <span className="product-reviews__count">
-                {reviewStats.reviewCount}{" "}
-                {getText({ ru: "отзывов", ro: "recenzii", en: "reviews" }, lang)}
-              </span>
-            </div>
-            <p className="product-reviews__source">
-              <a href={SELLER_999_URL} target="_blank" rel="noopener noreferrer">
-                {getText(
-                  {
-                    ru: "Реальные отзывы с профиля продавца на 999.md",
-                    ro: "Recenzii reale de pe profilul vânzătorului pe 999.md",
-                    en: "Real reviews from the seller profile on 999.md",
-                  },
-                  lang
-                )}
-              </a>
-            </p>
-          </div>
-
-          <div className="product-reviews__grid">
-            {visibleReviews.map((review) => (
-              <ReviewCard review={review} lang={lang} key={`${review.author}-${review.date}`} />
-            ))}
-          </div>
-
-          {productReviews.length > REVIEWS_PREVIEW && (
-            <button
-              type="button"
-              className="btn btn-secondary product-reviews__more"
-              onClick={() => setShowAllReviews((value) => !value)}
-            >
-              {showAllReviews
-                ? getText({ ru: "Свернуть отзывы", ro: "Ascunde recenziile", en: "Show fewer reviews" }, lang)
-                : getText({ ru: "Показать все отзывы", ro: "Arată toate recenziile", en: "Show all reviews" }, lang)}
-            </button>
-          )}
-        </section>
-      )}
+      <ProductReviews reviews={productReviews} stats={reviewStats} lang={lang} />
 
       {/* 8. Similar products */}
       {similar.length > 0 && (
