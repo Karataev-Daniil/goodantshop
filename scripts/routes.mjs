@@ -14,6 +14,8 @@ const staticPages = [
   { path: "", seo: pageSeo.home },
   { path: "/ants", seo: pageSeo.ants },
   { path: "/formicariums", seo: pageSeo.formicariums },
+  { path: "/accessories", seo: pageSeo.accessories },
+  { path: "/species-map", seo: pageSeo.speciesMap },
   { path: "/blog", seo: pageSeo.blog },
   { path: "/about", seo: pageSeo.about },
   { path: "/contacts", seo: pageSeo.contacts },

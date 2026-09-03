@@ -7,6 +7,8 @@ const footerText = {
     navTitle: "Каталог",
     ants: "Муравьи",
     formicariums: "Формикарий",
+    accessories: "Уход за колонией",
+    speciesMap: "Карта видов Молдовы",
     about: "О нас",
     blog: "Блог",
     contacts: "Контакты",
@@ -21,6 +23,8 @@ const footerText = {
     navTitle: "Catalog",
     ants: "Furnici",
     formicariums: "Formicariu",
+    accessories: "Îngrijirea coloniei",
+    speciesMap: "Harta speciilor din Moldova",
     about: "Despre noi",
     blog: "Blog",
     contacts: "Contacte",
@@ -35,6 +39,8 @@ const footerText = {
     navTitle: "Catalog",
     ants: "Ants",
     formicariums: "Formicarium",
+    accessories: "Colony care",
+    speciesMap: "Ant map of Moldova",
     about: "About",
     blog: "Blog",
     contacts: "Contacts",
@@ -76,6 +82,8 @@ export default function FooterMenu({ curLang }) {
           <h3 className="footer-col__title">{copy.navTitle}</h3>
           <Link to={`/${curLang}/ants`}>{copy.ants}</Link>
           <Link to={`/${curLang}/formicariums`}>{copy.formicariums}</Link>
+          <Link to={`/${curLang}/accessories`}>{copy.accessories}</Link>
+          <Link to={`/${curLang}/species-map`}>{copy.speciesMap}</Link>
           <Link to={`/${curLang}/blog`}>{copy.blog}</Link>
           <Link to={`/${curLang}/about`}>{copy.about}</Link>
           <Link to={`/${curLang}/contacts`}>{copy.contacts}</Link>

@@ -95,6 +95,30 @@ export const pageSeo = {
       en: "Formicariums for home ant farms: arena, ventilation, humidity system and clear chamber view. Delivery across Moldova.",
     },
   },
+  accessories: {
+    title: {
+      ru: "Уход за колонией муравьёв: корм и инструменты | GoodAntShop",
+      ro: "Îngrijirea coloniei de furnici: hrană și instrumente | GoodAntShop",
+      en: "Ant Colony Care: food and tools | GoodAntShop",
+    },
+    description: {
+      ru: "Чем кормить муравьёв, как держать влажность и когда переселять колонию в формикарий. Зерновая смесь, живой корм и набор инструментов с доставкой по Молдове.",
+      ro: "Cu ce hrănești furnicile, cum menții umiditatea și când muți colonia în formicariu. Amestec de semințe, hrană vie și set de instrumente, cu livrare în Moldova.",
+      en: "What to feed ants, how to keep humidity right and when to rehouse the colony. Seed mix, live food and a tool kit, delivered across Moldova.",
+    },
+  },
+  speciesMap: {
+    title: {
+      ru: "Карта муравьёв Молдовы: какие виды где водятся | GoodAntShop",
+      ro: "Harta furnicilor din Moldova: ce specii unde trăiesc | GoodAntShop",
+      en: "Ant Map of Moldova: which species live where | GoodAntShop",
+    },
+    description: {
+      ru: "Открытый атлас муравьёв Молдовы по нашим сборам: какие виды встречаются на севере, в центре, в Кишинёве, Приднестровье, Гагаузии и на юге. Карта пополняется после каждой поездки.",
+      ro: "Atlas deschis al furnicilor din Moldova, din colectările noastre: ce specii se întâlnesc în nord, centru, Chișinău, Transnistria, Găgăuzia și sud. Harta se completează după fiecare deplasare.",
+      en: "An open atlas of the ants of Moldova from our own collecting: which species occur in the north, centre, Chișinău, Transnistria, Gagauzia and the south. The map grows after every trip.",
+    },
+  },
   blog: {
     title: {
       ru: "Блог о муравьях: уход, виды и запуск колонии | GoodAntShop",

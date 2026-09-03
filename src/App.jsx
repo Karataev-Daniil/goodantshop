@@ -7,7 +7,9 @@ import FormicariumsPage from "./pages/FormicariumsPage";
 import FormicPage from "./pages/SingleFormicPage";
 import BlogPage from "./pages/BlogPage";
 import SingleBlogPage from "./pages/SingleBlogPage";
+import AccessoriesPage from "./pages/AccessoriesPage";
 import SingleAccessoryPage from "./pages/SingleAccessoryPage";
+import SpeciesMapPage from "./pages/SpeciesMapPage";
 import ContactsPage from "./pages/ContactsPage";
 import AboutPage from "./pages/AboutPage";
 import CartPage from "./pages/CartPage";
@@ -114,7 +116,9 @@ export default function App() {
           <Route path="ants/:slug" element={<SingleAntPage />} />
           <Route path="formicariums" element={<FormicariumsPage />} />
           <Route path="formic/:slug" element={<FormicPage />} />
+          <Route path="accessories" element={<AccessoriesPage />} />
           <Route path="accessories/:slug" element={<SingleAccessoryPage />} />
+          <Route path="species-map" element={<SpeciesMapPage />} />
           <Route path="blog" element={<BlogPage />} />
           <Route path="blog/:slug" element={<SingleBlogPage />} />
           <Route path="contacts" element={<ContactsPage />} />

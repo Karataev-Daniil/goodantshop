@@ -92,6 +92,12 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
             <NavLink to={`/${curLang}/formicariums`}>
               {t({ ru: "Формикарий", ro: "Formicariu", en: "Formicarium" })}
             </NavLink>
+            <NavLink to={`/${curLang}/accessories`}>
+              {t({ ru: "Уход", ro: "Îngrijire", en: "Care" })}
+            </NavLink>
+            <NavLink to={`/${curLang}/species-map`}>
+              {t({ ru: "Карта видов", ro: "Harta speciilor", en: "Species map" })}
+            </NavLink>
             <NavLink to={`/${curLang}/about`}>
               {t({ ru: "О нас", ro: "Despre noi", en: "About" })}
             </NavLink>

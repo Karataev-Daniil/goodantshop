@@ -3,6 +3,8 @@
 @import "./styles/base/typography.css";
 @import "./styles/pages/home.css";
 @import "./styles/pages/content-pages.css";
+@import "./styles/pages/accessories.css";
+@import "./styles/pages/species-map.css";
 @import "./styles/pages/blog.css";
 @import "./styles/pages/contacts.css";
 @import "./styles/pages/product-detail.css";
