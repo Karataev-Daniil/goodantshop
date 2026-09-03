@@ -19,6 +19,10 @@ const staticPages = [
   { path: "/blog", seo: pageSeo.blog },
   { path: "/about", seo: pageSeo.about },
   { path: "/contacts", seo: pageSeo.contacts },
+  // Корзина в sitemap не нужна (robots.txt закрывает /*/cart), но HTML ей
+  // необходим: без него прямая ссылка и обычное обновление страницы на шаге
+  // оформления отдавали 404 - SPA-фолбэк в vercel.json не срабатывает.
+  { path: "/cart", seo: pageSeo.cart },
 ];
 
 const list = [];
