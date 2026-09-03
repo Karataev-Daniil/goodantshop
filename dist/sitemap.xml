@@ -92,6 +92,66 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/formicariums"/>
   </url>
   <url>
+    <loc>https://goodantshop.md/ru/accessories</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/accessories"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/accessories"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/accessories"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/accessories"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/ro/accessories</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/accessories"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/accessories"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/accessories"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/accessories"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/en/accessories</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/accessories"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/accessories"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/accessories"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/accessories"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/ru/species-map</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/species-map"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/species-map"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/species-map"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/species-map"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/ro/species-map</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/species-map"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/species-map"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/species-map"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/species-map"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/en/species-map</loc>
+    <lastmod>2026-08-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/species-map"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/species-map"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/species-map"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/species-map"/>
+  </url>
+  <url>
     <loc>https://goodantshop.md/ru/contacts</loc>
     <lastmod>2026-08-08</lastmod>
     <changefreq>monthly</changefreq>
