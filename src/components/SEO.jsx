@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { reviewsFor, reviewStatsFor } from "../data/reviewsData";
+import { ownReviewsFor, ownReviewStatsFor } from "../data/reviewsData";
 
 export const SITE_URL = "https://goodantshop.md";
 export const SITE_NAME = "GoodAntShop";
@@ -258,7 +258,7 @@ export const itemListSchema = (lang = "ru", items = [], pathFactory) => ({
 });
 
 export const aggregateRatingSchema = (type, slug) => {
-  const stats = reviewStatsFor(type, slug);
+  const stats = ownReviewStatsFor(type, slug);
   return {
     "@type": "AggregateRating",
     ratingValue: stats.ratingValue,
@@ -293,10 +293,11 @@ const PRODUCT_CATEGORY = {
 export const productSchema = (product, type, lang = "ru", path = "/") => {
   const images = product.images?.length ? product.images : [product.image].filter(Boolean);
   // AggregateRating без отзывов невалиден - отдаём разметку только когда они есть.
-  // У аксессуаров учитываются ТОЛЬКО собственные отзывы, привязанные к товару:
-  // подмешивать общие отзывы магазина нельзя, Google не считает их отзывами о
-  // товаре. Фильтрация живёт в reviewsFor, здесь просто передаём slug.
-  const productReviews = reviewsFor(type, product.slug);
+  // Для всех типов товаров (колонии, формикарии, аксессуары) учитываются ТОЛЬКО
+  // собственные отзывы, привязанные к товару через productSlug. Общие отзывы
+  // магазина на странице показываются, но в разметку Product не идут: Google не
+  // считает их отзывами о товаре. Фильтрация живёт в ownReviewsFor.
+  const productReviews = ownReviewsFor(type, product.slug);
 
   return {
     "@type": "Product",
