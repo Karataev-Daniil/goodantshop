@@ -150,6 +150,10 @@ export const pageSeo = {
     },
   },
   cart: {
+    // Корзина закрыта и в robots.txt (Disallow: /*/cart), и мета-тегом: если
+    // бот всё же получит URL (например, по внешней ссылке), он не попадёт в
+    // индекс. follow - чтобы ссылки из шапки/подвала оставались рабочими.
+    robots: "noindex, follow",
     title: {
       ru: "Корзина | GoodAntShop",
       ro: "Coș | GoodAntShop",

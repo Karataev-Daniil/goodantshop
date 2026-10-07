@@ -35,6 +35,7 @@ for (const lang of LANGS) {
       title: getText(page.seo.title, lang),
       description: getText(page.seo.description, lang),
       image: null,
+      ...(page.seo.robots ? { robots: page.seo.robots } : {}),
     });
   }
 

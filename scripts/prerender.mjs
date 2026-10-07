@@ -113,7 +113,7 @@ function splitLangPath(routePath) {
   return { lang: m[1], rest: m[2] || "" };
 }
 
-function applyMeta(html, { title, description, url, image, path: routePath }) {
+function applyMeta(html, { title, description, url, image, path: routePath, robots = "index, follow" }) {
   const t = esc(title);
   const d = esc(description);
   const { lang, rest } = splitLangPath(routePath);
@@ -127,7 +127,7 @@ function applyMeta(html, { title, description, url, image, path: routePath }) {
 
   const block = [
     `<meta name="description" content="${d}" />`,
-    `<meta name="robots" content="index, follow" />`,
+    `<meta name="robots" content="${esc(robots)}" />`,
     // canonical + hreflang: раньше их вписывал только react-helmet в рантайме,
     // из-за чего боты без JS (и до рендера) их не видели - ro/en склеивались с ru.
     `<link rel="canonical" href="${esc(url)}" />`,
@@ -166,6 +166,7 @@ for (const route of routes) {
     url: SITE_URL + route.path,
     image: SITE_URL + ogRel,
     path: route.path,
+    robots: route.robots,
   });
   const outDir = path.join(dist, route.path);
   await mkdir(outDir, { recursive: true });
@@ -173,4 +174,83 @@ for (const route of routes) {
   count += 1;
 }
 
-console.log(`✓ Prerendered ${count} route HTML files (+ OG images in dist/og)`);
+// --- 4. 404.html ---
+// Vercel отдаёт dist/404.html со статусом 404 для любого неизвестного URL.
+// Раньше там был голый текст Vercel «NOT_FOUND»: человек со старой или битой
+// ссылки попадал в тупик. Страница статическая (без бандла приложения: роутер
+// для неизвестного пути отрисовал бы пустой <main>), со стилями сайта и
+// ссылками на основные разделы. Язык неизвестен заранее - выводим все три,
+// а маленький инлайн-скрипт оставляет нужный по префиксу пути.
+const NOT_FOUND = {
+  ru: {
+    title: "Страница не найдена",
+    text: "Такой страницы нет: возможно, ссылка устарела или в адресе опечатка. Загляните в каталог или напишите нам.",
+    links: [["/ru/ants", "Муравьи"], ["/ru/formicariums", "Формикарии"], ["/ru/blog", "Блог"], ["/ru/contacts", "Контакты"], ["/ru", "На главную"]],
+  },
+  ro: {
+    title: "Pagina nu a fost găsită",
+    text: "Această pagină nu există: poate linkul e vechi sau adresa are o greșeală. Vezi catalogul sau scrie-ne.",
+    links: [["/ro/ants", "Furnici"], ["/ro/formicariums", "Formicarii"], ["/ro/blog", "Blog"], ["/ro/contacts", "Contacte"], ["/ro", "Pagina principală"]],
+  },
+  en: {
+    title: "Page not found",
+    text: "This page does not exist: the link may be outdated or the address mistyped. Browse the catalog or get in touch.",
+    links: [["/en/ants", "Ants"], ["/en/formicariums", "Formicariums"], ["/en/blog", "Blog"], ["/en/contacts", "Contacts"], ["/en", "Home page"]],
+  },
+};
+
+function render404(html) {
+  const styles = (html.match(/<link[^>]+rel="stylesheet"[^>]*>/gi) || []).join("\n    ");
+  const icons = (html.match(/<link[^>]+rel="(?:icon|apple-touch-icon)"[^>]*>/gi) || []).join("\n    ");
+  const sections = LANGS.map((code) => {
+    const t = NOT_FOUND[code];
+    const links = t.links
+      .map(([href, label], i) => `<a class="btn${i === t.links.length - 1 ? " btn-secondary" : ""}" href="${href}">${esc(label)}</a>`)
+      .join("\n          ");
+    return `      <section class="panel" lang="${code}" data-lang="${code}" style="margin:24px 0;padding:32px">
+        <p style="margin:0 0 8px;font-weight:700;color:var(--accent)">404</p>
+        <h1 style="margin:0 0 12px">${esc(t.title)}</h1>
+        <p style="margin:0 0 20px">${esc(t.text)}</p>
+        <nav style="display:flex;flex-wrap:wrap;gap:12px">
+          ${links}
+        </nav>
+      </section>`;
+  }).join("\n");
+
+  return `<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 · ${esc(NOT_FOUND.ru.title)} | GoodAntShop</title>
+    <meta name="robots" content="noindex, follow" />
+    ${icons}
+    ${styles}
+  </head>
+  <body>
+    <main class="container" style="max-width:760px;padding:48px 16px">
+      <a href="/ru" style="display:inline-flex;align-items:center;gap:10px;font-weight:700;color:inherit;text-decoration:none">
+        <img src="/logo.webp" alt="GoodAntShop" width="40" height="40" style="border-radius:50%" />GoodAntShop
+      </a>
+${sections}
+    </main>
+    <script>
+      (function () {
+        var m = location.pathname.match(/^\\/(ru|ro|en)(\\/|$)/);
+        if (!m) return;
+        document.documentElement.lang = m[1];
+        var titles = ${JSON.stringify(Object.fromEntries(LANGS.map((c) => [c, `404 · ${NOT_FOUND[c].title} | GoodAntShop`])))};
+        document.title = titles[m[1]];
+        document.querySelectorAll("[data-lang]").forEach(function (el) {
+          if (el.getAttribute("data-lang") !== m[1]) el.style.display = "none";
+        });
+      })();
+    </script>
+  </body>
+</html>
+`;
+}
+
+await writeFile(path.join(dist, "404.html"), render404(template), "utf8");
+
+console.log(`✓ Prerendered ${count} route HTML files (+ OG images in dist/og, 404.html)`);
