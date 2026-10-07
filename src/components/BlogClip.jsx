@@ -1,11 +1,40 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getText } from "./SEO";
 
 // Локальный ролик статьи как «живая гифка»: автоплей без звука по кругу, без
 // стандартных кнопок (пауза/полный экран убраны). Клик открывает тот же ролик
 // крупно в лайтбоксе - так же, как приближается фото (см. BlogImage).
+//
+// Ролики тяжёлые (десятки МБ), поэтому видео в статье не качается целиком при
+// открытии страницы: preload="none" при наличии poster (иначе "metadata", чтобы
+// был виден первый кадр), а воспроизведение включается, только когда ролик
+// попадает в viewport, и ставится на паузу, когда уходит из него.
 export default function BlogClip({ clip, lang = "ru" }) {
   const [open, setOpen] = useState(false);
+  const inlineRef = useRef(null);
+
+  useEffect(() => {
+    const el = inlineRef.current;
+    if (!el) return undefined;
+    el.muted = true;
+    const play = () => {
+      const result = el.play();
+      if (result && typeof result.catch === "function") result.catch(() => {});
+    };
+    if (typeof IntersectionObserver === "undefined") {
+      play();
+      return undefined;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) play();
+        else el.pause();
+      },
+      { threshold: 0.25 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [clip.src]);
 
   useEffect(() => {
     if (!open) return;
@@ -25,14 +54,15 @@ export default function BlogClip({ clip, lang = "ru" }) {
   const closeLabel = getText({ ru: "Закрыть", ro: "Închide", en: "Close" }, lang);
   const label = getText(clip.alt, lang) || "video";
 
-  // Общие атрибуты видео: гифка без управления.
+  // Общие атрибуты видео: гифка без управления. autoplay здесь нет - в статье
+  // запуском управляет IntersectionObserver выше, в лайтбоксе он включается
+  // явно (ролик открыли кликом, значит его хотят смотреть).
   const videoProps = {
     src: clip.src,
-    autoPlay: true,
     muted: true,
     loop: true,
     playsInline: true,
-    preload: "auto",
+    ...(clip.poster ? { poster: clip.poster } : {}),
     disablePictureInPicture: true,
     controlsList: "nodownload nofullscreen noremoteplayback",
     "aria-label": label,
@@ -45,7 +75,12 @@ export default function BlogClip({ clip, lang = "ru" }) {
           <div className="blog-video">
             {/* muted до автоплея выставляем и через ref-атрибут, некоторые
                 браузеры игнорируют проп muted при первом рендере */}
-            <video {...videoProps} ref={(el) => el && (el.muted = true)} tabIndex={-1} />
+            <video
+              {...videoProps}
+              preload={clip.poster ? "none" : "metadata"}
+              ref={inlineRef}
+              tabIndex={-1}
+            />
           </div>
           <span className="blog-figure__zoom" aria-hidden="true">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -64,6 +99,8 @@ export default function BlogClip({ clip, lang = "ru" }) {
           </button>
           <video
             {...videoProps}
+            autoPlay
+            preload="auto"
             ref={(el) => el && (el.muted = true)}
             className="blog-lightbox__video"
             onClick={(event) => event.stopPropagation()}
