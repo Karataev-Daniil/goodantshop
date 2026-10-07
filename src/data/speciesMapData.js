@@ -253,6 +253,12 @@ export const mapSpecies = [
 
 export const getSpecies = (slug) => mapSpecies.find((item) => item.slug === slug) || null;
 
+// Народное название продаваемого вида ({ ru, ro, en }) по slug из antsData.js -
+// для H1 карточки: «Муравей-жнец Messor Structor» вместо одной латыни.
+// Берётся из атласа, чтобы название вида не расходилось между страницами.
+export const commonNameFor = (sellSlug) =>
+  mapSpecies.find((item) => item.sellSlug === sellSlug)?.name || null;
+
 // --- Производные ------------------------------------------------------------
 
 // Зоны с находкой вида (confirmed + reported), в порядке `zones`.

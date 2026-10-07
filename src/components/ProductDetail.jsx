@@ -6,6 +6,7 @@ import ProductReviews from "./ProductReviews";
 import SEO, { breadcrumbSchema, productSchema, productSeo } from "./SEO";
 import Stars from "./Stars";
 import { reviewsFor, reviewStatsFor } from "../data/reviewsData";
+import { commonNameFor } from "../data/speciesMapData";
 
 const getText = (value, lang) => {
   if (value && typeof value === "object") {
@@ -318,7 +319,18 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
           <p className="kicker">
             {getText(type === "ant" ? { ru: "Колония", ro: "Colonie", en: "Colony" } : { ru: "Формикарий", ro: "Formicariu", en: "Formicarium" }, lang)}
           </p>
-          <h1 className="product-buy__title">{getText(item.title, lang)}</h1>
+          {/* У муравьёв перед латынью - народное название вида: по-русски и
+              по-румынски вид ищут и так («муравей-жнец»), а одна латынь в H1
+              этих запросов не покрывает. Пробел между частями нужен, чтобы
+              в тексте страницы слова не слиплись. */}
+          <h1 className="product-buy__title">
+            {type === "ant" && commonNameFor(item.slug) && (
+              <>
+                <span className="product-buy__common">{getText(commonNameFor(item.slug), lang)}</span>{" "}
+              </>
+            )}
+            {getText(item.title, lang)}
+          </h1>
 
           {reviewStats.reviewCount > 0 && (
             <a className="product-buy__rating" href="#reviews">

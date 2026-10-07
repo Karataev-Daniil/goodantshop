@@ -55,13 +55,13 @@ export const priceValue = (product) => {
 export const pageSeo = {
   home: {
     title: {
-      ru: "Купить муравьёв и формикарии в Молдове | GoodAntShop",
-      ro: "Cumpără furnici și formicarii în Moldova | GoodAntShop",
+      ru: "Купить муравьёв и муравьиную ферму в Молдове | GoodAntShop",
+      ro: "Cumpără furnici și o fermă de furnici în Moldova | GoodAntShop",
       en: "Buy Live Ants & Formicariums in Moldova | GoodAntShop",
     },
     description: {
-      ru: "Купить живых муравьёв, колонию с маткой и формикарий для домашней муравьиной фермы. Большой выбор видов, гарантия качества и доставка по всей Молдове.",
-      ro: "Cumpără furnici vii, o colonie cu regină și un formicariu pentru ferma ta de acasă. Varietate de specii, calitate garantată și livrare în toată Moldova.",
+      ru: "Муравьиная ферма для дома: живые муравьи, колония с маткой и формикарий. Большой выбор видов, гарантия качества и доставка по всей Молдове.",
+      ro: "Fermă de furnici pentru acasă: furnici vii, o colonie cu regină și un formicariu. Varietate de specii, calitate garantată și livrare în toată Moldova.",
       en: "Buy live ants, a queen-right colony and a formicarium for your home ant farm. Wide choice of species, quality guarantee and delivery across Moldova.",
     },
   },
@@ -79,13 +79,13 @@ export const pageSeo = {
   },
   formicariums: {
     title: {
-      ru: "Купить формикарий в Молдове | GoodAntShop",
-      ro: "Cumpără formicariu în Moldova | GoodAntShop",
+      ru: "Формикарии и муравьиные фермы: купить в Молдове | GoodAntShop",
+      ro: "Fermă de furnici (formicariu): cumpără în Moldova | GoodAntShop",
       en: "Buy Formicariums in Moldova | GoodAntShop",
     },
     description: {
-      ru: "Акриловые формикарии для домашних муравьиных ферм: арена, вентиляция, система увлажнения и удобный обзор камер. Доставка по всей Молдове.",
-      ro: "Formicarii pentru ferme de furnici acasă: arenă, ventilație, sistem de umidificare și vizibilitate bună a camerelor. Livrare în Moldova.",
+      ru: "Муравьиная ферма для дома - акриловый формикарий с ареной, вентиляцией, системой увлажнения и удобным обзором камер. Доставка по всей Молдове.",
+      ro: "Fermă de furnici pentru acasă - formicariu cu arenă, ventilație, sistem de umidificare și vizibilitate bună a camerelor. Livrare în Moldova.",
       en: "Formicariums for home ant farms: arena, ventilation, humidity system and clear chamber view. Delivery across Moldova.",
     },
   },
