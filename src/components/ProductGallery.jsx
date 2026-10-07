@@ -89,7 +89,7 @@ export default function ProductGallery({ images, title, imageAlt, badge, zoomLab
               onClick={() => setIndex(i)}
               aria-label={`Image ${i + 1}`}
             >
-              <img src={src} alt="" loading="lazy" />
+              <img src={src} alt={`${altText} - ${i + 1}`} loading="lazy" />
             </button>
           ))}
         </div>
