@@ -207,6 +207,13 @@
   font-size: clamp(28px, 4vw, 40px);
   line-height: 1.05;
 }
+.product-buy__common {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.5em;
+  font-weight: 600;
+  line-height: 1.2;
+}
 .product-buy__price {
   display: flex;
   align-items: baseline;

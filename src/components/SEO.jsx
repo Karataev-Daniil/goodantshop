@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { reviewsFor, reviewStatsFor } from "../data/reviewsData";
+import { ownReviewsFor, ownReviewStatsFor, SELLER_999_URL } from "../data/reviewsData";
 
 export const SITE_URL = "https://goodantshop.md";
 export const SITE_NAME = "GoodAntShop";
@@ -12,17 +12,14 @@ export const SITE_PHONE = "+37360983052";
 export const SITE_PHONE_DISPLAY = "060 983 052";
 
 // Instagram нельзя «поделиться ссылкой» из веба - кнопка ведёт на профиль.
-// TODO: заменить на реальный аккаунт GoodAntShop.
+// TODO: заменить на реальный аккаунт GoodAntShop (https://www.instagram.com/<логин>/).
+// Пока здесь заглушка, кнопка Instagram скрыта и в sameAs он не попадает:
+// ссылка на главную instagram.com только подрывает доверие.
 export const SITE_INSTAGRAM = "https://www.instagram.com/";
+export const HAS_INSTAGRAM = /instagram\.com\/[^/?#]+/i.test(SITE_INSTAGRAM);
 
 // Основной канал связи: и в разметке организации, и в кнопках на страницах.
 export const SITE_TELEGRAM = "https://t.me/GoodAnt_Shop";
-
-const LOCALES = {
-  ru: "ru_MD",
-  ro: "ro_MD",
-  en: "en_US",
-};
 
 const AVAILABILITY = {
   inStock: "https://schema.org/InStock",
@@ -61,13 +58,13 @@ export const priceValue = (product) => {
 export const pageSeo = {
   home: {
     title: {
-      ru: "Купить муравьёв и формикарии в Молдове | GoodAntShop",
-      ro: "Cumpără furnici și formicarii în Moldova | GoodAntShop",
+      ru: "Купить муравьёв и муравьиную ферму в Молдове | GoodAntShop",
+      ro: "Cumpără furnici și o fermă de furnici în Moldova | GoodAntShop",
       en: "Buy Live Ants & Formicariums in Moldova | GoodAntShop",
     },
     description: {
-      ru: "Купить живых муравьёв, колонию с маткой и формикарий для домашней муравьиной фермы. Большой выбор видов, гарантия качества и доставка по всей Молдове.",
-      ro: "Cumpără furnici vii, o colonie cu regină și un formicariu pentru ferma ta de acasă. Varietate de specii, calitate garantată și livrare în toată Moldova.",
+      ru: "Муравьиная ферма для дома: живые муравьи, колония с маткой и формикарий. Большой выбор видов, гарантия качества и доставка по всей Молдове.",
+      ro: "Fermă de furnici pentru acasă: furnici vii, o colonie cu regină și un formicariu. Varietate de specii, calitate garantată și livrare în toată Moldova.",
       en: "Buy live ants, a queen-right colony and a formicarium for your home ant farm. Wide choice of species, quality guarantee and delivery across Moldova.",
     },
   },
@@ -85,13 +82,13 @@ export const pageSeo = {
   },
   formicariums: {
     title: {
-      ru: "Купить формикарий в Молдове | GoodAntShop",
-      ro: "Cumpără formicariu în Moldova | GoodAntShop",
+      ru: "Формикарии и муравьиные фермы: купить в Молдове | GoodAntShop",
+      ro: "Fermă de furnici (formicariu): cumpără în Moldova | GoodAntShop",
       en: "Buy Formicariums in Moldova | GoodAntShop",
     },
     description: {
-      ru: "Акриловые формикарии для домашних муравьиных ферм: арена, вентиляция, система увлажнения и удобный обзор камер. Доставка по всей Молдове.",
-      ro: "Formicarii pentru ferme de furnici acasă: arenă, ventilație, sistem de umidificare și vizibilitate bună a camerelor. Livrare în Moldova.",
+      ru: "Муравьиная ферма для дома - акриловый формикарий с ареной, вентиляцией, системой увлажнения и удобным обзором камер. Доставка по всей Молдове.",
+      ro: "Fermă de furnici pentru acasă - formicariu cu arenă, ventilație, sistem de umidificare și vizibilitate bună a camerelor. Livrare în Moldova.",
       en: "Formicariums for home ant farms: arena, ventilation, humidity system and clear chamber view. Delivery across Moldova.",
     },
   },
@@ -156,6 +153,10 @@ export const pageSeo = {
     },
   },
   cart: {
+    // Корзина закрыта и в robots.txt (Disallow: /*/cart), и мета-тегом: если
+    // бот всё же получит URL (например, по внешней ссылке), он не попадёт в
+    // индекс. follow - чтобы ссылки из шапки/подвала оставались рабочими.
+    robots: "noindex, follow",
     title: {
       ru: "Корзина | GoodAntShop",
       ro: "Coș | GoodAntShop",
@@ -223,7 +224,7 @@ export const organizationSchema = (lang = "ru") => ({
     { "@type": "Country", name: "Moldova" },
     { "@type": "City", name: "Chișinău" },
   ],
-  sameAs: [SITE_TELEGRAM],
+  sameAs: [SITE_TELEGRAM, SELLER_999_URL, ...(HAS_INSTAGRAM ? [SITE_INSTAGRAM] : [])],
 });
 
 export const websiteSchema = (lang = "ru") => ({
@@ -258,7 +259,7 @@ export const itemListSchema = (lang = "ru", items = [], pathFactory) => ({
 });
 
 export const aggregateRatingSchema = (type, slug) => {
-  const stats = reviewStatsFor(type, slug);
+  const stats = ownReviewStatsFor(type, slug);
   return {
     "@type": "AggregateRating",
     ratingValue: stats.ratingValue,
@@ -293,14 +294,16 @@ const PRODUCT_CATEGORY = {
 export const productSchema = (product, type, lang = "ru", path = "/") => {
   const images = product.images?.length ? product.images : [product.image].filter(Boolean);
   // AggregateRating без отзывов невалиден - отдаём разметку только когда они есть.
-  // У аксессуаров учитываются ТОЛЬКО собственные отзывы, привязанные к товару:
-  // подмешивать общие отзывы магазина нельзя, Google не считает их отзывами о
-  // товаре. Фильтрация живёт в reviewsFor, здесь просто передаём slug.
-  const productReviews = reviewsFor(type, product.slug);
+  // Для всех типов товаров (колонии, формикарии, аксессуары) учитываются ТОЛЬКО
+  // собственные отзывы, привязанные к товару через productSlug. Общие отзывы
+  // магазина на странице показываются, но в разметку Product не идут: Google не
+  // считает их отзывами о товаре. Фильтрация живёт в ownReviewsFor.
+  const productReviews = ownReviewsFor(type, product.slug);
 
   return {
     "@type": "Product",
     name: getText(product.title, lang),
+    sku: product.slug,
     description: getText(product.description, lang) || getText(product.excerpt, lang),
     image: images.map(absoluteUrl),
     category: PRODUCT_CATEGORY[type] || PRODUCT_CATEGORY.accessory,
@@ -420,21 +423,16 @@ export const articleSchema = (post, lang = "ru", path = "/") => {
   };
 };
 
-export default function SEO({
-  lang = "ru",
-  path = "/",
-  title,
-  description,
-  image = DEFAULT_IMAGE,
-  type = "website",
-  robots = "index,follow",
-  jsonLd = [],
-}) {
-  const cleanPath = normalizePath(path);
-  const canonical = localizedUrl(lang, cleanPath || "/");
+// Мета-теги страницы (description, robots, canonical, hreflang, og:*, twitter:*)
+// вписывает scripts/prerender.mjs прямо в статический HTML каждого маршрута -
+// их видят боты без JS. Здесь их намеренно НЕ дублируем: раньше Helmet после
+// гидрации добавлял второй комплект (2× description, 2× robots, 2× og:image с
+// разными картинками). Остаются только то, что должно меняться при клиентской
+// навигации: <title>, lang у <html> и JSON-LD.
+// Пропсы description / image / type / robots страницы по-прежнему передают -
+// они описывают страницу и пригодятся, но в рантайме в <head> не выводятся.
+export default function SEO({ lang = "ru", title, jsonLd = [] }) {
   const titleText = getText(title, lang);
-  const descriptionText = getText(description, lang);
-  const imageUrl = absoluteUrl(image);
   const schemas = [
     organizationSchema(lang),
     websiteSchema(lang),
@@ -444,25 +442,6 @@ export default function SEO({
   return (
     <Helmet htmlAttributes={{ lang }}>
       <title>{titleText}</title>
-      <meta name="description" content={descriptionText} />
-      <meta name="robots" content={robots} />
-      {/* canonical + hreflang теперь вписывает scripts/prerender.mjs прямо в
-          статический HTML каждого маршрута (их видят и боты без JS). Здесь их
-          намеренно НЕ дублируем, чтобы в готовом DOM не было двух canonical. */}
-
-      <meta property="og:type" content={type} />
-      <meta property="og:locale" content={LOCALES[lang] || LOCALES.ru} />
-      <meta property="og:site_name" content={SITE_NAME} />
-      <meta property="og:title" content={titleText} />
-      <meta property="og:description" content={descriptionText} />
-      <meta property="og:url" content={canonical} />
-      <meta property="og:image" content={imageUrl} />
-
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={titleText} />
-      <meta name="twitter:description" content={descriptionText} />
-      <meta name="twitter:image" content={imageUrl} />
-
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",

@@ -265,14 +265,12 @@ const round1 = (value) => Math.round(value * 10) / 10;
 // принимает, а на странице карточка с пустой подписью выглядит поломанной.
 const isPublished = (review) => !review.draft && Boolean(review.author) && Boolean(review.date);
 
-// Отзывы, релевантные товару.
-//   ant / formicarium - профильные плюс общие про магазин (shop): человек,
-//                       похваливший сервис и доставку, покупал живую колонию,
-//                       так что отзыв к ней относится;
-//   accessory         - ТОЛЬКО собственные, привязанные к productSlug. Общие
-//                       отзывы магазина сюда не подмешиваем: Google не считает
-//                       их отзывами о товаре, и собирать из них рейтинг набора
-//                       инструментов - прямой путь к ручным санкциям.
+// Отзывы, которые ПОКАЗЫВАЮТСЯ на странице товара (блок «Отзывы покупателей»).
+//   ant / formicarium - профильные плюс общие про магазин (shop): человеку,
+//                       выбирающему колонию, полезно видеть опыт покупателей
+//                       магазина в целом;
+//   accessory         - ТОЛЬКО собственные, привязанные к productSlug.
+// В микроразметку Product этот список НЕ идёт - для неё есть ownReviewsFor.
 export const reviewsFor = (type, slug) =>
   reviews.filter((review) => {
     if (!isPublished(review)) return false;
@@ -282,12 +280,19 @@ export const reviewsFor = (type, slug) =>
     return review.target === type || review.target === "shop";
   });
 
-// Сводный рейтинг для AggregateRating и заголовка блока - по тем отзывам,
-// которые реально показаны на странице данного товара.
-export const reviewStatsFor = (type, slug) => {
-  const subset = reviewsFor(type, slug);
-  const total = subset.reduce((sum, review) => sum + review.rating, 0);
+// Отзывы для schema.org Review / AggregateRating - только собственные отзывы
+// товара, привязанные к нему через productSlug. Общие отзывы магазина и
+// отзывы «про муравьёв вообще» без slug сюда не попадают: раньше одни и те же
+// 15 отзывов размечались как отзывы о каждом из видов, а это ровно то, за что
+// Google выдаёт ручную меру «Spammy structured markup» на весь сайт.
+// Чтобы у колонии появились звёзды, новому отзыву нужно проставить productSlug.
+export const ownReviewsFor = (type, slug) =>
+  reviews.filter(
+    (review) => isPublished(review) && review.target === type && Boolean(slug) && review.productSlug === slug
+  );
 
+const statsOf = (subset) => {
+  const total = subset.reduce((sum, review) => sum + review.rating, 0);
   return {
     ratingValue: subset.length ? round1(total / subset.length) : 0,
     reviewCount: subset.length,
@@ -295,6 +300,13 @@ export const reviewStatsFor = (type, slug) => {
     worstRating: 1,
   };
 };
+
+// Рейтинг для микроразметки - по собственным отзывам товара.
+export const ownReviewStatsFor = (type, slug) => statsOf(ownReviewsFor(type, slug));
+
+// Сводный рейтинг для AggregateRating и заголовка блока - по тем отзывам,
+// которые реально показаны на странице данного товара.
+export const reviewStatsFor = (type, slug) => statsOf(reviewsFor(type, slug));
 
 // Общий рейтинг по всем отзывам - для витрины (например, блока на главной).
 export const reviewStatsAll = () => {

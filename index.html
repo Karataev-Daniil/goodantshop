@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Купить муравьёв и формикарии в Молдове | GoodAntShop</title>
+    <title>Купить муравьёв и муравьиную ферму в Молдове | GoodAntShop</title>
 
     <!-- Круглые иконки собраны из public/logo.webp (круговая маска).
          .ico оставлен для старых браузеров и ботов, которые дёргают
@@ -14,9 +14,12 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- description / robots / og / twitter намеренно не заданы статически:
-         в dev их выставляет react-helmet (SEO.jsx), в prod вписывает
-         scripts/prerender.mjs. Статический тег не менялся бы при смене языка. -->
+    <!-- description / robots / canonical / hreflang / og / twitter здесь
+         намеренно не заданы: scripts/prerender.mjs вписывает полный набор в
+         HTML каждого маршрута при сборке, туда же он кладёт разметку страницы
+         (src/entry-server.jsx). react-helmet (SEO.jsx) в рантайме меняет
+         только title, lang и JSON-LD, поэтому в dev-сервере этих тегов нет -
+         смотрите их в dist/ после npm run build. -->
   </head>
 
   <body>

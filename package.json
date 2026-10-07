@@ -7,7 +7,7 @@
     "dev": "vite",
     "api": "node api-server.js",
     "dev:full": "concurrently \"npm run api\" \"npm run dev\"",
-    "build": "vite build && node scripts/prerender.mjs",
+    "build": "vite build && vite build --ssr src/entry-server.jsx --outDir node_modules/.cache/prerender-ssr && node scripts/prerender.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

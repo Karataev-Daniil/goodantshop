@@ -103,7 +103,9 @@ export default function FooterMenu({ curLang }) {
       </div>
 
       <div className="container footer-bottom">
-        <span>© {year} GoodAntShop · {copy.location}</span>
+        {/* Год вычисляется и при сборке, и в браузере - на стыке лет они могут
+            разойтись, это не ошибка разметки. */}
+        <span suppressHydrationWarning>© {year} GoodAntShop · {copy.location}</span>
         <span>{copy.rights}</span>
       </div>
     </footer>
