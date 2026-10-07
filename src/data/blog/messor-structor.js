@@ -12,6 +12,7 @@ import {
 
 // Локальный ролик лежит в public/videos (ссылаемся абсолютным путём от корня).
 const clipNestTopdown = "/videos/messor-nest-entrance-topdown.mp4";
+const clipNestTopdownPoster = "/videos/messor-nest-entrance-topdown.webp";
 
 export default {
   id: 402,
@@ -101,6 +102,7 @@ export default {
     {
       type: "clip",
       src: clipNestTopdown,
+      poster: clipNestTopdownPoster,
       alt: {
         ru: "Вид сверху на вход в муравейник мессоров, муравьи носят семена и соринки",
         ro: "Vedere de sus a intrării în furnicarul Messor, furnicile cară semințe și fire mărunte",
