@@ -1,40 +1,36 @@
-﻿# GoodAntShop React Version
+# GoodAntShop
 
-Это автономная React-версия на мок-данных (без админки).
+Online store for ants and formicaria in Moldova — **[goodantshop.md](https://goodantshop.md)**.
+My own product: I run the shop and built the whole site.
 
-## Что внутри
-- Главная: hero, популярные муравьи, все виды.
-- Каталог муравьев.
-- Single страница муравья: картинка + контент + характеристики справа + рекомендованные формикарии.
-- Каталог формикариев.
+## Features
 
-## Запуск
-1. Перейти в папку:
-   `cd good-ant-react`
-2. Установить зависимости:
-   `npm install`
-3. Запустить фронтенд:
-   `npm run dev`
-4. Запустить локальный API-сервер:
-   `npm run api`
-5. Запустить сразу фронтенд + API:
-   `npm run dev:full`
+- Catalog of ant species, formicaria and accessories with product pages, gallery and reviews
+- Cart and order form; orders go to a serverless API that sends email notifications
+- Blog and an interactive map of ant species found in Moldova (Leaflet)
+- Three languages: RU / RO / EN with hreflang
+- **SEO-first build:** every route is prerendered to static HTML with its content, meta tags and JSON-LD, then hydrated on the client; sitemap and 404 page are generated at build time
 
-## Деплой на Vercel
-- На Vercel бекенд используется из `api/order.js`
-- Фронтенд делает запросы к `/api/order`
-- В продакшене это будет `https://goodantshop.md/api/order`
-- В Vercel задайте секреты:
-  - `RESEND_API_KEY`
-  - `ORDER_EMAIL`
-  - `FROM_EMAIL`
+## Stack
 
-## Локальная разработка
-- `api-server.js` нужен только для локального запуска
-- В проде `http://localhost:3001` не используется
+React · Vite · React Router · react-helmet-async · Node.js (Express for local API) · Vercel serverless functions · Resend
 
-## Данные
-Каталог товаров лежит в:
-- `src/data/antsData.js`
-- `src/data/formicariumsData.js`
-- `src/data/blogPostsData.js`
+## Scripts
+
+```bash
+npm install
+npm run dev        # Vite dev server
+npm run dev:full   # dev server + local order API
+npm run build      # client build + SSR build + prerender of all routes
+npm run preview
+```
+
+Production order API needs `RESEND_API_KEY`, `ORDER_EMAIL`, `FROM_EMAIL` in the Vercel project settings.
+
+## Structure
+
+- `src/pages` — route components
+- `src/components` — UI and SEO (`SEO.jsx`: meta and structured data)
+- `src/data` — catalog, blog posts, reviews, species map data
+- `scripts/prerender.mjs`, `scripts/routes.mjs` — static prerender, sitemap, 404
+- `api/order.js` — serverless order handler
