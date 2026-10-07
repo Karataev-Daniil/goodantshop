@@ -18,12 +18,6 @@ export const SITE_INSTAGRAM = "https://www.instagram.com/";
 // Основной канал связи: и в разметке организации, и в кнопках на страницах.
 export const SITE_TELEGRAM = "https://t.me/GoodAnt_Shop";
 
-const LOCALES = {
-  ru: "ru_MD",
-  ro: "ro_MD",
-  en: "en_US",
-};
-
 const AVAILABILITY = {
   inStock: "https://schema.org/InStock",
   preorder: "https://schema.org/PreOrder",
@@ -421,21 +415,16 @@ export const articleSchema = (post, lang = "ru", path = "/") => {
   };
 };
 
-export default function SEO({
-  lang = "ru",
-  path = "/",
-  title,
-  description,
-  image = DEFAULT_IMAGE,
-  type = "website",
-  robots = "index,follow",
-  jsonLd = [],
-}) {
-  const cleanPath = normalizePath(path);
-  const canonical = localizedUrl(lang, cleanPath || "/");
+// Мета-теги страницы (description, robots, canonical, hreflang, og:*, twitter:*)
+// вписывает scripts/prerender.mjs прямо в статический HTML каждого маршрута -
+// их видят боты без JS. Здесь их намеренно НЕ дублируем: раньше Helmet после
+// гидрации добавлял второй комплект (2× description, 2× robots, 2× og:image с
+// разными картинками). Остаются только то, что должно меняться при клиентской
+// навигации: <title>, lang у <html> и JSON-LD.
+// Пропсы description / image / type / robots страницы по-прежнему передают -
+// они описывают страницу и пригодятся, но в рантайме в <head> не выводятся.
+export default function SEO({ lang = "ru", title, jsonLd = [] }) {
   const titleText = getText(title, lang);
-  const descriptionText = getText(description, lang);
-  const imageUrl = absoluteUrl(image);
   const schemas = [
     organizationSchema(lang),
     websiteSchema(lang),
@@ -445,25 +434,6 @@ export default function SEO({
   return (
     <Helmet htmlAttributes={{ lang }}>
       <title>{titleText}</title>
-      <meta name="description" content={descriptionText} />
-      <meta name="robots" content={robots} />
-      {/* canonical + hreflang теперь вписывает scripts/prerender.mjs прямо в
-          статический HTML каждого маршрута (их видят и боты без JS). Здесь их
-          намеренно НЕ дублируем, чтобы в готовом DOM не было двух canonical. */}
-
-      <meta property="og:type" content={type} />
-      <meta property="og:locale" content={LOCALES[lang] || LOCALES.ru} />
-      <meta property="og:site_name" content={SITE_NAME} />
-      <meta property="og:title" content={titleText} />
-      <meta property="og:description" content={descriptionText} />
-      <meta property="og:url" content={canonical} />
-      <meta property="og:image" content={imageUrl} />
-
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={titleText} />
-      <meta name="twitter:description" content={descriptionText} />
-      <meta name="twitter:image" content={imageUrl} />
-
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
