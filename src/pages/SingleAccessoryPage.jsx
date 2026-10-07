@@ -48,12 +48,10 @@ export default function SingleAccessoryPage() {
     navigate(`/${lang}/cart`);
   };
 
-  // Корм ведём в каталог муравьёв, инструменты - в формикарии.
-  const backTo = item.kind === "food" ? "ants" : "formicariums";
-  const backLabel =
-    item.kind === "food"
-      ? { ru: "Ко всем муравьям", ro: "La toate furnicile", en: "All ants" }
-      : { ru: "Ко всем формикариям", ro: "La toate formicariile", en: "All formicariums" };
+  // Аксессуары живут в разделе «Уход за колонией» - туда и ведёт ссылка назад
+  // (раньше корм вёл в каталог муравьёв с подписью «Ко всем муравьям»), и тот
+  // же уровень стоит в хлебных крошках.
+  const sectionName = { ru: "Уход за колонией", ro: "Îngrijirea coloniei", en: "Colony care" };
 
   return (
     <article className="section product-detail accessory-detail">
@@ -67,14 +65,15 @@ export default function SingleAccessoryPage() {
         jsonLd={[
           breadcrumbSchema(lang, [
             { name: { ru: "Главная", ro: "Acasă", en: "Home" }, path: "/" },
+            { name: sectionName, path: "/accessories" },
             { name: item.title, path: productPath },
           ]),
           productSchema(item, "accessory", lang, productPath),
         ]}
       />
 
-      <Link className="product-detail__back" to={`/${lang}/${backTo}`}>
-        ← {getText(backLabel, lang)}
+      <Link className="product-detail__back" to={`/${lang}/accessories`}>
+        ← {getText(sectionName, lang)}
       </Link>
 
       <div className="product-detail__top">
