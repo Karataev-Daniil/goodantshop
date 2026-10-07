@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { ownReviewsFor, ownReviewStatsFor } from "../data/reviewsData";
+import { ownReviewsFor, ownReviewStatsFor, SELLER_999_URL } from "../data/reviewsData";
 
 export const SITE_URL = "https://goodantshop.md";
 export const SITE_NAME = "GoodAntShop";
@@ -12,8 +12,11 @@ export const SITE_PHONE = "+37360983052";
 export const SITE_PHONE_DISPLAY = "060 983 052";
 
 // Instagram нельзя «поделиться ссылкой» из веба - кнопка ведёт на профиль.
-// TODO: заменить на реальный аккаунт GoodAntShop.
+// TODO: заменить на реальный аккаунт GoodAntShop (https://www.instagram.com/<логин>/).
+// Пока здесь заглушка, кнопка Instagram скрыта и в sameAs он не попадает:
+// ссылка на главную instagram.com только подрывает доверие.
 export const SITE_INSTAGRAM = "https://www.instagram.com/";
+export const HAS_INSTAGRAM = /instagram\.com\/[^/?#]+/i.test(SITE_INSTAGRAM);
 
 // Основной канал связи: и в разметке организации, и в кнопках на страницах.
 export const SITE_TELEGRAM = "https://t.me/GoodAnt_Shop";
@@ -221,7 +224,7 @@ export const organizationSchema = (lang = "ru") => ({
     { "@type": "Country", name: "Moldova" },
     { "@type": "City", name: "Chișinău" },
   ],
-  sameAs: [SITE_TELEGRAM],
+  sameAs: [SITE_TELEGRAM, SELLER_999_URL, ...(HAS_INSTAGRAM ? [SITE_INSTAGRAM] : [])],
 });
 
 export const websiteSchema = (lang = "ru") => ({
