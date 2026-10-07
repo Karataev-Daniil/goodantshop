@@ -271,8 +271,10 @@ export default function SingleBlogPage() {
 
   const category = getBlogCategory(post.category);
   const postPath = `/blog/${post.slug}`;
-  const shareUrl =
-    typeof window !== "undefined" ? window.location.href : `${SITE_URL}/${lang}${postPath}`;
+  // Всегда канонический адрес: он же уходит в пререндеренный HTML, и при
+  // гидрации ссылки «Поделиться» совпадают с серверными (React 18 не правит
+  // расхождения в атрибутах). Заодно в шаринг не попадают utm и прочие хвосты.
+  const shareUrl = `${SITE_URL}/${lang}${postPath}`;
   const shareTitle = getText(post.title, lang);
   // «Читайте дальше»: сначала явно связанные посты, затем добираем остальными,
   // чтобы блок не пустовал. Максимум два - под сетку в две колонки.

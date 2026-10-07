@@ -1,8 +1,14 @@
-// Пост-билд пререндер мета-тегов.
+// Пост-билд пререндер: мета-теги + разметка страницы.
 // Боты соцсетей/мессенджеров не исполняют JS и берут «сырой» HTML. Этот скрипт
 // после `vite build` создаёт по index.html на каждый маршрут с его собственными
 // title / description / og:image, чтобы превью ссылки было правильным на любой
 // странице. Картинки для OG приводятся к jpg 1200×630 (совместимо с FB/VK).
+//
+// Тело страницы рендерится через src/entry-server.jsx (собран командой
+// `vite build --ssr` в node_modules/.cache/prerender-ssr - см. package.json):
+// H1, текст, ссылки и JSON-LD оказываются прямо в HTML, а браузер затем
+// гидрирует эту разметку. Если рендер маршрута падает, падает и сборка -
+// лучше не задеплоить, чем молча выкатить пустые страницы.
 import esbuild from "esbuild";
 import sharp from "sharp";
 import { readFile, writeFile, mkdir } from "node:fs/promises";
@@ -157,10 +163,23 @@ function applyMeta(html, { title, description, url, image, path: routePath, robo
   return withLang.replace(/<title>[\s\S]*?<\/title>/i, `<title>${t}</title>\n${block}`);
 }
 
+const ssrEntry = path.join(root, "node_modules", ".cache", "prerender-ssr", "entry-server.js");
+const { render } = await import(pathToFileURL(ssrEntry).href);
+
+function applyBody(html, routePath) {
+  const { html: appHtml, head } = render(routePath);
+  if (!appHtml) throw new Error(`SSR rendered nothing for ${routePath}`);
+  // Функции-замены: в разметке могут встретиться «$&», «$'» и т.п., которые
+  // строковая замена интерпретировала бы как шаблоны.
+  return html
+    .replace("</head>", () => `${head ? `    ${head}\n` : ""}  </head>`)
+    .replace('<div id="root"></div>', () => `<div id="root">${appHtml}</div>`);
+}
+
 let count = 0;
 for (const route of routes) {
   const ogRel = await ogFor(route.image);
-  const html = applyMeta(template, {
+  const withMeta = applyMeta(template, {
     title: route.title,
     description: route.description,
     url: SITE_URL + route.path,
@@ -168,6 +187,7 @@ for (const route of routes) {
     path: route.path,
     robots: route.robots,
   });
+  const html = applyBody(withMeta, route.path);
   const outDir = path.join(dist, route.path);
   await mkdir(outDir, { recursive: true });
   await writeFile(path.join(outDir, "index.html"), html, "utf8");

@@ -19,19 +19,33 @@ import FooterMenu from "./components/navigation/FooterMenu";
 
 import { HelmetProvider } from "react-helmet-async";
 
+// Страницы пререндерятся на сервере, где localStorage нет, а первый
+// клиентский рендер при гидрации обязан совпасть с серверным. Поэтому стартуем
+// с initialValue и читаем сохранённое значение уже после монтирования.
+// Запись включается только после чтения (ready), иначе первый же эффект
+// затёр бы сохранённую корзину пустым массивом.
 function useLocalStorage(key, initialValue) {
-  const [state, setState] = useState(() => {
-    try {
-      const stored = window.localStorage.getItem(key);
-      return stored ? JSON.parse(stored) : initialValue;
-    } catch {
-      return initialValue;
-    }
-  });
+  const [state, setState] = useState(initialValue);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    window.localStorage.setItem(key, JSON.stringify(state));
-  }, [key, state]);
+    try {
+      const stored = window.localStorage.getItem(key);
+      if (stored) setState(JSON.parse(stored));
+    } catch {
+      // Битое значение или запрещённый storage - остаёмся на initialValue.
+    }
+    setReady(true);
+  }, [key]);
+
+  useEffect(() => {
+    if (!ready) return;
+    try {
+      window.localStorage.setItem(key, JSON.stringify(state));
+    } catch {
+      // Приватный режим / переполненный storage - корзина живёт до перезагрузки.
+    }
+  }, [key, state, ready]);
 
   return [state, setState];
 }
@@ -105,9 +119,11 @@ function Layout() {
   );
 }
 
-export default function App() {
+// helmetContext передаёт только серверный рендер (src/entry-server.jsx), чтобы
+// забрать JSON-LD для статического HTML; в браузере он не нужен.
+export default function App({ helmetContext }) {
   return (
-    <HelmetProvider>
+    <HelmetProvider context={helmetContext}>
       <Routes>
         <Route path="/" element={<Navigate to="/ru" replace />} />
         <Route path="/:lang/*" element={<Layout />}>

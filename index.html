@@ -16,9 +16,10 @@
 
     <!-- description / robots / canonical / hreflang / og / twitter здесь
          намеренно не заданы: scripts/prerender.mjs вписывает полный набор в
-         HTML каждого маршрута при сборке. react-helmet (SEO.jsx) в рантайме
-         меняет только <title>, lang и JSON-LD, поэтому в dev-сервере этих
-         тегов нет - смотрите их в dist/ после npm run build. -->
+         HTML каждого маршрута при сборке, туда же он кладёт разметку страницы
+         (src/entry-server.jsx). react-helmet (SEO.jsx) в рантайме меняет
+         только title, lang и JSON-LD, поэтому в dev-сервере этих тегов нет -
+         смотрите их в dist/ после npm run build. -->
   </head>
 
   <body>

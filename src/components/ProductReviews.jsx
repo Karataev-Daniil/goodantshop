@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Stars from "./Stars";
 import { formatReviewDate, SELLER_999_URL } from "../data/reviewsData";
 import { getText } from "./SEO";
@@ -13,13 +13,17 @@ import { getText } from "./SEO";
 
 const REVIEWS_PREVIEW = 4;
 
+// На сервере (пререндер) useLayoutEffect не выполняется и сыплет
+// предупреждениями - там подменяем его на useEffect, который тоже не запустится.
+const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
+
 // Карточка отзыва: текст обрезается до 3 строк, длинные разворачиваются по кнопке.
 function ReviewCard({ review, lang }) {
   const bodyRef = useRef(null);
   const [expanded, setExpanded] = useState(false);
   const [isClamped, setIsClamped] = useState(false);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const el = bodyRef.current;
     if (el) setIsClamped(el.scrollHeight > el.clientHeight + 1);
   }, [review.body, lang]);
