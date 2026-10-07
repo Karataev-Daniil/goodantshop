@@ -174,7 +174,45 @@ for (const route of routes) {
   count += 1;
 }
 
-// --- 4. 404.html ---
+// --- 4. sitemap.xml ---
+// Собирается из того же списка routes, что и HTML: новый товар или статья
+// попадает в sitemap автоматически (раньше public/sitemap.xml вёлся руками).
+// Маршруты с sitemap: false (корзина) не включаются. hreflang-альтернативы и
+// x-default (= ru) совпадают с теми, что prerender вписывает в <head>.
+// lastmod - только там, где есть настоящая дата изменения (статьи блога):
+// одинаковая выдуманная дата на всех URL Google только учит игнорировать поле.
+const xmlEsc = (s) => esc(s).replace(/'/g, "&apos;");
+const sitemapUrls = routes
+  .filter((route) => route.sitemap !== false)
+  .map((route) => {
+    const { rest } = splitLangPath(route.path);
+    const alternates = [
+      ...LANGS.map((code) => [code, `${SITE_URL}/${code}${rest}`]),
+      ["x-default", `${SITE_URL}/ru${rest}`],
+    ]
+      .map(([code, href]) => `    <xhtml:link rel="alternate" hreflang="${code}" href="${xmlEsc(href)}"/>`)
+      .join("\n");
+    return [
+      "  <url>",
+      `    <loc>${xmlEsc(SITE_URL + route.path)}</loc>`,
+      ...(route.lastmod ? [`    <lastmod>${xmlEsc(route.lastmod)}</lastmod>`] : []),
+      alternates,
+      "  </url>",
+    ].join("\n");
+  });
+
+const sitemap = [
+  '<?xml version="1.0" encoding="UTF-8"?>',
+  '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+  '  xmlns:xhtml="http://www.w3.org/1999/xhtml">',
+  ...sitemapUrls,
+  "</urlset>",
+  "",
+].join("\n");
+await writeFile(path.join(dist, "sitemap.xml"), sitemap, "utf8");
+console.log(`✓ sitemap.xml: ${sitemapUrls.length} URLs`);
+
+// --- 5. 404.html ---
 // Vercel отдаёт dist/404.html со статусом 404 для любого неизвестного URL.
 // Раньше там был голый текст Vercel «NOT_FOUND»: человек со старой или битой
 // ссылки попадал в тупик. Страница статическая (без бандла приложения: роутер

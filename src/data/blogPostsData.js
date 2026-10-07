@@ -10,7 +10,9 @@
 //      ./blog/<slug>.js, поменяйте id/slug/category и впишите тексты
 //      (достаточно поля `ru` - ro/en подставят русский, пока нет перевода).
 //   2. Импортируйте его ниже и добавьте в массив `blogPosts`.
-//   3. Добавьте URL поста (3 языка) в public/sitemap.xml.
+//   3. Всё. sitemap.xml собирается при сборке (scripts/prerender.mjs) из того же
+//      списка маршрутов, lastmod берётся из dateModified - обновляйте его при
+//      правке статьи.
 //
 // Типы блоков content: lead · heading(level 2/3) · paragraph · image ·
 // row (фото в ряд) · list(ordered?) · steps · deflist · accordion ·

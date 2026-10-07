@@ -23,7 +23,7 @@ const staticPages = [
   // необходим: без него прямая ссылка и обычное обновление страницы на шаге
   // оформления отдавали 404. SPA-фолбэка на Vercel нет (мёртвое правило
   // rewrites удалено): каждый маршрут обязан иметь свой пререндеренный HTML.
-  { path: "/cart", seo: pageSeo.cart },
+  { path: "/cart", seo: pageSeo.cart, sitemap: false },
 ];
 
 const list = [];
@@ -36,6 +36,7 @@ for (const lang of LANGS) {
       description: getText(page.seo.description, lang),
       image: null,
       ...(page.seo.robots ? { robots: page.seo.robots } : {}),
+      ...(page.sitemap === false ? { sitemap: false } : {}),
     });
   }
 
@@ -75,6 +76,7 @@ for (const lang of LANGS) {
       title: getText(post.seoTitle || post.title, lang),
       description: getText(post.seoDescription || post.excerpt, lang),
       image: (post.cover && post.cover.src) || null,
+      lastmod: post.dateModified || post.datePublished || null,
     });
   }
 }
