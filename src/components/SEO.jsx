@@ -303,6 +303,7 @@ export const productSchema = (product, type, lang = "ru", path = "/") => {
   return {
     "@type": "Product",
     name: getText(product.title, lang),
+    sku: product.slug,
     description: getText(product.description, lang) || getText(product.excerpt, lang),
     image: images.map(absoluteUrl),
     category: PRODUCT_CATEGORY[type] || PRODUCT_CATEGORY.accessory,
