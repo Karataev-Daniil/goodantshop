@@ -38,27 +38,19 @@ export const priceOptions: PriceOption[] = [
   },
 ];
 
-// У Messor сейчас в наличии только одна градация: колоний «матка + расплод» и
-// крупных (15-30 рабочих) пока нет. Отдельный массив нужен потому, что базовый
-// priceOptions делят Messor и Lasius Niger, а ограничение только у Messor.
+// У Messor сейчас в наличии только одна градация: все колонии подросли до
+// 15+ рабочих, мелких «матка + расплод» и «5-15» нет. Отдельный массив нужен
+// потому, что базовый priceOptions делят Messor и Lasius Niger, а ограничение
+// только у Messor.
 export const messorPriceOptions: PriceOption[] = [
-  {
-    label: {
-      ru: "Матка + 5-15 муравьёв",
-      ro: "Regina + 5-15 furnici",
-      en: "Queen + 5-15 ants",
-    },
-    value: "650 лей",
-    selected: true,
-  },
   {
     label: {
       ru: "Матка + 15-30 муравьёв",
       ro: "Regina + 15-30 furnici",
       en: "Queen + 15-30 ants",
     },
-    value: "750 лей",
-    selected: false,
+    value: "650 лей",
+    selected: true,
   },
 ];
 
@@ -181,7 +173,7 @@ export const ants: Ant[] = [
     queenSize: { ru: "10-12 мм", ro: "10-12 mm", en: "10-12 mm" },
     workerSize: { ru: "4-9 мм", ro: "4-9 mm", en: "4-9 mm" },
     soldierSize: { ru: "до 12 мм", ro: "până la 12 mm", en: "up to 12 mm" },
-    colonySize: { ru: "Матка + 5-15 рабочих", ro: "Regină + 5-15 lucrătoare", en: "Queen + 5-15 workers" },
+    colonySize: { ru: "Матка + 15-30 рабочих", ro: "Regină + 15-30 lucrătoare", en: "Queen + 15-30 workers" },
     food: { ru: "Семена и зёрна", ro: "Semințe și grăunțe", en: "Seeds and grains" },
     // Рацион определяет, какой корм предлагаем к колонии (см. foodForAnt в accessoriesData.ts).
     diet: "seeds",
