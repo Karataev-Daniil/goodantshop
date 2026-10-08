@@ -13,7 +13,7 @@ My own product: I run the shop and built the whole site.
 
 ## Stack
 
-React · Vite · React Router · react-helmet-async · Node.js (Express for local API) · Vercel serverless functions · Resend
+React · TypeScript · Vite · React Router · react-helmet-async · Node.js (Express for local API) · Vercel serverless functions · Resend
 
 ## Scripts
 
@@ -21,7 +21,8 @@ React · Vite · React Router · react-helmet-async · Node.js (Express for loca
 npm install
 npm run dev        # Vite dev server
 npm run dev:full   # dev server + local order API
-npm run build      # client build + SSR build + prerender of all routes
+npm run typecheck  # tsc --noEmit
+npm run build      # type check + client build + SSR build + prerender of all routes
 npm run preview
 ```
 
@@ -30,7 +31,7 @@ Production order API needs `RESEND_API_KEY`, `ORDER_EMAIL`, `FROM_EMAIL` in the 
 ## Structure
 
 - `src/pages` — route components
-- `src/components` — UI and SEO (`SEO.jsx`: meta and structured data)
-- `src/data` — catalog, blog posts, reviews, species map data
+- `src/components` — UI and SEO (`SEO.tsx`: meta and structured data)
+- `src/data` — catalog, blog posts, reviews, species map data (types in `src/types.ts`)
 - `scripts/prerender.mjs`, `scripts/routes.mjs` — static prerender, sitemap, 404
-- `api/order.js` — serverless order handler
+- `api/order.ts` — serverless order handler
