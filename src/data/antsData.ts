@@ -222,7 +222,7 @@ export const ants: Ant[] = [
     food: { ru: "Сахарный сироп, насекомые", ro: "Sirop de zahăr, insecte", en: "Sugar syrup, insects" },
     diet: "insects",
     priceOptions: formicaPriceOptions,
-    availability: "inStock",
+    availability: "outOfStock",
     characteristics: [
       {
         label: { ru: "Температура", ro: "Temperatura", en: "Temperature" },
