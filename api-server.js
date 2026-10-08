@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import handler from './api/order.js';
+import handler from './api/order.ts';
 
 // Load environment variables
 dotenv.config({ path: '.env.local' });

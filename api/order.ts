@@ -1,4 +1,43 @@
-﻿function escapeHtml(value) {
+﻿/// <reference types="node" />
+
+// Минимальные типы запроса/ответа: им соответствуют и Vercel (VercelRequest /
+// VercelResponse), и Express из api-server.js, поэтому @vercel/node не нужен.
+interface OrderRequest {
+  method?: string;
+  url?: string;
+  body?: RawOrderBody;
+}
+
+interface OrderResponseWriter {
+  setHeader(name: string, value: string): unknown;
+  status(code: number): OrderResponseWriter;
+  json(body: unknown): unknown;
+  end(): unknown;
+}
+
+// Строка заказа как пришла от клиента - поля не проверены.
+interface RawOrderItem {
+  title?: unknown;
+  qty?: unknown;
+  price?: unknown;
+  lineTotal?: unknown;
+}
+
+// Тело запроса как пришло от клиента (ожидается OrderPayload из src/types.ts,
+// но доверять ему нельзя). Элементы items не проверяются по отдельности.
+interface RawOrderBody {
+  name?: unknown;
+  phone?: unknown;
+  address?: unknown;
+  comment?: unknown;
+  items?: RawOrderItem[];
+  total?: unknown;
+  itemsTotal?: unknown;
+  to?: unknown;
+  from?: unknown;
+}
+
+function escapeHtml(value: unknown): string {
   return String(value)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -7,7 +46,7 @@
     .replaceAll("'", "&#39;");
 }
 
-async function handler(req, res) {
+async function handler(req: OrderRequest, res: OrderResponseWriter) {
   console.log('[ORDER] Method:', req.method, 'Path:', req.url);
   
   // Set CORS headers
@@ -36,8 +75,9 @@ async function handler(req, res) {
 
     const resendApiKey = process.env.RESEND_API_KEY;
     const defaultOrderEmail = process.env.RESEND_TEST_EMAIL || process.env.ORDER_EMAIL;
-    const toEmail = req.body.to || defaultOrderEmail;
-    const fromEmail = req.body.from || process.env.FROM_EMAIL;
+    // Сюда доходим только с непустым name, значит body есть.
+    const toEmail = req.body!.to || defaultOrderEmail;
+    const fromEmail = req.body!.from || process.env.FROM_EMAIL;
 
     if (!resendApiKey || !toEmail || !fromEmail) {
       console.error('[ORDER] Missing config');
@@ -89,7 +129,7 @@ async function handler(req, res) {
 
     return res.status(200).json({ ok: true, message: "Order sent" });
   } catch (err) {
-    console.error('[ORDER] Error:', err.message);
+    console.error('[ORDER] Error:', (err as Error).message);
     return res.status(500).json({ ok: false, error: "Server error" });
   }
 }
