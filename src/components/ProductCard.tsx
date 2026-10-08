@@ -1,0 +1,152 @@
+﻿import { useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import type { MouseEvent } from "react";
+import type { Availability, Lang, Localized, PriceOption, Text } from "../types";
+
+const getText = (value: Partial<Localized> | string | null | undefined, lang: string): string => {
+  if (value && typeof value === "object") {
+    return value[lang as Lang] ?? value.ru ?? value.ro ?? value.en ?? "";
+  }
+  return value ?? "";
+};
+
+const availabilityLabels: Record<Availability, Localized> = {
+  inStock: {
+    ru: "В наличии",
+    ro: "În stoc",
+    en: "In stock",
+  },
+  preorder: {
+    ru: "Предзаказ",
+    ro: "Precomandă",
+    en: "Pre-order",
+  },
+  outOfStock: {
+    ru: "Нет в наличии",
+    ro: "Nu este în stoc",
+    en: "Out of stock",
+  },
+};
+
+const getAvailabilityTitle = (availability: Availability | undefined, lang: string) =>
+  availability ? getText(availabilityLabels[availability] || {}, lang) : "";
+
+// Всё, что карточке нужно от товара. Шире ProductLike: на главной в ту же
+// карточку идёт «Стартовый набор» со строковым id и без slug/description.
+export interface ProductCardItem {
+  id: number | string;
+  title: Text;
+  excerpt: Text;
+  image?: string;
+  images?: string[];
+  availability?: Availability;
+  priceOptions?: PriceOption[];
+}
+
+interface ProductCardProps {
+  item: ProductCardItem;
+  linkTo: string;
+  onAddToCart?: (id: number | string) => void;
+}
+
+export default function ProductCard({ item, linkTo, onAddToCart }: ProductCardProps) {
+  const { lang = "ru" } = useParams();
+  const [previewIndex, setPreviewIndex] = useState(0);
+  const previewImages = item.images?.length ? item.images : [item.image || "/placeholder-ant.svg"];
+  const imageSrc = previewImages[previewIndex] || "/placeholder-ant.svg";
+  const title = getText(item.title, lang);
+  const excerpt = getText(item.excerpt, lang);
+  const availabilityTitle = getAvailabilityTitle(item.availability, lang);
+  const primaryPrice = item.priceOptions?.[0];
+  const isPreorder = item.availability === "preorder";
+  const isOutOfStock = item.availability === "outOfStock";
+  // Preorder means it's not in stock right now but can still be ordered - spell
+  // that out on the badge instead of the vague "Предзаказ".
+  const badgeAria = isPreorder
+    ? getText({ ru: "Нет в наличии, предзаказ", ro: "Nu este în stoc, precomandă", en: "Out of stock, pre-order" }, lang)
+    : availabilityTitle;
+
+  const handleProductHoverMove = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (previewImages.length < 2) return;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const nextIndex = Math.min(
+      previewImages.length - 1,
+      Math.max(0, Math.floor((x / Math.max(rect.width, 1)) * previewImages.length))
+    );
+    setPreviewIndex(nextIndex);
+  };
+
+  const resetPreview = () => setPreviewIndex(0);
+
+  return (
+    <article className="product-card">
+      <Link
+        className="product-media"
+        to={linkTo}
+        aria-label={title}
+        onMouseMove={handleProductHoverMove}
+        onMouseLeave={resetPreview}
+      >
+        <span className="product-media__frame">
+          <img src={imageSrc} alt={title} loading="lazy" />
+        </span>
+        {item.availability && (
+          <span
+            className={`product-card__status product-card__status--${item.availability}`}
+            title={badgeAria}
+            aria-label={badgeAria}
+          >
+            {isPreorder ? (
+              <>
+                <span className="product-card__status-main">
+                  {getText({ ru: "Нет в наличии", ro: "Nu este în stoc", en: "Out of stock" }, lang)}
+                </span>
+                <span className="product-card__status-note">
+                  {getText({ ru: "предзаказ", ro: "precomandă", en: "pre-order" }, lang)}
+                </span>
+              </>
+            ) : (
+              availabilityTitle
+            )}
+          </span>
+        )}
+        <span className="product-card__hover-delivery">
+          {getText({ ru: "Доставка", ro: "Livrare", en: "Delivery" }, lang)}
+        </span>
+      </Link>
+      <div className="product-content">
+        <h3>
+          <Link to={linkTo}>{title}</Link>
+        </h3>
+        <p>{excerpt}</p>
+        {primaryPrice && (
+          <div className="product-card__price">
+            <span>{getText(primaryPrice.label, lang)}</span>
+            <strong>{primaryPrice.value}</strong>
+          </div>
+        )}
+        <div className="product-actions">
+          <Link className="btn" to={linkTo}>
+            {getText({ ru: "Подробнее", ro: "Detalii", en: "Details" }, lang)}
+          </Link>
+          {onAddToCart && (
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => onAddToCart(item.id)}
+              disabled={isOutOfStock}
+            >
+              {getText(
+                isPreorder
+                  ? { ru: "Предзаказать", ro: "Precomandă", en: "Pre-order" }
+                  : { ru: "В корзину", ro: "In cos", en: "Add to cart" },
+                lang
+              )}
+            </button>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+}
