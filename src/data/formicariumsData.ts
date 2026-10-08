@@ -24,7 +24,7 @@ const priceOptions: PriceOption[] = [
       ro: "Model de bază",
       en: "Basic model",
     },
-    value: "1300 лей",
+    value: "1600 лей",
   }
 ];
 
@@ -36,7 +36,7 @@ const terraMiniPriceOptions: PriceOption[] = [
       ro: "Model de bază",
       en: "Basic model",
     },
-    value: "1100 лей",
+    value: "1350 лей",
   }
 ];
 
