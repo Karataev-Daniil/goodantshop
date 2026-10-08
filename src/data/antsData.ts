@@ -1,4 +1,5 @@
-﻿import messorStructorImage from "../assets/images/ants/messor-structor.webp";
+﻿import type { Ant, PriceOption } from "../types";
+import messorStructorImage from "../assets/images/ants/messor-structor.webp";
 import lasiusNigerImage from "../assets/images/ants/lasius-niger.webp";
 import lasiusNeglectusImage from "../assets/images/ants/lasius-neglectus.jpg";
 import camponotusFellahImage from "../assets/images/ants/camponotus-fellah.webp";
@@ -7,7 +8,7 @@ import formicaRufibarbisImage from "../assets/images/ants/formica_rufibarbis.web
 
 // Each species is sold in three colony-size tiers. Prices are written out per
 // tier so they can be edited individually per species.
-export const priceOptions = [
+export const priceOptions: PriceOption[] = [
   {
     label: {
       ru: "Матка + расплод (стартовая колония)",
@@ -40,7 +41,7 @@ export const priceOptions = [
 // У Messor сейчас в наличии только одна градация: колоний «матка + расплод» и
 // крупных (15-30 рабочих) пока нет. Отдельный массив нужен потому, что базовый
 // priceOptions делят Messor и Lasius Niger, а ограничение только у Messor.
-export const messorPriceOptions = [
+export const messorPriceOptions: PriceOption[] = [
   {
     label: {
       ru: "Матка + 5-15 муравьёв",
@@ -64,7 +65,7 @@ export const messorPriceOptions = [
 // Camponotus Fellah is a premium species and is priced higher than the others.
 // Конкурентов по этому виду в Молдове нет (у ближайшего магазина только Messor
 // и Tetramorium), поэтому цена не привязана к чужому прайсу.
-export const camponotusPriceOptions = [
+export const camponotusPriceOptions: PriceOption[] = [
   {
     label: {
       ru: "Матка + расплод (стартовая колония)",
@@ -95,7 +96,7 @@ export const camponotusPriceOptions = [
 ];
 
 // Formica species are currently scarce (only a few of each), small premium.
-export const formicaPriceOptions = [
+export const formicaPriceOptions: PriceOption[] = [
   {
     label: {
       ru: "Матка + расплод (стартовая колония)",
@@ -126,7 +127,7 @@ export const formicaPriceOptions = [
 ];
 
 // Lasius neglectus is a popular fast-growing super colony, small premium.
-export const neglectusPriceOptions = [
+export const neglectusPriceOptions: PriceOption[] = [
   {
     label: {
       ru: "Матка + расплод (стартовая колония)",
@@ -156,7 +157,7 @@ export const neglectusPriceOptions = [
   },
 ];
 
-export const ants = [
+export const ants: Ant[] = [
   {
     id: 44,
     slug: "messor-structor",
@@ -182,7 +183,7 @@ export const ants = [
     soldierSize: { ru: "до 12 мм", ro: "până la 12 mm", en: "up to 12 mm" },
     colonySize: { ru: "Матка + 5-15 рабочих", ro: "Regină + 5-15 lucrătoare", en: "Queen + 5-15 workers" },
     food: { ru: "Семена и зёрна", ro: "Semințe și grăunțe", en: "Seeds and grains" },
-    // Рацион определяет, какой корм предлагаем к колонии (см. foodForAnt в accessoriesData.js).
+    // Рацион определяет, какой корм предлагаем к колонии (см. foodForAnt в accessoriesData.ts).
     diet: "seeds",
     priceOptions: messorPriceOptions,
     availability: "inStock",
@@ -438,4 +439,4 @@ export const ants = [
   }
 ];
 
-export const popularAntIds = [44, 43, 42];
+export const popularAntIds: number[] = [44, 43, 42];

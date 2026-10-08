@@ -3,10 +3,10 @@
 // Этот файл бандлится esbuild-ом с заглушкой ассетов, поэтому импорт картинок
 // возвращает абсолютный путь к исходному файлу (его читает sharp для OG).
 import { pageSeo, productSeo, getText } from "../src/components/SEO.jsx";
-import { ants } from "../src/data/antsData.js";
-import { formicariums } from "../src/data/formicariumsData.js";
-import { blogPosts } from "../src/data/blogPostsData.js";
-import { accessories } from "../src/data/accessoriesData.js";
+import { ants } from "../src/data/antsData.ts";
+import { formicariums } from "../src/data/formicariumsData.ts";
+import { blogPosts } from "../src/data/blogPostsData.ts";
+import { accessories } from "../src/data/accessoriesData.ts";
 
 const LANGS = ["ru", "ro", "en"];
 

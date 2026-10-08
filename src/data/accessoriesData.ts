@@ -10,9 +10,10 @@
 //   giftWithBundle - позиция идёт в подарок при покупке комплекта
 //                    «колония + формикарий» (цена показывается зачёркнутой);
 //   kind: "food"   - корм, подбирается под вид муравья по полю forDiet;
-//   forDiet        - совпадает с полем `diet` у вида в antsData.js.
+//   forDiet        - совпадает с полем `diet` у вида в antsData.ts.
 // ============================================================================
 
+import type { Accessory, Diet } from "../types";
 import toolKitFlatlay from "../assets/images/accessories/tool-kit-flatlay.webp";
 import toolKitContents from "../assets/images/accessories/tool-kit-contents.webp";
 import feederBeetleCulture from "../assets/images/accessories/feeder-beetle-culture.webp";
@@ -20,7 +21,7 @@ import feederBeetleCulture from "../assets/images/accessories/feeder-beetle-cult
 // положите рядом seed-mix.webp и поменяйте только эту строку.
 import seedMix from "../assets/images/accessories/seed-mix.svg";
 
-export const accessories = [
+export const accessories: Accessory[] = [
   // ==========================================================================
   // НАБОР ИНСТРУМЕНТОВ - 150 лей, в подарок при покупке комплекта.
   // ==========================================================================
@@ -184,30 +185,30 @@ export const accessories = [
   },
 ];
 
-export const getAccessory = (slug) =>
+export const getAccessory = (slug: string | undefined): Accessory | null =>
   accessories.find((item) => item.slug === slug) || null;
 
-export const getAccessoryById = (id) =>
+export const getAccessoryById = (id: number | string): Accessory | null =>
   accessories.find((item) => String(item.id) === String(id)) || null;
 
 // Набор инструментов - он же подарок к комплекту.
 export const TOOL_KIT_ID = 301;
-export const toolKit = () => getAccessoryById(TOOL_KIT_ID);
+export const toolKit = (): Accessory | null => getAccessoryById(TOOL_KIT_ID);
 
 // Основной корм вида - он же уходит подарком к комплекту (подарок один).
-// `diet` проставлен у каждого вида в antsData.js.
-export const foodForAnt = (ant) =>
+// `diet` проставлен у каждого вида в antsData.ts.
+export const foodForAnt = (ant: { diet?: Diet } | null | undefined): Accessory | null =>
   accessories.find((item) => item.kind === "food" && item.forDiet === (ant?.diet || "insects")) || null;
 
 // Всё, чем можно кормить этот вид. Жнецам, кроме семян, полезен и живой белок:
 // на нём быстрее растёт расплод, поэтому им показываем оба корма. Насекомоядным
 // видам семена не нужны - у них только живой корм.
-const FOOD_SLUGS_BY_DIET = {
+const FOOD_SLUGS_BY_DIET: Record<Diet, string[]> = {
   seeds: ["seed-mix", "feeder-beetle"],
   insects: ["feeder-beetle"],
 };
 
-export const foodsForAnt = (ant) =>
-  (FOOD_SLUGS_BY_DIET[ant?.diet] || FOOD_SLUGS_BY_DIET.insects)
+export const foodsForAnt = (ant: { diet?: Diet } | null | undefined): Accessory[] =>
+  ((ant?.diet && FOOD_SLUGS_BY_DIET[ant.diet]) || FOOD_SLUGS_BY_DIET.insects)
     .map((slug) => getAccessory(slug))
-    .filter(Boolean);
+    .filter((item): item is Accessory => Boolean(item));

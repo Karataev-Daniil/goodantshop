@@ -9,6 +9,7 @@ import {
   messorSoldier as imgSoldier,
   antHeadMandibles as imgMandibles,
 } from "../../assets/images/library";
+import type { BlogPost } from "../../types";
 
 // Локальный ролик лежит в public/videos (ссылаемся абсолютным путём от корня).
 const clipNestTopdown = "/videos/messor-nest-entrance-topdown.mp4";
@@ -409,4 +410,4 @@ export default {
 
   relatedProductIds: [44],
   relatedPostIds: [401],
-};
+} satisfies BlogPost;

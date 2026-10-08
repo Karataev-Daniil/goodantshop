@@ -1,5 +1,5 @@
 // Пост блога №1 - «манифест» для тех, кто ещё не знает о хобби.
-// Один пост = один файл; общий список собирается в ../blogPostsData.js.
+// Один пост = один файл; общий список собирается в ../blogPostsData.ts.
 import {
   antColonyNestEntrance as imgNestEntrance,
   antsTrail as imgTrail,
@@ -10,6 +10,7 @@ import {
   redAntsDrinkingWater as imgWaterDrop,
   antEmergingFromHole as imgNestHole,
 } from "../../assets/images/library";
+import type { BlogPost } from "../../types";
 
 export default {
   id: 401,
@@ -428,4 +429,4 @@ export default {
 
   relatedProductIds: [],
   relatedPostIds: [402],
-};
+} satisfies BlogPost;

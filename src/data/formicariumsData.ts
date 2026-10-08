@@ -1,4 +1,6 @@
-﻿// Фото стандартной модели Terra - папка assets/images/formicariums/terra/.
+﻿import type { Formicarium, PriceOption } from "../types";
+
+// Фото стандартной модели Terra - папка assets/images/formicariums/terra/.
 import formicariumBlueFront from "../assets/images/formicariums/terra/formicarium-blue-front.webp";
 import formicariumBlueBackCorner from "../assets/images/formicariums/terra/formicarium-blue-back-corner.webp";
 import formicariumBlueRear from "../assets/images/formicariums/terra/formicarium-blue-rear.webp";
@@ -15,7 +17,7 @@ import miniGreenBackCorner from "../assets/images/formicariums/terra-mini/formic
 import miniOrangeBackCorner from "../assets/images/formicariums/terra-mini/formicarium-orange-back-corner.webp";
 import miniRedBackCorner from "../assets/images/formicariums/terra-mini/formicarium-red-back-corner.webp";
 
-const priceOptions = [
+const priceOptions: PriceOption[] = [
   {
     label: {
       ru: "Базовая модель",
@@ -27,7 +29,7 @@ const priceOptions = [
 ];
 
 // Terra Mini - компактная младшая модель, дешевле стандартной Terra.
-const terraMiniPriceOptions = [
+const terraMiniPriceOptions: PriceOption[] = [
   {
     label: {
       ru: "Базовая модель",
@@ -38,7 +40,7 @@ const terraMiniPriceOptions = [
   }
 ];
 
-export const formicariums = [
+export const formicariums: Formicarium[] = [
   {
     id: 202,
     slug: "terra",

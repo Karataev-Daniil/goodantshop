@@ -1,3 +1,5 @@
+import type { ProductType, Review, ReviewStats } from "../types";
+
 // Реальные отзывы покупателей с профиля продавца на 999.md.
 // Используются и для блока отзывов на странице товара, и для микроразметки
 // schema.org (Review + AggregateRating). Текст оставлен на языке оригинала,
@@ -9,7 +11,7 @@
 //   "shop"        - про сервис/доставку/детей  → показываем везде (общий опыт магазина)
 //
 // Отзывы, не относящиеся к муравьям/формикариям (покупка ПК, набора Lego), исключены.
-export const reviews = [
+export const reviews: Review[] = [
   {
     author: "Iurie C.",
     lang: "ro",
@@ -174,7 +176,7 @@ export const reviews = [
   // --- Отзывы на дополнительные товары -------------------------------------
   // Приходят из Telegram и от покупателей на руках, а не с 999.md, поэтому
   // source: "telegram" - блок отзывов подписывает источник честно.
-  // Привязка к товару идёт по productSlug (см. accessoriesData.js).
+  // Привязка к товару идёт по productSlug (см. accessoriesData.ts).
   //
   // Осталось проставить date (формат 2026-08-14) и убрать draft - до этого
   // отзыв не показывается и в микроразметку не идёт.
@@ -254,7 +256,7 @@ export const reviews = [
 // Профиль продавца на 999.md - источник отзывов.
 export const SELLER_999_URL = "https://999.md/ru/profile/GoodAnt-Shop-MD";
 
-const round1 = (value) => Math.round(value * 10) / 10;
+const round1 = (value: number): number => Math.round(value * 10) / 10;
 
 // Черновик не публикуется. Нужен для отзывов, сказанных устно или в Telegram:
 // текст уже записан, но пока не подставлены настоящее имя покупателя и дата
@@ -263,7 +265,7 @@ const round1 = (value) => Math.round(value * 10) / 10;
 // Автора и дату проверяем отдельно от флага: если draft убрали, а имя вписать
 // забыли, отзыв всё равно не выйдет. Отзыв без автора Google для сниппетов не
 // принимает, а на странице карточка с пустой подписью выглядит поломанной.
-const isPublished = (review) => !review.draft && Boolean(review.author) && Boolean(review.date);
+const isPublished = (review: Review): boolean => !review.draft && Boolean(review.author) && Boolean(review.date);
 
 // Отзывы, которые ПОКАЗЫВАЮТСЯ на странице товара (блок «Отзывы покупателей»).
 //   ant / formicarium - профильные плюс общие про магазин (shop): человеку,
@@ -271,7 +273,7 @@ const isPublished = (review) => !review.draft && Boolean(review.author) && Boole
 //                       магазина в целом;
 //   accessory         - ТОЛЬКО собственные, привязанные к productSlug.
 // В микроразметку Product этот список НЕ идёт - для неё есть ownReviewsFor.
-export const reviewsFor = (type, slug) =>
+export const reviewsFor = (type: ProductType, slug: string | undefined): Review[] =>
   reviews.filter((review) => {
     if (!isPublished(review)) return false;
     if (type === "accessory") {
@@ -286,12 +288,12 @@ export const reviewsFor = (type, slug) =>
 // 15 отзывов размечались как отзывы о каждом из видов, а это ровно то, за что
 // Google выдаёт ручную меру «Spammy structured markup» на весь сайт.
 // Чтобы у колонии появились звёзды, новому отзыву нужно проставить productSlug.
-export const ownReviewsFor = (type, slug) =>
+export const ownReviewsFor = (type: ProductType, slug: string | undefined): Review[] =>
   reviews.filter(
     (review) => isPublished(review) && review.target === type && Boolean(slug) && review.productSlug === slug
   );
 
-const statsOf = (subset) => {
+const statsOf = (subset: Review[]): ReviewStats => {
   const total = subset.reduce((sum, review) => sum + review.rating, 0);
   return {
     ratingValue: subset.length ? round1(total / subset.length) : 0,
@@ -302,14 +304,14 @@ const statsOf = (subset) => {
 };
 
 // Рейтинг для микроразметки - по собственным отзывам товара.
-export const ownReviewStatsFor = (type, slug) => statsOf(ownReviewsFor(type, slug));
+export const ownReviewStatsFor = (type: ProductType, slug: string | undefined): ReviewStats => statsOf(ownReviewsFor(type, slug));
 
 // Сводный рейтинг для AggregateRating и заголовка блока - по тем отзывам,
 // которые реально показаны на странице данного товара.
-export const reviewStatsFor = (type, slug) => statsOf(reviewsFor(type, slug));
+export const reviewStatsFor = (type: ProductType, slug: string | undefined): ReviewStats => statsOf(reviewsFor(type, slug));
 
 // Общий рейтинг по всем отзывам - для витрины (например, блока на главной).
-export const reviewStatsAll = () => {
+export const reviewStatsAll = (): ReviewStats => {
   const published = reviews.filter(isPublished);
   const total = published.reduce((sum, review) => sum + review.rating, 0);
   return {
@@ -321,11 +323,11 @@ export const reviewStatsAll = () => {
 };
 
 // Избранные короткие отзывы для главной (помечены featured).
-export const featuredReviews = () => reviews.filter((review) => isPublished(review) && review.featured);
+export const featuredReviews = (): Review[] => reviews.filter((review) => isPublished(review) && review.featured);
 
-const LOCALE_TAGS = { ru: "ru-RU", ro: "ro-RO", en: "en-US" };
+const LOCALE_TAGS: Record<string, string> = { ru: "ru-RU", ro: "ro-RO", en: "en-US" };
 
-export const formatReviewDate = (iso, lang = "ru") => {
+export const formatReviewDate = (iso: string, lang: string = "ru"): string => {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return iso;
   return new Intl.DateTimeFormat(LOCALE_TAGS[lang] || LOCALE_TAGS.ru, {

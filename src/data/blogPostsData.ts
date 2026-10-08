@@ -6,8 +6,8 @@
 // держим справочник рубрик. Так один пост правится независимо от других.
 //
 // Как добавить новый пост:
-//   1. Скопируйте любой файл из ./blog/ (напр. messor-structor.js) в
-//      ./blog/<slug>.js, поменяйте id/slug/category и впишите тексты
+//   1. Скопируйте любой файл из ./blog/ (напр. messor-structor.ts) в
+//      ./blog/<slug>.ts, поменяйте id/slug/category и впишите тексты
 //      (достаточно поля `ru` - ro/en подставят русский, пока нет перевода).
 //   2. Импортируйте его ниже и добавьте в массив `blogPosts`.
 //   3. Всё. sitemap.xml собирается при сборке (scripts/prerender.mjs) из того же
@@ -19,22 +19,23 @@
 // callout(tip/note/warning) · quote · keytakeaways · video · cta(to: "/ants").
 // ============================================================================
 
+import type { BlogCategory, BlogPost } from "../types";
 import whyAntsAreFascinating from "./blog/why-ants-are-fascinating";
 import messorStructor from "./blog/messor-structor";
 
 // Рубрики блога. Список расширяемый - добавляйте новые разделы сюда, и они
 // автоматически появятся в фильтре архива и в хлебных крошках статьи.
-export const blogCategories = [
+export const blogCategories: BlogCategory[] = [
   { slug: "beginners", label: { ru: "Новичкам", ro: "Începători", en: "Beginners" } },
   { slug: "care", label: { ru: "Уход и содержание", ro: "Îngrijire", en: "Care" } },
   { slug: "species", label: { ru: "Виды муравьёв", ro: "Specii de furnici", en: "Ant species" } },
   { slug: "formicariums", label: { ru: "Формикарии", ro: "Formicarii", en: "Formicariums" } },
 ];
 
-export const getBlogCategory = (slug) =>
+export const getBlogCategory = (slug: string): BlogCategory | null =>
   blogCategories.find((category) => category.slug === slug) || null;
 
 // Порядок = порядок на витрине блога. Первый пост показывается крупной
 // featured-карточкой, поэтому вводный «манифест» держим первым - его логично
 // прочитать раньше остального. Новые посты добавляйте после него.
-export const blogPosts = [whyAntsAreFascinating, messorStructor];
+export const blogPosts: BlogPost[] = [whyAntsAreFascinating, messorStructor];

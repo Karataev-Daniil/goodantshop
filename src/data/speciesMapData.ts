@@ -1,3 +1,5 @@
+import type { Localized, MapSpecies, PinColor, RecordStatus, SpeciesZone, ZoneStatus } from "../types";
+
 // ============================================================================
 // АТЛАС ВИДОВ МОЛДОВЫ - данные для страницы /species-map.
 // ----------------------------------------------------------------------------
@@ -37,7 +39,7 @@
 // lat/lon - точка, в которую ставится отметка. Берём середину зоны, а не город:
 // подпись должна читаться как «север страны», а не как адрес.
 // anchor - что входит в зону; показывается подсказкой на чипсе.
-export const zones = [
+export const zones: SpeciesZone[] = [
   {
     code: "balti",
     lat: 47.76,
@@ -88,22 +90,22 @@ export const zones = [
   },
 ];
 
-export const getZone = (code) => zones.find((item) => item.code === code) || null;
+export const getZone = (code: string): SpeciesZone | null => zones.find((item) => item.code === code) || null;
 
 // Массовый вид, встреченный по всей стране. Нужен, чтобы не переписывать шесть
 // одинаковых строк у каждого такого вида. Если хотя бы по одной зоне статус
 // другой - у этого вида пишите records объектом целиком, а не через хелпер.
-const everywhere = (status = "confirmed") =>
+const everywhere = (status: RecordStatus = "confirmed"): Record<string, RecordStatus> =>
   Object.fromEntries(zones.map((zone) => [zone.code, status]));
 
 // Центр и зум для общего вида страны - подобраны так, чтобы влезли и Бричень,
 // и Кагул, но карта не уходила в соседние страны.
-export const MAP_CENTER = [47.05, 28.6];
+export const MAP_CENTER: [number, number] = [47.05, 28.6];
 export const MAP_ZOOM = 7;
 export const MAP_ZOOM_ZONE = 9;
 
 // --- Статусы находки --------------------------------------------------------
-export const statusLabel = {
+export const statusLabel: Record<ZoneStatus, Localized> = {
   confirmed: { ru: "Зафиксирован",     ro: "Confirmat",       en: "Confirmed" },
   reported:  { ru: "По литературе",    ro: "Din literatură",  en: "Reported" },
   absent:    { ru: "Искали, не нашли", ro: "Căutat, negăsit", en: "Searched, not found" },
@@ -114,7 +116,7 @@ export const statusLabel = {
 // divIcon, и цвет ему нужно передать значением. Оттенки взяты от --accent сайта.
 // dot - заливка кружка, ring - обводка. «Нет данных» и «искали, не нашли»
 // намеренно светлые и полые: они не должны спорить с реальными находками.
-export const statusColor = {
+export const statusColor: Record<ZoneStatus, PinColor> = {
   confirmed: { dot: "#bd241f", ring: "#8f1714" },
   reported:  { dot: "#eeb3af", ring: "#bd241f" },
   absent:    { dot: "#ffffff", ring: "#a99e8c" },
@@ -124,8 +126,8 @@ export const statusColor = {
 // --- Виды -------------------------------------------------------------------
 // Только виды с собственными находками. Порядок = порядок чипсов на карте,
 // первый выбран по умолчанию.
-// sellSlug должен совпадать со slug в antsData.js, иначе ссылка будет битой.
-export const mapSpecies = [
+// sellSlug должен совпадать со slug в antsData.ts, иначе ссылка будет битой.
+export const mapSpecies: MapSpecies[] = [
   {
     slug: "messor-structor",
     latin: "Messor structor",
@@ -251,29 +253,29 @@ export const mapSpecies = [
   },
 ];
 
-export const getSpecies = (slug) => mapSpecies.find((item) => item.slug === slug) || null;
+export const getSpecies = (slug: string): MapSpecies | null => mapSpecies.find((item) => item.slug === slug) || null;
 
-// Народное название продаваемого вида ({ ru, ro, en }) по slug из antsData.js -
+// Народное название продаваемого вида ({ ru, ro, en }) по slug из antsData.ts -
 // для H1 карточки: «Муравей-жнец Messor Structor» вместо одной латыни.
 // Берётся из атласа, чтобы название вида не расходилось между страницами.
-export const commonNameFor = (sellSlug) =>
+export const commonNameFor = (sellSlug: string): Localized | null =>
   mapSpecies.find((item) => item.sellSlug === sellSlug)?.name || null;
 
 // --- Производные ------------------------------------------------------------
 
 // Зоны с находкой вида (confirmed + reported), в порядке `zones`.
-export const zonesWithSpecies = (species) =>
+export const zonesWithSpecies = (species: MapSpecies | null | undefined): SpeciesZone[] =>
   zones.filter((zone) => {
     const status = species?.records?.[zone.code];
     return status === "confirmed" || status === "reported";
   });
 
 // Сколько видов отмечено в зоне - для режима «все виды».
-export const speciesCountInZone = (code) =>
+export const speciesCountInZone = (code: string): number =>
   mapSpecies.filter((species) => {
     const status = species.records?.[code];
     return status === "confirmed" || status === "reported";
   }).length;
 
-export const totalRecordedZones = () =>
+export const totalRecordedZones = (): number =>
   zones.filter((zone) => speciesCountInZone(zone.code) > 0).length;
