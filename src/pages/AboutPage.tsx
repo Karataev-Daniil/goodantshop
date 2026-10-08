@@ -1,9 +1,10 @@
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import SEO, { breadcrumbSchema, pageSeo } from "../components/SEO";
 import { reviewStatsAll } from "../data/reviewsData";
+import type { OutletContext } from "../types";
 
 export default function AboutPage() {
-  const { t } = useOutletContext();
+  const { t } = useOutletContext<OutletContext>();
   const { lang = "ru" } = useParams();
   const stats = reviewStatsAll();
 

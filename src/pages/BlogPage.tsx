@@ -1,10 +1,11 @@
 import { Link, useParams } from "react-router-dom";
 import SEO, { breadcrumbSchema, itemListSchema, pageSeo, getText } from "../components/SEO";
 import { blogPosts } from "../data/blogPostsData";
+import type { BlogPost } from "../types";
 
-const LOCALES = { ru: "ru-RU", ro: "ro-RO", en: "en-US" };
+const LOCALES: Record<string, string> = { ru: "ru-RU", ro: "ro-RO", en: "en-US" };
 
-export const formatBlogDate = (value, lang = "ru") => {
+export const formatBlogDate = (value: string | undefined, lang: string = "ru"): string => {
   if (!value) return "";
   try {
     return new Date(value).toLocaleDateString(LOCALES[lang] || LOCALES.ru, {
@@ -18,7 +19,7 @@ export const formatBlogDate = (value, lang = "ru") => {
 };
 
 // Компактная карточка поста для сетки архива.
-function BlogCard({ post, lang }) {
+function BlogCard({ post, lang }: { post: BlogPost; lang: string }) {
   return (
     <article className="blog-card">
       <Link className="blog-card__cover" to={`/${lang}/blog/${post.slug}`} aria-label={getText(post.title, lang)}>
@@ -54,7 +55,7 @@ function BlogCard({ post, lang }) {
 export default function BlogPage() {
   const { lang = "ru" } = useParams();
 
-  // Порядок берём как есть из blogPostsData.js. Первый пост - крупная
+  // Порядок берём как есть из blogPostsData.ts. Первый пост - крупная
   // featured-карточка (сейчас вводный «манифест», его логично читать первым),
   // остальные идут сеткой ниже.
   const featured = blogPosts[0] || null;

@@ -13,16 +13,18 @@ import BlogImage from "../components/BlogImage";
 import BlogClip from "../components/BlogClip";
 import { blogPosts, getBlogCategory } from "../data/blogPostsData";
 import { formatBlogDate } from "./BlogPage";
+import type { ReactNode } from "react";
+import type { BlogBlock, BlogPost, Text } from "../types";
 
 // Инлайн-ссылки в тексте: синтаксис [подпись](/путь) -> внутренняя ссылка.
 const LINK_RE = /\[([^\]]+)\]\((\/[^)]+)\)/g;
-function RichText({ value, lang }) {
+function RichText({ value, lang }: { value: Text; lang: string }) {
   const text = getText(value, lang);
   if (!text.includes("](")) return text;
-  const nodes = [];
+  const nodes: ReactNode[] = [];
   let last = 0;
   let key = 0;
-  let match;
+  let match: RegExpExecArray | null;
   LINK_RE.lastIndex = 0;
   while ((match = LINK_RE.exec(text)) !== null) {
     if (match.index > last) nodes.push(text.slice(last, match.index));
@@ -37,8 +39,8 @@ function RichText({ value, lang }) {
   return <>{nodes}</>;
 }
 
-// Рендер одного блока контента. См. список типов в blogPostsData.js.
-function ContentBlock({ block, lang, headingId }) {
+// Рендер одного блока контента. См. список типов в blogPostsData.ts.
+function ContentBlock({ block, lang, headingId }: { block: BlogBlock; lang: string; headingId?: string }) {
   switch (block.type) {
     case "lead":
       return (
@@ -203,7 +205,7 @@ export default function SingleBlogPage() {
   const post = blogPosts.find((item) => item.slug === slug);
 
   const [progress, setProgress] = useState(0);
-  const [activeId, setActiveId] = useState(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   // Оглавление собираем из заголовков H2.
@@ -216,7 +218,7 @@ export default function SingleBlogPage() {
             ? { id: `sec-${index}`, text: block.text }
             : null
         )
-        .filter(Boolean),
+        .filter((heading): heading is { id: string; text: Text } => Boolean(heading)),
     [content]
   );
 
@@ -235,7 +237,7 @@ export default function SingleBlogPage() {
   // Подсветка активного раздела в оглавлении.
   useEffect(() => {
     if (headings.length < 2) return;
-    const els = headings.map((h) => document.getElementById(h.id)).filter(Boolean);
+    const els = headings.map((h) => document.getElementById(h.id)).filter((el): el is HTMLElement => Boolean(el));
     if (!els.length) return;
     const observer = new IntersectionObserver(
       (entries) => {
@@ -282,7 +284,7 @@ export default function SingleBlogPage() {
     ...(post.relatedPostIds ?? []).map((id) => blogPosts.find((item) => item.id === id)),
     ...blogPosts,
   ]
-    .filter((item) => item && item.slug !== slug)
+    .filter((item): item is BlogPost => Boolean(item && item.slug !== slug))
     .filter((item, index, arr) => arr.findIndex((x) => x.id === item.id) === index)
     .slice(0, 2);
 
@@ -463,7 +465,7 @@ export default function SingleBlogPage() {
             </button>
           </div>
 
-          {post.faq?.length > 0 && (
+          {post.faq && post.faq.length > 0 && (
             <section className="blog-single__faq">
               <h2>{getText({ ru: "Частые вопросы", ro: "Întrebări frecvente", en: "FAQ" }, lang)}</h2>
               <div className="blog-accordion">

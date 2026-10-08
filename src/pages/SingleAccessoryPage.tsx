@@ -5,6 +5,7 @@ import ProductReviews from "../components/ProductReviews";
 import SEO, { breadcrumbSchema, productSchema, productSeo, getText } from "../components/SEO";
 import { getAccessory } from "../data/accessoriesData";
 import { reviewsFor, reviewStatsFor } from "../data/reviewsData";
+import type { OutletContext } from "../types";
 
 // Страница дополнительного товара - намеренно короткая: галерея, цена,
 // описание, состав и памятка по использованию. Без табов и блока «похожие» -
@@ -14,7 +15,7 @@ import { reviewsFor, reviewStatsFor } from "../data/reviewsData";
 // инструментов и корм покупают отдельно, и людям важно мнение именно о них.
 export default function SingleAccessoryPage() {
   const { slug, lang = "ru" } = useParams();
-  const { addToCart } = useOutletContext();
+  const { addToCart } = useOutletContext<OutletContext>();
   const navigate = useNavigate();
   const item = getAccessory(slug);
 

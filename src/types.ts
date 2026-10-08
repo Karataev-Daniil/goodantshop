@@ -256,8 +256,16 @@ export interface CartItem {
   qty?: number;
 }
 
+// Значение на трёх языках произвольного типа: t() переводит не только строки,
+// но и JSX (например, заголовок с <br /> на главной).
+export interface LocalizedValue<T> {
+  ru: T;
+  ro?: T;
+  en?: T;
+}
+
 // Перевод «на лету» для текущего языка (t из Layout).
-export type Translate = (map: Localized) => string;
+export type Translate = <T extends {} = string>(map: LocalizedValue<T>) => T;
 
 // Контекст, который Layout (App.tsx) передаёт страницам через <Outlet>.
 export interface OutletContext {
@@ -276,6 +284,13 @@ export interface OrderItem {
   qty: number;
   price: string;
   lineTotal: string;
+}
+
+// Ответ /api/order.
+export interface OrderResponse {
+  ok: boolean;
+  error?: string;
+  message?: string;
 }
 
 // Тело POST /api/order.

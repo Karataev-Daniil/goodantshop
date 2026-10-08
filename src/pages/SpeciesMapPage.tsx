@@ -2,9 +2,10 @@ import { useOutletContext, useParams, Link } from "react-router-dom";
 import SEO, { breadcrumbSchema, pageSeo, SITE_TELEGRAM } from "../components/SEO";
 import SpeciesMap from "../components/SpeciesMap";
 import { mapSpecies, zones, totalRecordedZones } from "../data/speciesMapData";
+import type { OutletContext } from "../types";
 
 export default function SpeciesMapPage() {
-  const { t } = useOutletContext();
+  const { t } = useOutletContext<OutletContext>();
   const { lang = "ru" } = useParams();
 
   const recorded = totalRecordedZones();

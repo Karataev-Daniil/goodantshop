@@ -1,16 +1,17 @@
 // Серверный вход для пререндера (scripts/prerender.mjs). Собирается отдельно:
-// `vite build --ssr src/entry-server.jsx`. Рендерит приложение для одного URL
+// `vite build --ssr src/entry-server.tsx`. Рендерит приложение для одного URL
 // в строку, чтобы в статическом HTML каждой страницы сразу были H1, текст,
 // ссылки и JSON-LD - их видят боты, которые не исполняют JS (Bing, Яндекс без
-// рендера, AI-краулеры, мессенджеры). В браузере main.jsx гидрирует эту
+// рендера, AI-краулеры, мессенджеры). В браузере main.tsx гидрирует эту
 // разметку (hydrateRoot) вместо того, чтобы рисовать страницу с нуля.
 import React from "react";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom/server";
 import App from "./App";
+import type { HelmetContext } from "./App";
 
-export function render(url) {
-  const helmetContext = {};
+export function render(url: string): { html: string; head: string } {
+  const helmetContext: HelmetContext = {};
   const html = renderToString(
     <React.StrictMode>
       <StaticRouter location={url}>

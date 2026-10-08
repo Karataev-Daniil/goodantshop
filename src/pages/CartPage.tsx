@@ -4,17 +4,28 @@ import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
 import { accessories, foodForAnt, toolKit } from "../data/accessoriesData";
 import SEO, { breadcrumbSchema, pageSeo } from "../components/SEO";
+import type { FormEvent } from "react";
+import type {
+  Accessory,
+  Lang,
+  OrderPayload,
+  OrderResponse,
+  OutletContext,
+  PriceOption,
+  ProductLike,
+  Text,
+} from "../types";
 
-const getText = (value, lang) => {
+const getText = (value: Text | null | undefined, lang: string): string => {
   if (value && typeof value === "object") {
-    return value[lang] ?? value.ru ?? value.ro ?? value.en ?? "";
+    return value[lang as Lang] ?? value.ru ?? value.ro ?? value.en ?? "";
   }
   return value ?? "";
 };
 
 // Выделяет важные слова: фрагменты между **двойными звёздочками** становятся
 // акцентными. Маркеры в строке позволяют держать перевод обычным текстом.
-const withHighlights = (text) =>
+const withHighlights = (text: string) =>
   String(text)
     .split(/\*\*(.+?)\*\*/g)
     .map((part, index) =>
@@ -27,12 +38,12 @@ const withHighlights = (text) =>
       )
     );
 
-const optionPriceNumber = (option) =>
+const optionPriceNumber = (option: PriceOption | null | undefined) =>
   parseInt(String(option?.value || "").replace(/[^\d]/g, ""), 10) || 0;
 
 // Доставка по Кишинёву: 150 лей, бесплатно в заказе с формикарием. Загород
 // считается отдельно (проезд + 100 лей) и заранее не фиксируется - см. подсказку
-// под полем адреса. Держите в согласии с shippingRate в SEO.jsx.
+// под полем адреса. Держите в согласии с shippingRate в SEO.tsx.
 const CHISINAU_DELIVERY = 150;
 
 // В localStorage лежит СНИМОК опции на момент добавления в корзину. Брать цену
@@ -41,14 +52,22 @@ const CHISINAU_DELIVERY = 150;
 // узнаём, какой вариант выбрал человек, а сам вариант берём из каталога.
 // Если такого варианта больше нет (градацию убрали из продажи), откатываемся
 // на текущий вариант по умолчанию.
-const resolveOption = (product, lineOption) => {
+const resolveOption = (product: ProductLike, lineOption: PriceOption | null | undefined): PriceOption | null => {
   const options = product.priceOptions || [];
   const savedLabel = lineOption?.label?.ru;
   const matched = savedLabel ? options.find((option) => option.label?.ru === savedLabel) : null;
   return matched || options.find((option) => option.selected) || options[0] || null;
 };
 
-const countWord = (count, lang) => {
+// Строки корзины, сгруппированные по товару и варианту цены.
+interface CartGroup {
+  product: ProductLike;
+  option: PriceOption | null;
+  qty: number;
+  uids: string[];
+}
+
+const countWord = (count: number, lang: string) => {
   if (lang === "ro") return count === 1 ? "produs" : "produse";
   if (lang === "en") return count === 1 ? "item" : "items";
   const mod10 = count % 10;
@@ -59,7 +78,7 @@ const countWord = (count, lang) => {
 };
 
 export default function CartPage() {
-  const { t, cartIds, removeFromCart, clearCart } = useOutletContext();
+  const { t, cartIds, removeFromCart, clearCart } = useOutletContext<OutletContext>();
   const { lang = "ru" } = useParams();
 
   const [name, setName] = useState("");
@@ -72,17 +91,18 @@ export default function CartPage() {
   // если в корзине только муравьи. Не блокирует, лишь предлагает.
   const [showBundlePrompt, setShowBundlePrompt] = useState(false);
 
-  const catalog = [...ants, ...formicariums, ...accessories];
+  const catalog: ProductLike[] = [...ants, ...formicariums, ...accessories];
 
   // Group cart lines by product - one line equals one unit
-  const groupsMap = new Map();
+  const groupsMap = new Map<string, CartGroup>();
   cartIds.forEach((line) => {
     const product = catalog.find((entry) => String(entry.id) === String(line.id));
     if (!product) return;
     const option = resolveOption(product, line.option);
     const key = `${line.id}__${option?.value || ""}`;
     if (!groupsMap.has(key)) groupsMap.set(key, { product, option, qty: 0, uids: [] });
-    const group = groupsMap.get(key);
+    // Ключ только что положен строкой выше, если его не было.
+    const group = groupsMap.get(key)!;
     group.qty += 1;
     group.uids.push(line.uid);
   });
@@ -93,9 +113,9 @@ export default function CartPage() {
   // инструментов и корм идут в подарок только к полному комплекту, где у каждой
   // колонии есть свой формикарий. Так дом предлагается пряником, а не запретом.
   // Считаем количество: 3 колонии и 1 дом - комплект ещё не собран.
-  const isAnt = (product) => ants.some((entry) => entry.id === product.id);
-  const isFormicarium = (product) => formicariums.some((entry) => entry.id === product.id);
-  const sumQty = (list) => list.reduce((sum, group) => sum + group.qty, 0);
+  const isAnt = (product: ProductLike) => ants.some((entry) => entry.id === product.id);
+  const isFormicarium = (product: ProductLike) => formicariums.some((entry) => entry.id === product.id);
+  const sumQty = (list: { qty: number }[]) => list.reduce((sum, group) => sum + group.qty, 0);
 
   const antGroups = groups.filter((group) => isAnt(group.product));
   const antQty = sumQty(antGroups);
@@ -106,9 +126,9 @@ export default function CartPage() {
 
   // Подарки идут на КАЖДУЮ колонию: набор инструментов и корм под её рацион
   // (жнецам семена, остальным живой белок). Две колонии - два набора и два корма.
-  const giftLines = [];
+  const giftLines: { product: Accessory; qty: number }[] = [];
   if (bundleComplete) {
-    const addGift = (product, qty) => {
+    const addGift = (product: Accessory | null, qty: number) => {
       if (!product) return;
       const found = giftLines.find((entry) => entry.product.id === product.id);
       if (found) found.qty += qty;
@@ -122,13 +142,13 @@ export default function CartPage() {
   }
 
   // Сколько единиц каждого товара положено бесплатно.
-  const giftQtyFor = (product) =>
+  const giftQtyFor = (product: ProductLike) =>
     giftLines.find((entry) => entry.product.id === product.id)?.qty || 0;
 
   // В строке корзины бесплатны только положенные единицы: если человек взял три
   // набора, а комплект даёт один, платит он за два.
-  const freeQtyIn = (group) => Math.min(group.qty, giftQtyFor(group.product));
-  const lineTotal = (group) =>
+  const freeQtyIn = (group: CartGroup) => Math.min(group.qty, giftQtyFor(group.product));
+  const lineTotal = (group: CartGroup) =>
     optionPriceNumber(group.option) * (group.qty - freeQtyIn(group));
 
   // Остаток подарков, который в корзину не клали - добавим к заказу сами.
@@ -144,9 +164,9 @@ export default function CartPage() {
 
   // Реальные подарки для превью в поп-апе (с фото и зачёркнутой ценой):
   // набор инструментов + корм под каждый вид, что лежит в корзине.
-  const giftPreview = [];
+  const giftPreview: Accessory[] = [];
   if (antQty > 0) {
-    const pushGift = (product) => {
+    const pushGift = (product: Accessory | null) => {
       if (product && !giftPreview.some((entry) => entry.id === product.id)) giftPreview.push(product);
     };
     pushGift(kitForValue);
@@ -156,9 +176,9 @@ export default function CartPage() {
   const totalQty = groups.reduce((sum, group) => sum + group.qty, 0);
   const itemsTotal = groups.reduce((sum, group) => sum + lineTotal(group), 0);
   const currency = t({ ru: "лей", ro: "lei", en: "lei" });
-  const fmt = (value) => `${value} ${currency}`;
+  const fmt = (value: number) => `${value} ${currency}`;
 
-  const removeGroup = (uids) => uids.forEach((uid) => removeFromCart(uid));
+  const removeGroup = (uids: string[]) => uids.forEach((uid) => removeFromCart(uid));
 
   // Реальная отправка заказа. Вызывается либо напрямую (комплект собран или
   // одни аксессуары), либо из поп-апа, когда человек решил оформить без дома.
@@ -204,10 +224,10 @@ export default function CartPage() {
           items: orderItems,
           itemsTotal: fmt(itemsTotal),
           total: fmt(itemsTotal),
-        }),
+        } satisfies OrderPayload),
       });
 
-      const data = await response.json();
+      const data = (await response.json()) as OrderResponse;
       if (!response.ok || !data.ok) {
         throw new Error(data.error || "Order sending failed");
       }
@@ -240,7 +260,7 @@ export default function CartPage() {
     }
   };
 
-  const submitOrder = (event) => {
+  const submitOrder = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!name.trim() || !phone.trim() || !address.trim()) {

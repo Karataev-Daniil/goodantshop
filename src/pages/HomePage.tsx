@@ -14,6 +14,9 @@ import {
 import messorForagingSeeds from "../assets/images/ants/messor-foraging-seeds.webp";
 import messorWorkersCloseup from "../assets/images/ants/messor-workers-closeup.webp";
 import { antTendingAphids, woodAntsCarryingBeetle } from "../assets/images/library";
+import type { TouchEvent } from "react";
+import type { ProductCardItem } from "../components/ProductCard";
+import type { OutletContext, ProductLike } from "../types";
 
 // Hero background carousel: leads with the shot that used to sit in the
 // "what-is" block, followed by a few strong colony close-ups.
@@ -22,7 +25,7 @@ const heroSlides = [messorForagingSeeds];
 // «От X лей» в герое считаем из каталога, а не пишем руками - иначе цифра
 // разойдётся с карточками при первой же правке прайса. Товары «нет в наличии»
 // не учитываем: обещать по ним цену нечестно.
-const priceFrom = (items) => {
+const priceFrom = (items: ProductLike[]): number | null => {
   const available = items.filter((item) => item.availability !== "outOfStock");
   const pool = available.length ? available : items;
   const values = pool
@@ -40,10 +43,11 @@ const GALLERY_INTERVAL = 6000;
 const SWIPE_THRESHOLD = 40;
 
 export default function HomePage() {
-  const { t, addToCart } = useOutletContext();
+  const { t, addToCart } = useOutletContext<OutletContext>();
   const { lang = "ru" } = useParams();
-  const starterAnt = ants[0];
-  const starterFormicarium = formicariums[0];
+  // Каталог не пустой: первые позиции есть всегда.
+  const starterAnt = ants[0]!;
+  const starterFormicarium = formicariums[0]!;
   const homeReviewStats = reviewStatsAll();
   const homeReviews = featuredReviews();
 
@@ -54,7 +58,7 @@ export default function HomePage() {
   // уже нельзя.
   const [galleryAuto, setGalleryAuto] = useState(true);
   const [openFaq, setOpenFaq] = useState(0);
-  const touchStartX = useRef(null);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     if (heroSlides.length < 2) return undefined;
@@ -69,7 +73,7 @@ export default function HomePage() {
     addToCart(starterFormicarium.id);
   };
 
-  const starterKit = {
+  const starterKit: ProductCardItem = {
     id: "starter-kit",
     title: { ru: "Стартовый набор", ro: "Set de start", en: "Starter kit" },
     excerpt: {
@@ -80,7 +84,7 @@ export default function HomePage() {
     images: ["/formicarium-colony.webp"],
     availability: "inStock",
     // Цена = Terra (1300) + Messor (650). Держите её в согласии с priceOptions
-    // в formicariumsData.js и antsData.js, иначе витрина разойдётся с корзиной.
+    // в formicariumsData.ts и antsData.ts, иначе витрина разойдётся с корзиной.
     priceOptions: [
       {
         label: { ru: "Формикарий + колония", ro: "Formicariu + colonie", en: "Formicarium + colony" },
@@ -155,7 +159,8 @@ export default function HomePage() {
     },
   ];
   const galleryCount = gallerySlides.length;
-  const currentSlide = gallerySlides[galleryIndex];
+  // galleryIndex всегда берётся по модулю galleryCount.
+  const currentSlide = gallerySlides[galleryIndex]!;
 
   useEffect(() => {
     if (!galleryAuto) return undefined;
@@ -174,17 +179,18 @@ export default function HomePage() {
     setGalleryAuto(false);
     setGalleryIndex((i) => (i + 1) % galleryCount);
   };
-  const showSlide = (index) => {
+  const showSlide = (index: number) => {
     setGalleryAuto(false);
     setGalleryIndex(index);
   };
 
-  const onGalleryTouchStart = (event) => {
-    touchStartX.current = event.touches[0].clientX;
+  // В touchstart/touchend всегда есть хотя бы одно касание.
+  const onGalleryTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    touchStartX.current = event.touches[0]!.clientX;
   };
-  const onGalleryTouchEnd = (event) => {
+  const onGalleryTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     if (touchStartX.current === null) return;
-    const distance = event.changedTouches[0].clientX - touchStartX.current;
+    const distance = event.changedTouches[0]!.clientX - touchStartX.current;
     touchStartX.current = null;
     if (Math.abs(distance) < SWIPE_THRESHOLD) return;
     if (distance < 0) showNextSlide();

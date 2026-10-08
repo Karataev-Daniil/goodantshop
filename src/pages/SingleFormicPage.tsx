@@ -2,10 +2,11 @@ import { Link, useParams } from "react-router-dom";
 import ProductDetail from "../components/ProductDetail";
 import { formicariums } from "../data/formicariumsData";
 import { ants } from "../data/antsData";
+import type { Lang, Text } from "../types";
 
-const getText = (value, lang) => {
+const getText = (value: Text | null | undefined, lang: string): string => {
   if (value && typeof value === "object") {
-    return value[lang] ?? value.ru ?? value.ro ?? value.en ?? "";
+    return value[lang as Lang] ?? value.ru ?? value.ro ?? value.en ?? "";
   }
   return value ?? "";
 };

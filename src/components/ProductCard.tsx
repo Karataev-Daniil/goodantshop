@@ -1,7 +1,7 @@
 ﻿import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { MouseEvent } from "react";
-import type { Availability, Lang, Localized, ProductLike } from "../types";
+import type { Availability, Lang, Localized, PriceOption, Text } from "../types";
 
 const getText = (value: Partial<Localized> | string | null | undefined, lang: string): string => {
   if (value && typeof value === "object") {
@@ -31,10 +31,22 @@ const availabilityLabels: Record<Availability, Localized> = {
 const getAvailabilityTitle = (availability: Availability | undefined, lang: string) =>
   availability ? getText(availabilityLabels[availability] || {}, lang) : "";
 
+// Всё, что карточке нужно от товара. Шире ProductLike: на главной в ту же
+// карточку идёт «Стартовый набор» со строковым id и без slug/description.
+export interface ProductCardItem {
+  id: number | string;
+  title: Text;
+  excerpt: Text;
+  image?: string;
+  images?: string[];
+  availability?: Availability;
+  priceOptions?: PriceOption[];
+}
+
 interface ProductCardProps {
-  item: ProductLike;
+  item: ProductCardItem;
   linkTo: string;
-  onAddToCart?: (id: number) => void;
+  onAddToCart?: (id: number | string) => void;
 }
 
 export default function ProductCard({ item, linkTo, onAddToCart }: ProductCardProps) {

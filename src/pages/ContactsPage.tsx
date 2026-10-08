@@ -5,9 +5,10 @@ import SEO, {
   SITE_PHONE,
   SITE_PHONE_DISPLAY,
 } from "../components/SEO";
+import type { OutletContext } from "../types";
 
 export default function ContactsPage() {
-  const { t } = useOutletContext();
+  const { t } = useOutletContext<OutletContext>();
   const { lang = "ru" } = useParams();
 
   const channels = [

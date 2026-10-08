@@ -3,10 +3,12 @@ import ProductDetail from "../components/ProductDetail";
 import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
 import { foodForAnt, foodsForAnt, toolKit } from "../data/accessoriesData";
+import type { ProductExtras, StarterRole } from "../components/ProductDetail";
+import type { Accessory, Formicarium, Lang, Text } from "../types";
 
-const getText = (value, lang) => {
+const getText = (value: Text | null | undefined, lang: string): string => {
   if (value && typeof value === "object") {
-    return value[lang] ?? value.ru ?? value.ro ?? value.en ?? "";
+    return value[lang as Lang] ?? value.ru ?? value.ro ?? value.en ?? "";
   }
   return value ?? "";
 };
@@ -32,7 +34,7 @@ export default function SingleAntPage() {
   // (the first id in recommendedFormicariumIds is the recommended pick).
   const crossSell = (ant.recommendedFormicariumIds ?? [])
     .map((id) => formicariums.find((item) => item.id === id))
-    .filter(Boolean);
+    .filter((item): item is Formicarium => Boolean(item));
   // Similar: other ants only
   const similar = ants.filter((item) => item.slug !== ant.slug);
 
@@ -41,13 +43,13 @@ export default function SingleAntPage() {
   // идут набор и ОСНОВНОЙ корм вида; второй корм - платное дополнение.
   const giftFood = foodForAnt(ant);
   const kit = toolKit();
-  const extras = {
+  const extras: ProductExtras = {
     items: [
-      ...foodsForAnt(ant).map((food) => ({
+      ...foodsForAnt(ant).map((food): { product: Accessory; role: StarterRole } => ({
         product: food,
         role: food.id === giftFood?.id ? "gift" : "food",
       })),
-      ...(kit ? [{ product: kit, role: "gift" }] : []),
+      ...(kit ? [{ product: kit, role: "gift" as const }] : []),
     ],
   };
 

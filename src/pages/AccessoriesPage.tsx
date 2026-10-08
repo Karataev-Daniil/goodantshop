@@ -2,6 +2,7 @@ import { Link, useOutletContext, useParams } from "react-router-dom";
 import SEO, { breadcrumbSchema, getText, itemListSchema, pageSeo } from "../components/SEO";
 import { accessories, foodsForAnt, getAccessory } from "../data/accessoriesData";
 import { ants } from "../data/antsData";
+import type { Accessory, OutletContext, Text } from "../types";
 
 // Страница-гайд, а не витрина. Товаров всего три, и голая сетка карточек
 // выглядела бы пустой; здесь они стоят внутри разделов про уход, каждый - там,
@@ -13,10 +14,16 @@ import { ants } from "../data/antsData";
 //
 // Кормление разложено по видам, а не одним абзацем: рацион - первое, что
 // спрашивают, и человеку нужен ответ про свой вид, а не общий текст.
-function CareItem({ item, lang, onAddToCart }) {
+interface CareItemProps {
+  item: Accessory | null;
+  lang: string;
+  onAddToCart: (id: number) => void;
+}
+
+function CareItem({ item, lang, onAddToCart }: CareItemProps) {
   if (!item) return null;
 
-  const t = (value) => getText(value, lang);
+  const t = (value: Text) => getText(value, lang);
   const price = item.priceOptions?.[0];
   const to = `/${lang}/accessories/${item.slug}`;
 
@@ -44,7 +51,7 @@ function CareItem({ item, lang, onAddToCart }) {
 }
 
 export default function AccessoriesPage() {
-  const { t, addToCart } = useOutletContext();
+  const { t, addToCart } = useOutletContext<OutletContext>();
   const { lang = "ru" } = useParams();
 
   const toolKit = getAccessory("tool-kit");

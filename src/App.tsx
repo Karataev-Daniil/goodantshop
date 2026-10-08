@@ -18,20 +18,23 @@ import HeaderMenu from "./components/navigation/HeaderMenu";
 import FooterMenu from "./components/navigation/FooterMenu";
 
 import { HelmetProvider } from "react-helmet-async";
+import type { HelmetServerState } from "react-helmet-async";
+import type { Dispatch, SetStateAction } from "react";
+import type { CartItem, Lang, LocalizedValue, OutletContext, PriceOption } from "./types";
 
 // Страницы пререндерятся на сервере, где localStorage нет, а первый
 // клиентский рендер при гидрации обязан совпасть с серверным. Поэтому стартуем
 // с initialValue и читаем сохранённое значение уже после монтирования.
 // Запись включается только после чтения (ready), иначе первый же эффект
 // затёр бы сохранённую корзину пустым массивом.
-function useLocalStorage(key, initialValue) {
-  const [state, setState] = useState(initialValue);
+function useLocalStorage<T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] {
+  const [state, setState] = useState<T>(initialValue);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     try {
       const stored = window.localStorage.getItem(key);
-      if (stored) setState(JSON.parse(stored));
+      if (stored) setState(JSON.parse(stored) as T);
     } catch {
       // Битое значение или запрещённый storage - остаёмся на initialValue.
     }
@@ -56,9 +59,9 @@ function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [cartIds, setcartIds] = useLocalStorage('cart-ids', []);
+  const [cartIds, setcartIds] = useLocalStorage<CartItem[]>('cart-ids', []);
 
-  const switchLang = (nextLang) => {
+  const switchLang = (nextLang: string) => {
     const parts = location.pathname.split('/').filter(Boolean);
     if (parts[0]) {
       parts[0] = nextLang;
@@ -68,9 +71,10 @@ function Layout() {
     navigate(`/${parts.join('/')}`);
   };
 
-  const t = (map) => map[curLang] ?? map.ru ?? map.ro ?? map.en;
+  // curLang - из URL; для неизвестного языка индекс даёт undefined -> ru.
+  const t = <T extends {}>(map: LocalizedValue<T>): T => map[curLang as Lang] ?? map.ru ?? map.ro ?? map.en;
 
-  const addToCart = (id, option) => {
+  const addToCart = (id: number | string, option?: PriceOption | null) => {
     setcartIds((prev) => [
       ...prev,
       {
@@ -81,13 +85,13 @@ function Layout() {
     ]);
   };
 
-  const updateCartQty = (uid, qty) => {
+  const updateCartQty = (uid: string, qty: number) => {
     setcartIds((prev) =>
       prev.map((item) => (item.uid === uid ? { ...item, qty } : item))
     );
   };
 
-  const removeFromCart = (uid) => {
+  const removeFromCart = (uid: string) => {
     setcartIds((prev) => prev.filter((item) => item.uid !== uid));
   };
 
@@ -112,16 +116,21 @@ function Layout() {
     <div className="site-shell">
       <HeaderMenu curLang={curLang} switchLang={switchLang} t={t} cartCount={cartCount} />
       <main className="container">
-        <Outlet context={{ t, addToCart, cartIds, updateCartQty, removeFromCart, clearCart }} />
+        <Outlet context={{ t, addToCart, cartIds, updateCartQty, removeFromCart, clearCart } satisfies OutletContext} />
       </main>
       <FooterMenu curLang={curLang} />
     </div>
   );
 }
 
-// helmetContext передаёт только серверный рендер (src/entry-server.jsx), чтобы
+// helmetContext передаёт только серверный рендер (src/entry-server.tsx), чтобы
 // забрать JSON-LD для статического HTML; в браузере он не нужен.
-export default function App({ helmetContext }) {
+// Helmet дописывает в объект контекста поле helmet после рендера.
+export interface HelmetContext {
+  helmet?: HelmetServerState | null;
+}
+
+export default function App({ helmetContext }: { helmetContext?: HelmetContext }) {
   return (
     <HelmetProvider context={helmetContext}>
       <Routes>

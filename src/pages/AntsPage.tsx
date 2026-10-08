@@ -2,9 +2,10 @@ import { useOutletContext, useParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import SEO, { breadcrumbSchema, itemListSchema, pageSeo } from "../components/SEO";
 import { ants } from "../data/antsData";
+import type { OutletContext } from "../types";
 
 export default function AntsPage() {
-  const { t, addToCart } = useOutletContext();
+  const { t, addToCart } = useOutletContext<OutletContext>();
   const { lang = "ru" } = useParams();
 
   return (
