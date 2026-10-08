@@ -1,14 +1,16 @@
 ﻿import { useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import type { MouseEvent } from "react";
+import type { Availability, Lang, Localized, ProductLike } from "../types";
 
-const getText = (value, lang) => {
+const getText = (value: Partial<Localized> | string | null | undefined, lang: string): string => {
   if (value && typeof value === "object") {
-    return value[lang] ?? value.ru ?? value.ro ?? value.en ?? "";
+    return value[lang as Lang] ?? value.ru ?? value.ro ?? value.en ?? "";
   }
   return value ?? "";
 };
 
-const availabilityLabels = {
+const availabilityLabels: Record<Availability, Localized> = {
   inStock: {
     ru: "В наличии",
     ro: "În stoc",
@@ -26,10 +28,16 @@ const availabilityLabels = {
   },
 };
 
-const getAvailabilityTitle = (availability, lang) =>
+const getAvailabilityTitle = (availability: Availability | undefined, lang: string) =>
   availability ? getText(availabilityLabels[availability] || {}, lang) : "";
 
-export default function ProductCard({ item, linkTo, onAddToCart }) {
+interface ProductCardProps {
+  item: ProductLike;
+  linkTo: string;
+  onAddToCart?: (id: number) => void;
+}
+
+export default function ProductCard({ item, linkTo, onAddToCart }: ProductCardProps) {
   const { lang = "ru" } = useParams();
   const [previewIndex, setPreviewIndex] = useState(0);
   const previewImages = item.images?.length ? item.images : [item.image || "/placeholder-ant.svg"];
@@ -46,7 +54,7 @@ export default function ProductCard({ item, linkTo, onAddToCart }) {
     ? getText({ ru: "Нет в наличии, предзаказ", ro: "Nu este în stoc, precomandă", en: "Out of stock, pre-order" }, lang)
     : availabilityTitle;
 
-  const handleProductHoverMove = (event) => {
+  const handleProductHoverMove = (event: MouseEvent<HTMLAnchorElement>) => {
     if (previewImages.length < 2) return;
     const rect = event.currentTarget.getBoundingClientRect();
     const x = event.clientX - rect.left;

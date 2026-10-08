@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { SITE_PHONE, SITE_PHONE_DISPLAY } from "../SEO";
+import type { Lang } from "../../types";
 
 const footerText = {
   ru: {
@@ -52,8 +53,9 @@ const footerText = {
   },
 };
 
-export default function FooterMenu({ curLang }) {
-  const copy = footerText[curLang] ?? footerText.ru;
+export default function FooterMenu({ curLang }: { curLang: string }) {
+  // curLang берётся из URL: для неизвестного языка индекс даёт undefined -> ru.
+  const copy = footerText[curLang as Lang] ?? footerText.ru;
   const year = new Date().getFullYear();
 
   return (

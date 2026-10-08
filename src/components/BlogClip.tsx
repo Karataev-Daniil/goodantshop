@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { getText } from "./SEO";
+import type { BlogClipData } from "../types";
 
 // Локальный ролик статьи как «живая гифка»: автоплей без звука по кругу, без
 // стандартных кнопок (пауза/полный экран убраны). Клик открывает тот же ролик
@@ -9,9 +10,9 @@ import { getText } from "./SEO";
 // открытии страницы: preload="none" при наличии poster (иначе "metadata", чтобы
 // был виден первый кадр), а воспроизведение включается, только когда ролик
 // попадает в viewport, и ставится на паузу, когда уходит из него.
-export default function BlogClip({ clip, lang = "ru" }) {
+export default function BlogClip({ clip, lang = "ru" }: { clip: BlogClipData; lang?: string }) {
   const [open, setOpen] = useState(false);
-  const inlineRef = useRef(null);
+  const inlineRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     const el = inlineRef.current;
@@ -26,8 +27,9 @@ export default function BlogClip({ clip, lang = "ru" }) {
       return undefined;
     }
     const observer = new IntersectionObserver(
+      // Наблюдаем один элемент - в entries всегда ровно одна запись.
       ([entry]) => {
-        if (entry.isIntersecting) play();
+        if (entry!.isIntersecting) play();
         else el.pause();
       },
       { threshold: 0.25 }
@@ -38,7 +40,7 @@ export default function BlogClip({ clip, lang = "ru" }) {
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (event) => {
+    const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
     };
     window.addEventListener("keydown", onKey);

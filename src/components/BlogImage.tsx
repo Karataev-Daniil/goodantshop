@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { getText } from "./SEO";
+import type { BlogImageData } from "../types";
 
 // Одиночное фото статьи с приближением: клик по снимку (или кнопке-лупе)
 // открывает полноэкранный лайтбокс, где картинку можно ещё раз кликнуть, чтобы
 // увеличить. Закрытие по Esc или клику по фону. Галереи нет - только зум.
-export default function BlogImage({ image, lang = "ru" }) {
+export default function BlogImage({ image, lang = "ru" }: { image: BlogImageData; lang?: string }) {
   const [open, setOpen] = useState(false);
   const [zoomed, setZoomed] = useState(false);
 
@@ -15,7 +16,7 @@ export default function BlogImage({ image, lang = "ru" }) {
 
   useEffect(() => {
     if (!open) return;
-    const onKey = (event) => {
+    const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") close();
     };
     window.addEventListener("keydown", onKey);

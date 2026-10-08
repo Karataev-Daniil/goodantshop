@@ -13,10 +13,13 @@ import {
   zones,
   zonesWithSpecies,
 } from "../data/speciesMapData";
+// Только типы: сам Leaflet грузится динамически внутри эффектов.
+import type { Map as LeafletMap, Marker, PointTuple } from "leaflet";
+import type { Localized, PinColor, SpeciesZone, Text, ZoneStatus } from "../types";
 
 // Цвет точки в режиме «все виды»: чем больше видов отмечено в зоне, тем плотнее.
 // Больше четырёх на глаз всё равно не различается, поэтому шкала обрывается.
-const COUNT_COLORS = [
+const COUNT_COLORS: [PinColor, PinColor, PinColor, PinColor, PinColor] = [
   { dot: "#f4f0e8", ring: "#d6c9b2" },
   { dot: "#f7dedc", ring: "#eeb3af" },
   { dot: "#eeb3af", ring: "#dd726c" },
@@ -24,23 +27,23 @@ const COUNT_COLORS = [
   { dot: "#bd241f", ring: "#8f1714" },
 ];
 
-const ICON_SIZE = [120, 46];
-const ICON_ANCHOR = [60, 34];
+const ICON_SIZE: PointTuple = [120, 46];
+const ICON_ANCHOR: PointTuple = [60, 34];
 
 export default function SpeciesMap() {
   const { lang = "ru" } = useParams();
-  const t = (value) => getText(value, lang);
+  const t = (value: Text) => getText(value, lang);
 
   const [mode, setMode] = useState("species");
-  const [currentSlug, setCurrentSlug] = useState(mapSpecies[0]?.slug || null);
+  const [currentSlug, setCurrentSlug] = useState<string | null>(mapSpecies[0]?.slug || null);
   const [selectedZone, setSelectedZone] = useState("");
 
-  const holderRef = useRef(null);
-  const mapRef = useRef(null);
-  const markersRef = useRef({});
+  const holderRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<LeafletMap | null>(null);
+  const markersRef = useRef<Record<string, Marker>>({});
   // Клик живёт внутри Leaflet, поэтому свежий обработчик держим в ref: иначе
   // отметка навсегда запомнила бы функцию первого рендера.
-  const selectRef = useRef(null);
+  const selectRef = useRef<((code: string) => void) | null>(null);
 
   const current = useMemo(
     () => mapSpecies.find((item) => item.slug === currentSlug) || null,
@@ -48,7 +51,7 @@ export default function SpeciesMap() {
   );
 
   const counts = useMemo(() => {
-    const result = {};
+    const result: Record<string, number> = {};
     zones.forEach((zone) => {
       result[zone.code] = speciesCountInZone(zone.code);
     });
@@ -57,21 +60,22 @@ export default function SpeciesMap() {
 
   const byRegion = mode === "species";
 
-  selectRef.current = (code) => setSelectedZone((prev) => (prev === code ? "" : code));
+  selectRef.current = (code: string) => setSelectedZone((prev) => (prev === code ? "" : code));
 
-  const zoneStatus = (code) => current?.records?.[code] || "none";
+  const zoneStatus = (code: string): ZoneStatus => current?.records?.[code] || "none";
 
-  const zoneColor = (code) =>
-    byRegion ? statusColor[zoneStatus(code)] : COUNT_COLORS[Math.min(counts[code], 4)];
+  // counts заполнен для каждой зоны, а индекс обрезан до 4 - цвет есть всегда.
+  const zoneColor = (code: string): PinColor =>
+    byRegion ? statusColor[zoneStatus(code)] : COUNT_COLORS[Math.min(counts[code]!, 4)]!;
 
-  const zoneCaption = (zone) =>
+  const zoneCaption = (zone: SpeciesZone) =>
     byRegion
       ? t(statusLabel[zoneStatus(zone.code)])
       : `${counts[zone.code]} ${t({ ru: "видов", ro: "specii", en: "species" })}`;
 
   // Отметка = точка + подпись. Заливкой область не закрашиваем: точка честно
   // говорит «примерно здесь», а залитый круг притворялся бы границей ареала.
-  const pinHtml = (zone) => {
+  const pinHtml = (zone: SpeciesZone) => {
     const color = zoneColor(zone.code);
     const muted = byRegion && zoneStatus(zone.code) === "none";
     return `<span class="zone-pin${muted ? " is-empty" : ""}">
@@ -161,12 +165,12 @@ export default function SpeciesMap() {
     : [];
 
   const legendRows = byRegion
-    ? ["confirmed", "reported", "absent", "none"].map((key) => ({
+    ? (["confirmed", "reported", "absent", "none"] as const).map((key) => ({
         key,
         color: statusColor[key],
         label: statusLabel[key],
       }))
-    : [4, 3, 2, 1, 0].map((count) => ({
+    : ([4, 3, 2, 1, 0] as const).map((count): { key: string; color: PinColor; label: Localized } => ({
         key: `count-${count}`,
         color: COUNT_COLORS[count],
         label:

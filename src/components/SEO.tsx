@@ -1,11 +1,166 @@
 import { Helmet } from "react-helmet-async";
 import { ownReviewsFor, ownReviewStatsFor, SELLER_999_URL } from "../data/reviewsData";
+import type {
+  Availability,
+  BlogPost,
+  BlogVideo,
+  FaqItem,
+  Lang,
+  Localized,
+  PriceOption,
+  ProductLike,
+  ProductType,
+  Review,
+  Text,
+} from "../types";
+
+// --- Типы JSON-LD ------------------------------------------------------------
+// Описывают ровно то, что строят функции ниже, - не весь словарь schema.org.
+
+export interface OrganizationRef {
+  "@id": string;
+}
+
+export interface OrganizationSchema {
+  "@type": "Organization";
+  "@id": string;
+  name: string;
+  url: string;
+  logo: string;
+  contactPoint: {
+    "@type": "ContactPoint";
+    contactType: string;
+    areaServed: string;
+    availableLanguage: string[];
+    telephone: string;
+    url: string;
+  };
+  areaServed: { "@type": "Country" | "City"; name: string }[];
+  sameAs: string[];
+}
+
+export interface WebSiteSchema {
+  "@type": "WebSite";
+  "@id": string;
+  url: string;
+  name: string;
+  inLanguage: string;
+  publisher: OrganizationRef;
+}
+
+export interface BreadcrumbListSchema {
+  "@type": "BreadcrumbList";
+  itemListElement: { "@type": "ListItem"; position: number; name: string; item: string }[];
+}
+
+export interface ItemListSchema {
+  "@type": "ItemList";
+  itemListElement: { "@type": "ListItem"; position: number; url: string; name: string }[];
+}
+
+export interface AggregateRatingSchema {
+  "@type": "AggregateRating";
+  ratingValue: number;
+  reviewCount: number;
+  bestRating: number;
+  worstRating: number;
+}
+
+export interface ReviewSchema {
+  "@type": "Review";
+  author: { "@type": "Person"; name: string };
+  datePublished: string;
+  reviewBody: string;
+  reviewRating: { "@type": "Rating"; ratingValue: number; bestRating: number; worstRating: number };
+}
+
+export interface ProductSchema {
+  "@type": "Product";
+  name: string;
+  sku: string;
+  description: string;
+  image: string[];
+  category: string;
+  brand: { "@type": "Brand"; name: string };
+  aggregateRating?: AggregateRatingSchema;
+  review?: ReviewSchema[];
+  offers: {
+    "@type": "Offer";
+    url: string;
+    priceCurrency: string;
+    price: string | undefined;
+    availability: string;
+    seller: OrganizationRef;
+    shippingDetails: {
+      "@type": "OfferShippingDetails";
+      shippingRate: { "@type": "MonetaryAmount"; value: number; currency: string };
+      shippingDestination: { "@type": "DefinedRegion"; addressCountry: string };
+    };
+    hasMerchantReturnPolicy: {
+      "@type": "MerchantReturnPolicy";
+      applicableCountry: string;
+      returnPolicyCategory: string;
+    };
+  };
+  additionalProperty: { "@type": "PropertyValue"; name: string; value: string }[] | undefined;
+}
+
+export interface FaqPageSchema {
+  "@type": "FAQPage";
+  mainEntity: {
+    "@type": "Question";
+    name: string;
+    acceptedAnswer: { "@type": "Answer"; text: string };
+  }[];
+}
+
+export interface VideoObjectSchema {
+  "@type": "VideoObject";
+  name: string;
+  description: string;
+  thumbnailUrl: string[];
+  uploadDate: string;
+  duration?: string;
+  embedUrl?: string;
+  contentUrl?: string;
+}
+
+export interface BlogPostingSchema {
+  "@type": "BlogPosting";
+  headline: string;
+  description: string;
+  image: string[];
+  datePublished: string;
+  dateModified: string;
+  inLanguage: string;
+  author: { "@type": "Organization"; name: string; url: string };
+  publisher: OrganizationRef;
+  mainEntityOfPage: { "@type": "WebPage"; "@id": string };
+  video?: VideoObjectSchema | null;
+}
+
+export type JsonLdSchema =
+  | OrganizationSchema
+  | WebSiteSchema
+  | BreadcrumbListSchema
+  | ItemListSchema
+  | ProductSchema
+  | FaqPageSchema
+  | VideoObjectSchema
+  | BlogPostingSchema;
+
+// SEO-тексты страницы: заголовок и описание на трёх языках.
+export interface PageSeo {
+  title: Localized;
+  description: Localized;
+  robots?: string;
+}
 
 export const SITE_URL = "https://goodantshop.md";
 export const SITE_NAME = "GoodAntShop";
 export const SITE_LOGO = `${SITE_URL}/logo.webp`;
 export const DEFAULT_IMAGE = `${SITE_URL}/formicarium-colony.webp`;
-export const SUPPORTED_LANGS = ["ru", "ro", "en"];
+export const SUPPORTED_LANGS: Lang[] = ["ru", "ro", "en"];
 
 // Full international number for `tel:` links; national format for display.
 export const SITE_PHONE = "+37360983052";
@@ -21,35 +176,37 @@ export const HAS_INSTAGRAM = /instagram\.com\/[^/?#]+/i.test(SITE_INSTAGRAM);
 // Основной канал связи: и в разметке организации, и в кнопках на страницах.
 export const SITE_TELEGRAM = "https://t.me/GoodAnt_Shop";
 
-const AVAILABILITY = {
+const AVAILABILITY: Record<Availability, string> = {
   inStock: "https://schema.org/InStock",
   preorder: "https://schema.org/PreOrder",
   outOfStock: "https://schema.org/OutOfStock",
 };
 
-export const getText = (value, lang = "ru") => {
+export const getText = (value: Text | null | undefined, lang: string = "ru"): string => {
   if (value && typeof value === "object") {
-    return value[lang] ?? value.ru ?? value.ro ?? value.en ?? "";
+    // lang приходит из URL и может быть любым - тогда индекс даёт undefined
+    // и срабатывает фолбэк на ru.
+    return value[lang as Lang] ?? value.ru ?? value.ro ?? value.en ?? "";
   }
 
   return value ?? "";
 };
 
-export const normalizePath = (path = "/") => {
+export const normalizePath = (path: string = "/"): string => {
   if (!path || path === "/") return "";
   return path.startsWith("/") ? path : `/${path}`;
 };
 
-export const absoluteUrl = (path = "") => {
+export const absoluteUrl = (path: string = ""): string => {
   if (!path) return SITE_URL;
   if (/^https?:\/\//i.test(path)) return path;
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 };
 
-export const localizedUrl = (lang = "ru", path = "/") =>
+export const localizedUrl = (lang: string = "ru", path: string = "/"): string =>
   `${SITE_URL}/${lang}${normalizePath(path)}`;
 
-export const priceValue = (product) => {
+export const priceValue = (product: { priceOptions?: PriceOption[] }): string | undefined => {
   const option = product.priceOptions?.find((entry) => entry.selected) || product.priceOptions?.[0];
   const value = String(option?.value || "").replace(/[^\d]/g, "");
   return value || undefined;
@@ -168,13 +325,17 @@ export const pageSeo = {
       en: "GoodAntShop checkout for ant colonies, formicariums and home ant farm products.",
     },
   },
-};
+} satisfies Record<string, PageSeo>;
 
-export const productSeo = (product, type, lang = "ru") => {
+export const productSeo = (
+  product: ProductLike,
+  type: ProductType,
+  lang: string = "ru"
+): { title: Localized; description: Localized } => {
   const title = getText(product.title, lang);
   // У аксессуаров типового существительного нет - их название уже describes
   // сам товар («Набор инструментов…»), поэтому заголовок строим без него.
-  const typeName = {
+  const typeName: Partial<Record<ProductType, Localized>> = {
     ant: {
       ru: "колонию муравьёв",
       ro: "o colonie de furnici",
@@ -187,7 +348,7 @@ export const productSeo = (product, type, lang = "ru") => {
     },
   };
   const noun = typeName[type];
-  const buy = (lang_, verb) =>
+  const buy = (lang_: string, verb: string) =>
     noun ? `${verb} ${getText(noun, lang_)} ` : `${verb} `;
 
   return {
@@ -204,7 +365,7 @@ export const productSeo = (product, type, lang = "ru") => {
   };
 };
 
-export const organizationSchema = (lang = "ru") => ({
+export const organizationSchema = (lang: string = "ru"): OrganizationSchema => ({
   "@type": "Organization",
   "@id": `${SITE_URL}/#organization`,
   name: SITE_NAME,
@@ -227,7 +388,7 @@ export const organizationSchema = (lang = "ru") => ({
   sameAs: [SITE_TELEGRAM, SELLER_999_URL, ...(HAS_INSTAGRAM ? [SITE_INSTAGRAM] : [])],
 });
 
-export const websiteSchema = (lang = "ru") => ({
+export const websiteSchema = (lang: string = "ru"): WebSiteSchema => ({
   "@type": "WebSite",
   "@id": `${SITE_URL}/#website`,
   url: SITE_URL,
@@ -238,7 +399,10 @@ export const websiteSchema = (lang = "ru") => ({
   },
 });
 
-export const breadcrumbSchema = (lang = "ru", items = []) => ({
+export const breadcrumbSchema = (
+  lang: string = "ru",
+  items: { name: Text; path: string }[] = []
+): BreadcrumbListSchema => ({
   "@type": "BreadcrumbList",
   itemListElement: items.map((item, index) => ({
     "@type": "ListItem",
@@ -248,7 +412,11 @@ export const breadcrumbSchema = (lang = "ru", items = []) => ({
   })),
 });
 
-export const itemListSchema = (lang = "ru", items = [], pathFactory) => ({
+export const itemListSchema = <T extends { title: Text }>(
+  lang: string = "ru",
+  items: T[] = [],
+  pathFactory: (item: T) => string
+): ItemListSchema => ({
   "@type": "ItemList",
   itemListElement: items.map((item, index) => ({
     "@type": "ListItem",
@@ -258,7 +426,7 @@ export const itemListSchema = (lang = "ru", items = [], pathFactory) => ({
   })),
 });
 
-export const aggregateRatingSchema = (type, slug) => {
+export const aggregateRatingSchema = (type: ProductType, slug: string): AggregateRatingSchema => {
   const stats = ownReviewStatsFor(type, slug);
   return {
     "@type": "AggregateRating",
@@ -269,7 +437,7 @@ export const aggregateRatingSchema = (type, slug) => {
   };
 };
 
-export const reviewSchema = (review) => ({
+export const reviewSchema = (review: Review): ReviewSchema => ({
   "@type": "Review",
   author: {
     "@type": "Person",
@@ -285,14 +453,21 @@ export const reviewSchema = (review) => ({
   },
 });
 
-const PRODUCT_CATEGORY = {
+const PRODUCT_CATEGORY: Record<ProductType, string> = {
   ant: "Ant colony",
   formicarium: "Formicarium",
   accessory: "Ant keeping accessory",
 };
 
-export const productSchema = (product, type, lang = "ru", path = "/") => {
-  const images = product.images?.length ? product.images : [product.image].filter(Boolean);
+export const productSchema = (
+  product: ProductLike,
+  type: ProductType,
+  lang: string = "ru",
+  path: string = "/"
+): ProductSchema => {
+  const images = product.images?.length
+    ? product.images
+    : [product.image].filter((src): src is string => Boolean(src));
   // AggregateRating без отзывов невалиден - отдаём разметку только когда они есть.
   // Для всех типов товаров (колонии, формикарии, аксессуары) учитываются ТОЛЬКО
   // собственные отзывы, привязанные к товару через productSlug. Общие отзывы
@@ -363,10 +538,10 @@ export const productSchema = (product, type, lang = "ru", path = "/") => {
 };
 
 // Убираем инлайн-ссылки [текст](/путь) из строк для JSON-LD (там нужен чистый текст).
-const stripLinks = (value) =>
+const stripLinks = (value: string): string =>
   typeof value === "string" ? value.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") : value;
 
-export const faqSchema = (lang = "ru", items = []) => ({
+export const faqSchema = (lang: string = "ru", items: FaqItem[] = []): FaqPageSchema => ({
   "@type": "FAQPage",
   mainEntity: items.map((item) => ({
     "@type": "Question",
@@ -379,7 +554,7 @@ export const faqSchema = (lang = "ru", items = []) => ({
 });
 
 // VideoObject - даёт видео шанс попасть в Google Видео и в rich-результаты.
-export const videoSchema = (video, lang = "ru") => {
+export const videoSchema = (video: BlogVideo | null | undefined, lang: string = "ru"): VideoObjectSchema | null => {
   if (!video) return null;
   return {
     "@type": "VideoObject",
@@ -395,7 +570,7 @@ export const videoSchema = (video, lang = "ru") => {
 
 // BlogPosting - статья блога. Включает автора, даты и (при наличии) вложенное
 // видео, чтобы одна разметка описывала весь пост.
-export const articleSchema = (post, lang = "ru", path = "/") => {
+export const articleSchema = (post: BlogPost, lang: string = "ru", path: string = "/"): BlogPostingSchema => {
   const images = post.cover?.src ? [absoluteUrl(post.cover.src)] : [DEFAULT_IMAGE];
   const url = localizedUrl(lang, path);
 
@@ -431,7 +606,20 @@ export const articleSchema = (post, lang = "ru", path = "/") => {
 // навигации: <title>, lang у <html> и JSON-LD.
 // Пропсы description / image / type / robots страницы по-прежнему передают -
 // они описывают страницу и пригодятся, но в рантайме в <head> не выводятся.
-export default function SEO({ lang = "ru", title, jsonLd = [] }) {
+interface SEOProps {
+  lang?: string;
+  title: Text;
+  jsonLd?: JsonLdSchema | null | (JsonLdSchema | null | undefined)[];
+  // Ниже - описание страницы. В <head> не выводится (см. комментарий выше),
+  // но страницы его передают.
+  path?: string;
+  description?: Text;
+  image?: string;
+  type?: string;
+  robots?: string;
+}
+
+export default function SEO({ lang = "ru", title, jsonLd = [] }: SEOProps) {
   const titleText = getText(title, lang);
   const schemas = [
     organizationSchema(lang),

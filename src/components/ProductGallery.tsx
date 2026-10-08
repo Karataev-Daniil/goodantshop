@@ -1,4 +1,5 @@
 import { useState } from "react";
+import type { ReactNode, TouchEvent } from "react";
 
 const ChevronLeft = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -12,22 +13,31 @@ const ChevronRight = () => (
   </svg>
 );
 
-export default function ProductGallery({ images, title, imageAlt, badge, zoomLabel = "Zoom" }) {
+interface ProductGalleryProps {
+  images: string[];
+  title: string;
+  imageAlt?: string;
+  badge?: ReactNode;
+  zoomLabel?: string;
+}
+
+export default function ProductGallery({ images, title, imageAlt, badge, zoomLabel = "Zoom" }: ProductGalleryProps) {
   const altText = imageAlt || title;
   const slides = images?.length ? images : ["/placeholder-ant.svg"];
   const [index, setIndex] = useState(0);
   const [zoom, setZoom] = useState(false);
-  const [touchStartX, setTouchStartX] = useState(null);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
 
   const count = slides.length;
   const current = slides[index] || "/placeholder-ant.svg";
   const goPrev = () => setIndex((i) => (i - 1 + count) % count);
   const goNext = () => setIndex((i) => (i + 1) % count);
 
-  const onTouchStart = (event) => setTouchStartX(event.touches[0].clientX);
-  const onTouchEnd = (event) => {
+  // В touchstart/touchend всегда есть хотя бы одно касание.
+  const onTouchStart = (event: TouchEvent<HTMLDivElement>) => setTouchStartX(event.touches[0]!.clientX);
+  const onTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
     if (touchStartX === null) return;
-    const dx = event.changedTouches[0].clientX - touchStartX;
+    const dx = event.changedTouches[0]!.clientX - touchStartX;
     if (Math.abs(dx) > 40) {
       if (dx < 0) goNext();
       else goPrev();

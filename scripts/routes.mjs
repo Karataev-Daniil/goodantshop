@@ -2,7 +2,7 @@
 // Используется скриптом prerender.mjs (запускается после vite build).
 // Этот файл бандлится esbuild-ом с заглушкой ассетов, поэтому импорт картинок
 // возвращает абсолютный путь к исходному файлу (его читает sharp для OG).
-import { pageSeo, productSeo, getText } from "../src/components/SEO.jsx";
+import { pageSeo, productSeo, getText } from "../src/components/SEO.tsx";
 import { ants } from "../src/data/antsData.ts";
 import { formicariums } from "../src/data/formicariumsData.ts";
 import { blogPosts } from "../src/data/blogPostsData.ts";

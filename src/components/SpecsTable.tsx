@@ -1,13 +1,14 @@
 ﻿import { useParams } from "react-router-dom";
+import type { Lang, Text } from "../types";
 
-const getText = (value, lang) => {
+const getText = (value: Text | null | undefined, lang: string): string => {
   if (value && typeof value === "object") {
-    return value[lang] ?? value.ru ?? value.ro ?? value.en ?? "";
+    return value[lang as Lang] ?? value.ru ?? value.ro ?? value.en ?? "";
   }
   return value ?? "";
 };
 
-export default function SpecsTable({ specs }) {
+export default function SpecsTable({ specs }: { specs: { label: Text; value: Text }[] }) {
   const { lang = "ru" } = useParams();
 
   return (

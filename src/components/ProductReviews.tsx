@@ -2,6 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Stars from "./Stars";
 import { formatReviewDate, SELLER_999_URL } from "../data/reviewsData";
 import { getText } from "./SEO";
+import type { Review, ReviewStats } from "../types";
 
 // Блок отзывов товара. Жил внутри ProductDetail, но отзывы понадобились и на
 // странице аксессуара - вынесен целиком, чтобы разметка и логика «показать все»
@@ -18,8 +19,8 @@ const REVIEWS_PREVIEW = 4;
 const useIsomorphicLayoutEffect = typeof window === "undefined" ? useEffect : useLayoutEffect;
 
 // Карточка отзыва: текст обрезается до 3 строк, длинные разворачиваются по кнопке.
-function ReviewCard({ review, lang }) {
-  const bodyRef = useRef(null);
+function ReviewCard({ review, lang }: { review: Review; lang: string }) {
+  const bodyRef = useRef<HTMLParagraphElement>(null);
   const [expanded, setExpanded] = useState(false);
   const [isClamped, setIsClamped] = useState(false);
 
@@ -57,7 +58,14 @@ function ReviewCard({ review, lang }) {
   );
 }
 
-export default function ProductReviews({ reviews, stats, lang, source = "999" }) {
+interface ProductReviewsProps {
+  reviews: Review[];
+  stats: ReviewStats;
+  lang: string;
+  source?: "999" | "telegram";
+}
+
+export default function ProductReviews({ reviews, stats, lang, source = "999" }: ProductReviewsProps) {
   const [showAll, setShowAll] = useState(false);
 
   if (!reviews.length) return null;

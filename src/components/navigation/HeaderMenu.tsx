@@ -2,10 +2,19 @@ import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import cartIcon from "../../assets/images/icons/cart.svg";
 import { SITE_PHONE, SITE_PHONE_DISPLAY } from "../SEO";
+import type { MouseEvent } from "react";
+import type { Translate } from "../../types";
 
 const LANGS = ["ru", "ro", "en"];
 
-export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
+interface HeaderMenuProps {
+  curLang: string;
+  switchLang: (nextLang: string) => void;
+  t: Translate;
+  cartCount: number;
+}
+
+export default function HeaderMenu({ curLang, switchLang, t, cartCount }: HeaderMenuProps) {
   const langLabel = curLang.toUpperCase();
   const location = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -51,7 +60,7 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }) {
     return () => document.body.classList.remove("nav-locked");
   }, [menuOpen]);
 
-  const onLangSelect = (event, nextLang) => {
+  const onLangSelect = (event: MouseEvent<HTMLButtonElement>, nextLang: string) => {
     switchLang(nextLang);
     const details = event.currentTarget.closest("details");
     if (details) details.removeAttribute("open");

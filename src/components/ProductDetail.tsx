@@ -7,34 +7,61 @@ import SEO, { breadcrumbSchema, productSchema, productSeo } from "./SEO";
 import Stars from "./Stars";
 import { reviewsFor, reviewStatsFor } from "../data/reviewsData";
 import { commonNameFor } from "../data/speciesMapData";
+import type {
+  Accessory,
+  Availability,
+  Lang,
+  Localized,
+  OutletContext,
+  PriceOption,
+  ProductLike,
+  Text,
+} from "../types";
 
-const getText = (value, lang) => {
+const getText = (value: Text | null | undefined, lang: string): string => {
   if (value && typeof value === "object") {
-    return value[lang] ?? value.ru ?? value.ro ?? value.en ?? "";
+    return value[lang as Lang] ?? value.ru ?? value.ro ?? value.en ?? "";
   }
   return value ?? "";
 };
 
-const singlePath = (type, lang, slug) =>
+const singlePath = (type: string, lang: string, slug: string) =>
   type === "ant" ? `/${lang}/ants/${slug}` : `/${lang}/formic/${slug}`;
 
-const catalogPath = (type, lang) =>
+const catalogPath = (type: string, lang: string) =>
   type === "ant" ? `/${lang}/ants` : `/${lang}/formicariums`;
 
-const availabilityLabel = {
+const availabilityLabel: Record<Availability, Localized> = {
   inStock: { ru: "В наличии", ro: "În stoc", en: "In stock" },
   preorder: { ru: "Предзаказ", ro: "Precomandă", en: "Pre-order" },
   outOfStock: { ru: "Нет в наличии", ro: "Nu este în stoc", en: "Out of stock" },
 };
 
-export default function ProductDetail({ item, type, crossSell = [], similar = [], extras = {} }) {
+// Роль товара в блоке «Что нужно для старта».
+export type StarterRole = "home" | "food" | "gift" | "colony";
+
+// Корма и набор инструментов, которые страница колонии добавляет в блок
+// «Что нужно для старта»; role решает, подарок это или платное дополнение.
+export interface ProductExtras {
+  items?: { product: Accessory; role: StarterRole }[];
+}
+
+interface ProductDetailProps {
+  item: ProductLike;
+  type: "ant" | "formicarium";
+  crossSell?: ProductLike[];
+  similar?: ProductLike[];
+  extras?: ProductExtras;
+}
+
+export default function ProductDetail({ item, type, crossSell = [], similar = [], extras = {} }: ProductDetailProps) {
   const { lang = "ru" } = useParams();
-  const { addToCart } = useOutletContext();
+  const { addToCart } = useOutletContext<OutletContext>();
   const navigate = useNavigate();
 
   const [qty, setQty] = useState(1);
   const [activeTab, setActiveTab] = useState("description");
-  const [selectedOption, setSelectedOption] = useState(
+  const [selectedOption, setSelectedOption] = useState<PriceOption | null>(
     () => item.priceOptions?.find((o) => o.selected) || item.priceOptions?.[0] || null
   );
   // Reset the chosen colony size when navigating to another product.
@@ -57,19 +84,19 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
   const isOutOfStock = item.availability === "outOfStock";
   const isPreorder = item.availability === "preorder";
 
-  const findChar = (enKey) => {
+  const findChar = (enKey: string) => {
     const row = item.characteristics?.find((c) => (c.label?.en || "").toLowerCase().includes(enKey));
     return row ? row.value : null;
   };
 
-  const addItem = (id, count = 1) => {
+  const addItem = (id: number, count = 1) => {
     for (let n = 0; n < count; n += 1) addToCart(id, selectedOption);
   };
 
   // Кросс-продажа кладётся со СВОЕЙ ценой: selectedOption относится к текущему
   // товару, и передавать его чужому продукту нельзя - иначе формикарий попадал
   // бы в корзину по цене выбранной колонии.
-  const addCrossItem = (product) =>
+  const addCrossItem = (product: ProductLike) =>
     addToCart(
       product.id,
       product.priceOptions?.find((o) => o.selected) || product.priceOptions?.[0] || null
@@ -224,14 +251,14 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
   // идут подарком - этим он и предлагается. Дом берём из crossSell, остальное
   // (корма и набор) страница передаёт готовым списком в extras.items - она же
   // решает, что идёт подарком, а что платно.
-  const accessoryPath = (slug) => `/${lang}/accessories/${slug}`;
-  const starterItems =
+  const accessoryPath = (slug: string) => `/${lang}/accessories/${slug}`;
+  const starterItems: { product: ProductLike; to: string; role: StarterRole }[] =
     type === "ant"
       ? [
           ...crossSell.map((entry) => ({
             product: entry,
             to: singlePath("formicarium", lang, entry.slug),
-            role: "home",
+            role: "home" as const,
           })),
           ...(extras.items || []).map((entry) => ({
             product: entry.product,
@@ -242,10 +269,10 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
       : crossSell.map((entry) => ({
           product: entry,
           to: singlePath("ant", lang, entry.slug),
-          role: "colony",
+          role: "colony" as const,
         }));
 
-  const roleBadge = {
+  const roleBadge: Partial<Record<StarterRole, Localized>> = {
     home: { ru: "Дом для колонии", ro: "Casa coloniei", en: "Home for the colony" },
     food: { ru: "Корм для этого вида", ro: "Hrană pentru această specie", en: "Food for this species" },
     gift: { ru: "Подарок к комплекту", ro: "Cadou la set", en: "Free with the set" },
