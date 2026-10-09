@@ -83,12 +83,12 @@ export default function HomePage() {
     },
     images: ["/formicarium-colony.webp"],
     availability: "inStock",
-    // Цена = Terra (1300) + Messor (650). Держите её в согласии с priceOptions
+    // Цена = Terra (1600) + Messor (650). Держите её в согласии с priceOptions
     // в formicariumsData.ts и antsData.ts, иначе витрина разойдётся с корзиной.
     priceOptions: [
       {
         label: { ru: "Формикарий + колония", ro: "Formicariu + colonie", en: "Formicarium + colony" },
-        value: "1950 лей",
+        value: "2250 лей",
       },
     ],
   };
