@@ -578,6 +578,16 @@
   font-size: 13px;
 }
 
+.footer-credit {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-credit:hover {
+  color: #fff;
+}
+
 @media (max-width: 760px) {
   .footer-inner {
     grid-template-columns: 1fr 1fr;
