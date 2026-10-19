@@ -18,6 +18,7 @@ const footerText = {
     delivery: "Доставка по всей Молдове",
     location: "Кишинёв, Молдова",
     rights: "Все права защищены",
+    madeBy: "Разработка",
   },
   ro: {
     tagline: "Furnici, formicarii și suport pentru un start liniștit în toată Moldova.",
@@ -34,6 +35,7 @@ const footerText = {
     delivery: "Livrare în toată Moldova",
     location: "Chișinău, Moldova",
     rights: "Toate drepturile rezervate",
+    madeBy: "Dezvoltare",
   },
   en: {
     tagline: "Ants, formicariums, and support for a calm start across Moldova.",
@@ -50,6 +52,7 @@ const footerText = {
     delivery: "Delivery across Moldova",
     location: "Chișinău, Moldova",
     rights: "All rights reserved",
+    madeBy: "Development",
   },
 };
 
@@ -108,7 +111,17 @@ export default function FooterMenu({ curLang }: { curLang: string }) {
         {/* Год вычисляется и при сборке, и в браузере - на стыке лет они могут
             разойтись, это не ошибка разметки. */}
         <span suppressHydrationWarning>© {year} GoodAntShop · {copy.location}</span>
-        <span>{copy.rights}</span>
+        <span>
+          {copy.rights} · {copy.madeBy} —{" "}
+          <a
+            className="footer-credit"
+            href={`https://danilkarataev.com${curLang === "ru" || curLang === "ro" ? `/${curLang}` : ""}`}
+            target="_blank"
+            rel="noopener"
+          >
+            Daniil Karataev
+          </a>
+        </span>
       </div>
     </footer>
   );
