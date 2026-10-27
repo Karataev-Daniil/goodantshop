@@ -22,6 +22,7 @@
 import type { BlogCategory, BlogPost } from "../types";
 import whyAntsAreFascinating from "./blog/why-ants-are-fascinating";
 import messorStructor from "./blog/messor-structor";
+import starterKitGuide from "./blog/starter-kit-guide";
 
 // Рубрики блога. Список расширяемый - добавляйте новые разделы сюда, и они
 // автоматически появятся в фильтре архива и в хлебных крошках статьи.
@@ -38,4 +39,4 @@ export const getBlogCategory = (slug: string): BlogCategory | null =>
 // Порядок = порядок на витрине блога. Первый пост показывается крупной
 // featured-карточкой, поэтому вводный «манифест» держим первым - его логично
 // прочитать раньше остального. Новые посты добавляйте после него.
-export const blogPosts: BlogPost[] = [whyAntsAreFascinating, messorStructor];
+export const blogPosts: BlogPost[] = [whyAntsAreFascinating, messorStructor, starterKitGuide];

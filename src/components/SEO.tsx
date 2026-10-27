@@ -576,7 +576,7 @@ export const videoSchema = (video: BlogVideo | null | undefined, lang: string = 
     uploadDate: video.uploadDate,
     ...(video.duration ? { duration: video.duration } : {}),
     ...(video.embedUrl ? { embedUrl: video.embedUrl } : {}),
-    ...(video.contentUrl ? { contentUrl: video.contentUrl } : {}),
+    ...(video.contentUrl ? { contentUrl: absoluteUrl(video.contentUrl) } : {}),
   };
 };
 
