@@ -37,6 +37,11 @@ export default {
     height: 630,
   },
 
+  // Закреплён наверху блога: его ищут сразу после покупки набора.
+  pinned: {
+    label: { ru: "Купили набор? Начните здесь", ro: "Ai cumpărat setul? Începe aici", en: "Bought the kit? Start here" },
+  },
+
   datePublished: "2026-10-27",
   dateModified: "2026-10-27",
   author: { name: "GoodAntShop", url: "/about" },
@@ -256,5 +261,5 @@ export default {
   ],
 
   relatedProductIds: [44, 202],
-  relatedPostIds: [402, 401],
+  relatedPostIds: [404, 402, 401],
 } satisfies BlogPost;

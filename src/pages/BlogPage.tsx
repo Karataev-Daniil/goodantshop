@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import SEO, { breadcrumbSchema, itemListSchema, pageSeo, getText } from "../components/SEO";
-import { blogPosts } from "../data/blogPostsData";
+import { blogPosts, isPublished } from "../data/blogPostsData";
 import type { BlogPost } from "../types";
 
 const LOCALES: Record<string, string> = { ru: "ru-RU", ro: "ro-RO", en: "en-US" };
@@ -37,6 +37,10 @@ function BlogCard({ post, lang }: { post: BlogPost; lang: string }) {
         </h3>
         <p>{getText(post.excerpt, lang)}</p>
         <div className="blog-card__meta">
+          {/* Виден только в dev-сервере: в сборку запланированные посты не попадают. */}
+          {!isPublished(post) && (
+            <span className="blog-chip">{getText({ ru: "Запланировано", ro: "Programat", en: "Scheduled" }, lang)}</span>
+          )}
           <time dateTime={post.datePublished}>{formatBlogDate(post.datePublished, lang)}</time>
           {post.readingTime && (
             <span>
@@ -55,11 +59,11 @@ function BlogCard({ post, lang }: { post: BlogPost; lang: string }) {
 export default function BlogPage() {
   const { lang = "ru" } = useParams();
 
-  // Порядок берём как есть из blogPostsData.ts. Первый пост - крупная
-  // featured-карточка (сейчас вводный «манифест», его логично читать первым),
-  // остальные идут сеткой ниже.
-  const featured = blogPosts[0] || null;
-  const rest = blogPosts.slice(1);
+  // Крупной карточкой сверху - закреплённый пост (инструкция к стартовому
+  // набору: её ищут сразу после покупки), без него - первый по порядку из
+  // blogPostsData.ts. Остальные идут сеткой ниже.
+  const featured = blogPosts.find((post) => post.pinned) || blogPosts[0] || null;
+  const rest = blogPosts.filter((post) => post !== featured);
 
   return (
     <>
@@ -117,7 +121,7 @@ export default function BlogPage() {
             <div className="blog-featured__body">
               <div className="blog-featured__tags">
                 <span className="blog-chip blog-chip--accent">
-                  {getText({ ru: "Читать в первую очередь", ro: "De citit primul", en: "Read first" }, lang)}
+                  {getText(featured.pinned?.label ?? { ru: "Читать в первую очередь", ro: "De citit primul", en: "Read first" }, lang)}
                 </span>
               </div>
               <h2>{getText(featured.title, lang)}</h2>
