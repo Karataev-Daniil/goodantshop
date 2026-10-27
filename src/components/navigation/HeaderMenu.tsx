@@ -23,30 +23,14 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }: Header
   // Home is the index route: only the language segment in the path (or nothing).
   const isHome = location.pathname.split("/").filter(Boolean).length <= 1;
 
-  // On the homepage the header floats transparently over the hero photo, then
-  // turns solid once the hero band has scrolled past it.
+  // На главной шапка стоит на соломенном поле героя и сливается с ним; тень
+  // появляется только когда шапка реально плывёт над страницей.
   useEffect(() => {
-    if (!isHome) {
-      setScrolled(false);
-      return;
-    }
-    const band = document.querySelector(".home-hero-band");
-    const onScroll = () => {
-      if (!band) {
-        setScrolled(window.scrollY > 10);
-        return;
-      }
-      setScrolled(band.getBoundingClientRect().bottom <= 64);
-    };
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [isHome, location.pathname]);
-
-  // Прозрачной шапку держим только поверх героя. Как только на мобилке открыто
-  // бургер-меню, лента лого+бургер должна стать сплошной под цвет белого меню,
-  // иначе верхняя полоса остаётся прозрачной поверх белого списка.
-  const transparent = isHome && !scrolled && !menuOpen;
+  }, [location.pathname]);
 
   // Close the mobile menu on navigation.
   useEffect(() => {
@@ -67,7 +51,7 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }: Header
   };
 
   return (
-    <header className={`site-header${transparent ? " is-transparent" : ""}`}>
+    <header className={`site-header${isHome ? " is-home" : ""}${scrolled ? " is-scrolled" : ""}`}>
       <div className="container header-inner">
         <NavLink className="brand" to={`/${curLang}`}>
           <img src="/logo.webp" alt="GoodAnt" />

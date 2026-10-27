@@ -12,6 +12,7 @@ const LANGS = ["ru", "ro", "en"];
 
 const staticPages = [
   { path: "", seo: pageSeo.home },
+  { path: "/starter-kit", seo: pageSeo.starterKit },
   { path: "/ants", seo: pageSeo.ants },
   { path: "/formicariums", seo: pageSeo.formicariums },
   { path: "/accessories", seo: pageSeo.accessories },

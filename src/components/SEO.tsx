@@ -249,6 +249,18 @@ export const pageSeo = {
       en: "Formicariums for home ant farms: arena, ventilation, humidity system and clear chamber view. Delivery across Moldova.",
     },
   },
+  starterKit: {
+    title: {
+      ru: "Стартовый набор: муравьиная ферма с колонией | GoodAntShop",
+      ro: "Set de start: fermă de furnici cu colonie | GoodAntShop",
+      en: "Ant Farm Starter Kit with a Live Colony | GoodAntShop",
+    },
+    description: {
+      ru: "Готовая муравьиная ферма для дома: формикарий Terra и колония Messor Structor с маткой. Набор инструментов и корм в подарок, бесплатная доставка по Кишинёву, доставляем по всей Молдове.",
+      ro: "Fermă de furnici gata pentru acasă: formicariul Terra și colonia Messor Structor cu regină. Setul de instrumente și hrana cadou, livrare gratuită în Chișinău, livrăm în toată Moldova.",
+      en: "A ready home ant farm: the Terra formicarium and a queen-right Messor Structor colony. Tool kit and food as a gift, free delivery in Chișinău, shipping across Moldova.",
+    },
+  },
   accessories: {
     title: {
       ru: "Уход за колонией муравьёв: корм и инструменты | GoodAntShop",
