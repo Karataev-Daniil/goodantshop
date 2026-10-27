@@ -13,6 +13,7 @@ import SpeciesMapPage from "./pages/SpeciesMapPage";
 import ContactsPage from "./pages/ContactsPage";
 import AboutPage from "./pages/AboutPage";
 import CartPage from "./pages/CartPage";
+import StarterKitPage from "./pages/StarterKitPage";
 
 import HeaderMenu from "./components/navigation/HeaderMenu";
 import FooterMenu from "./components/navigation/FooterMenu";
@@ -137,6 +138,7 @@ export default function App({ helmetContext }: { helmetContext?: HelmetContext }
         <Route path="/" element={<Navigate to="/ru" replace />} />
         <Route path="/:lang/*" element={<Layout />}>
           <Route index element={<HomePage />} />
+          <Route path="starter-kit" element={<StarterKitPage />} />
           <Route path="ants" element={<AntsPage />} />
           <Route path="ants/:slug" element={<SingleAntPage />} />
           <Route path="formicariums" element={<FormicariumsPage />} />

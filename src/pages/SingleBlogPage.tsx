@@ -367,13 +367,26 @@ export default function SingleBlogPage() {
         <div className="blog-content">
           {post.video && (
             <div className="blog-video blog-video--main">
-              <iframe
-                src={post.video.embedUrl}
-                title={getText(post.video.name, lang)}
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+              {post.video.embedUrl ? (
+                <iframe
+                  src={post.video.embedUrl}
+                  title={getText(post.video.name, lang)}
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                // Свой ролик со звуком (в отличие от беззвучного block «clip»):
+                // обычный плеер, грузится только по нажатию - до этого виден постер.
+                <video
+                  src={post.video.contentUrl}
+                  poster={post.video.thumbnail}
+                  title={getText(post.video.name, lang)}
+                  controls
+                  playsInline
+                  preload="none"
+                />
+              )}
             </div>
           )}
 

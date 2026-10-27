@@ -3,6 +3,7 @@ import { Link, useOutletContext, useParams } from "react-router-dom";
 import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
 import { accessories, foodForAnt, toolKit } from "../data/accessoriesData";
+import { kitColony, kitFormicarium } from "../data/starterKitData";
 import SEO, { breadcrumbSchema, pageSeo } from "../components/SEO";
 import type { FormEvent } from "react";
 import type {
@@ -86,6 +87,8 @@ export default function CartPage() {
   const [address, setAddress] = useState("");
   const [comment, setComment] = useState("");
   const [status, setStatus] = useState({ type: "", text: "" });
+  // После заказа с Messor или Terra показываем ссылку на инструкцию к набору.
+  const [showGuide, setShowGuide] = useState(false);
   const [loading, setLoading] = useState(false);
   // Поп-ап с предложением добрать формикарий - показываем при оформлении заказа,
   // если в корзине только муравьи. Не блокирует, лишь предлагает.
@@ -232,6 +235,7 @@ export default function CartPage() {
         throw new Error(data.error || "Order sending failed");
       }
 
+      setShowGuide(groups.some((group) => group.product.id === kitColony.id || group.product.id === kitFormicarium.id));
       setStatus({
         type: "success",
         text: t({
@@ -320,7 +324,24 @@ export default function CartPage() {
             пропадает, а сообщение об успехе должно остаться на виду. Ошибки же
             выводим внизу, рядом с кнопкой отправки (см. форму ниже). */}
         {status.type === "success" && status.text && (
-          <p className="checkout-status checkout-status--success">{status.text}</p>
+          <p className="checkout-status checkout-status--success">
+            <span>
+              {status.text}
+              {showGuide && (
+                <>
+                  {" "}
+                  <Link className="text-link" to={`/${lang}/blog/starter-kit-guide`}>
+                    {t({ ru: "Инструкция по запуску колонии", ro: "Instrucțiunea de pornire a coloniei", en: "How to start the colony" })}
+                  </Link>{" "}
+                  {t({
+                    ru: "- посмотрите, пока ждёте доставку.",
+                    ro: "- aruncă o privire cât aștepți livrarea.",
+                    en: "- worth a look while you wait for delivery.",
+                  })}
+                </>
+              )}
+            </span>
+          </p>
         )}
 
         {/* Не запрет, а предложение: колонию можно заказать и одну, но набор

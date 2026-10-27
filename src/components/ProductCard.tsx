@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { MouseEvent } from "react";
 import type { Availability, Lang, Localized, PriceOption, Text } from "../types";
@@ -52,6 +52,14 @@ interface ProductCardProps {
 export default function ProductCard({ item, linkTo, onAddToCart }: ProductCardProps) {
   const { lang = "ru" } = useParams();
   const [previewIndex, setPreviewIndex] = useState(0);
+  // Кнопка на пару секунд подтверждает добавление: иначе меняется только
+  // счётчик в шапке, и человек жмёт ещё раз, думая, что ничего не произошло.
+  const [added, setAdded] = useState(false);
+  useEffect(() => {
+    if (!added) return undefined;
+    const timer = setTimeout(() => setAdded(false), 2200);
+    return () => clearTimeout(timer);
+  }, [added]);
   const previewImages = item.images?.length ? item.images : [item.image || "/placeholder-ant.svg"];
   const imageSrc = previewImages[previewIndex] || "/placeholder-ant.svg";
   const title = getText(item.title, lang);
@@ -133,14 +141,20 @@ export default function ProductCard({ item, linkTo, onAddToCart }: ProductCardPr
           {onAddToCart && (
             <button
               type="button"
-              className="btn btn-secondary"
-              onClick={() => onAddToCart(item.id)}
+              className={`btn btn-secondary${added ? " is-added" : ""}`}
+              onClick={() => {
+                onAddToCart(item.id);
+                setAdded(true);
+              }}
               disabled={isOutOfStock}
+              aria-live="polite"
             >
               {getText(
-                isPreorder
-                  ? { ru: "Предзаказать", ro: "Precomandă", en: "Pre-order" }
-                  : { ru: "В корзину", ro: "In cos", en: "Add to cart" },
+                added
+                  ? { ru: "Добавлено", ro: "Adăugat", en: "Added" }
+                  : isPreorder
+                    ? { ru: "Предзаказать", ro: "Precomandă", en: "Pre-order" }
+                    : { ru: "В корзину", ro: "In cos", en: "Add to cart" },
                 lang
               )}
             </button>

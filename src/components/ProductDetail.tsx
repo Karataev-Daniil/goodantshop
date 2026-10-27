@@ -7,6 +7,7 @@ import SEO, { breadcrumbSchema, productSchema, productSeo } from "./SEO";
 import Stars from "./Stars";
 import { reviewsFor, reviewStatsFor } from "../data/reviewsData";
 import { commonNameFor } from "../data/speciesMapData";
+import { STARTER_KIT_PATH, kitColony, kitFormicarium, kitPrice } from "../data/starterKitData";
 import type {
   Accessory,
   Availability,
@@ -473,6 +474,23 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
                     )}
                   </strong>
                 </>
+              )}
+            </p>
+          )}
+          {/* Товар входит в готовый стартовый набор - даём перейти к нему, чтобы
+              не собирать комплект по одной позиции. */}
+          {(item.id === kitColony.id || item.id === kitFormicarium.id) && (
+            <p className="starter-kit-link">
+              <Link className="text-link" to={`/${lang}${STARTER_KIT_PATH}`}>
+                {getText({ ru: "Готовый стартовый набор", ro: "Set de start gata", en: "Ready-made starter kit" }, lang)}
+              </Link>{" "}
+              {getText(
+                {
+                  ru: `- Terra и Messor Structor за ${kitPrice} лей, подарки и доставка по Кишинёву уже внутри.`,
+                  ro: `- Terra și Messor Structor la ${kitPrice} lei, cadourile și livrarea în Chișinău sunt incluse.`,
+                  en: `- Terra and Messor Structor for ${kitPrice} lei, with the gifts and Chișinău delivery included.`,
+                },
+                lang
               )}
             </p>
           )}
