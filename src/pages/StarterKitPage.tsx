@@ -409,7 +409,7 @@ export default function StarterKitPage() {
         </ol>
         <p className="kit-steps__more">
           <Link className="text-link" to={`/${lang}/blog/starter-kit-guide`}>
-            {t({ ru: "Подробная инструкция с видео", ro: "Instrucțiunea completă cu video", en: "The full guide with video" })}
+            {t({ ru: "Подробная инструкция с фото", ro: "Instrucțiunea completă cu fotografii", en: "The full guide with photos" })}
           </Link>{" "}
           {t({
             ru: "- что делать дальше, когда колония подрастёт - арена, кормление, этажи и вода.",
