@@ -1,265 +1,277 @@
-/* ===== Checkout (cart) - clean, single column, premium minimal ===== */
+/* ==========================================================================
+   Checkout (cart)
+   Same language as the starter-kit list: husk rows for the items, the gift
+   on the pale straw tint, a soil panel with the total. On a wide screen the
+   order form moves into its own column next to the list, so the total and
+   the submit button stay in view together.
+   ========================================================================== */
 .checkout {
-  max-width: 760px;
-  margin-left: auto;
-  margin-right: auto;
   display: grid;
-  gap: 40px;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 10px;
+  align-items: start;
 }
 
+/* ---- Head ---- */
 .checkout__head {
-  display: grid;
-  gap: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 20px;
+  margin-bottom: 14px;
 }
+
 .checkout__head h1 {
   margin: 0;
-  font-size: clamp(30px, 5vw, 44px);
 }
+
 .checkout__count {
   margin: 0;
-  color: var(--muted);
+  color: var(--clay);
+  font-size: 17px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Status messages ---- */
+.checkout-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0;
+  padding: 16px 20px;
+  border-radius: 14px;
   font-size: 16px;
   font-weight: 600;
+  line-height: 1.45;
 }
 
-.checkout-status {
-  margin: 0;
-  padding: 14px 18px;
-  border-radius: 12px;
-  font-weight: 600;
+.checkout-status::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 9px;
+  height: 9px;
+  margin-top: 7px;
+  border-radius: 50%;
+  background: currentColor;
 }
+
 .checkout-status--success {
-  color: #0d7c39;
-  background: rgba(31, 138, 48, 0.1);
-}
-.checkout-status--error {
-  color: #b42318;
-  background: rgba(180, 35, 24, 0.08);
+  color: var(--soil);
+  background: color-mix(in srgb, var(--green) 12%, var(--paper));
 }
 
-/* Напоминание про комплект: колонию не отправляем без формикария.
-   Тон подсказки, а не ошибки - поэтому нейтральный фон, а не красный. */
+.checkout-status--success::before {
+  background: var(--green);
+}
+
+.checkout-status--error {
+  color: var(--red-dark);
+  background: var(--red-soft);
+}
+
+/* Optional blocks above the list keep a wider step to it. */
+.checkout > .checkout-status,
+.checkout-bundle {
+  margin-bottom: 14px;
+}
+
+/* ---- Bundle hint: a suggestion, not an error - so straw, not red ---- */
 .checkout-bundle {
   display: grid;
-  justify-items: start;
-  gap: 8px;
-  padding: 18px 20px;
-  border-radius: 16px;
-  background: var(--surface-soft);
-  box-shadow: inset 0 0 0 1px var(--line);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px 32px;
+  padding: 24px 28px;
+  border-radius: var(--r-md);
+  background: var(--straw);
+  color: var(--soil);
 }
 
-/* Поп-ап-предложение формикария при оформлении заказа */
-.bundle-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  background: rgba(10, 8, 5, 0.6);
-  animation: bundle-fade 0.18s ease-out;
+.checkout-bundle strong {
+  grid-column: 1;
+  font-family: var(--font-display);
+  font-size: clamp(19px, 1.6vw, 22px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
-.bundle-modal__card {
-  position: relative;
-  width: min(480px, 100%);
-  max-height: calc(100dvh - 40px);
-  overflow-y: auto;
-  display: grid;
-  justify-items: center;
-  gap: 12px;
-  padding: 32px 26px 26px;
-  border-radius: 20px;
-  background: var(--surface);
-  box-shadow: 0 24px 60px rgba(10, 8, 5, 0.28);
-  text-align: center;
-  animation: bundle-pop 0.2s ease-out;
-}
-.bundle-modal__close {
-  position: absolute;
-  top: 12px;
-  right: 14px;
-  width: 32px;
-  height: 32px;
-  border: none;
-  border-radius: 50%;
-  background: var(--surface-soft);
-  color: var(--muted);
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
-}
-.bundle-modal__close:hover {
-  color: var(--text);
-}
-.bundle-modal__icon {
-  font-size: 40px;
-}
-.bundle-modal__card h3 {
+
+.checkout-bundle p {
+  grid-column: 1;
+  max-width: 62ch;
   margin: 0;
-  font-size: 21px;
+  color: var(--soil);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+/* Keywords of the offer (set / gift / free): gift colour, as on the kit page. */
+.checkout-bundle .hl {
+  font-family: var(--font-ui);
+  font-size: inherit;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--red-dark);
+}
+
+.checkout-bundle .btn {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-height: 52px;
+  padding-inline: 26px;
+  white-space: nowrap;
+}
+
+/* ---- Empty state: one message, one action ---- */
+.checkout-empty {
+  display: grid;
+  justify-items: start;
+  gap: 24px;
+  padding: clamp(32px, 5vw, 56px);
+  border-radius: var(--r-lg);
+  background: var(--husk);
+}
+
+.checkout-empty p {
+  margin: 0;
+  color: var(--soil);
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.checkout-empty .btn {
+  min-height: 56px;
+  padding-inline: 28px;
+  font-size: 17px;
+}
+
+/* ---- Items: husk rows like .kit-item ---- */
+.checkout-items {
+  display: grid;
+  gap: 10px;
+}
+
+.checkout-item {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr) auto;
+  gap: 24px;
+  align-items: center;
+  padding: 12px 28px 12px 12px;
+  border-radius: var(--r-md);
+  background: var(--husk);
+}
+
+.checkout-item__media {
+  align-self: start;
+  width: 128px;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--paper);
+}
+
+.checkout-item__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.checkout-item__info {
+  display: grid;
+  gap: 4px;
+  justify-items: start;
+  padding-block: 4px;
+}
+
+.checkout-item__info h3 {
+  margin: 0;
+  font-size: 20px;
   line-height: 1.25;
 }
-.bundle-modal__card > p {
+
+.checkout-item__info p {
+  max-width: 60ch;
   margin: 0;
-  color: var(--muted);
+  color: var(--clay);
   font-size: 15px;
   line-height: 1.5;
 }
-.bundle-modal__gifts {
-  list-style: none;
-  margin: 4px 0 0;
-  padding: 0;
-  display: grid;
-  gap: 8px;
-  width: 100%;
-}
-.bundle-modal__gifts li {
-  width: 100%;
-}
-.bundle-modal__gift-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  padding: 8px 12px 8px 8px;
-  border-radius: 12px;
-  background: var(--surface-soft);
-  font-size: 15px;
-  text-align: left;
-  color: inherit;
-  text-decoration: none;
-}
-.bundle-modal__gift-row--link {
-  transition: background 0.15s ease;
-}
-.bundle-modal__gift-row--link:hover {
-  background: #ece3d4;
-}
-.bundle-modal__gift-chevron {
-  flex-shrink: 0;
-  width: 18px;
-  color: var(--muted);
-}
-.bundle-modal__gift-chevron svg {
-  width: 18px;
-  height: 18px;
-  display: block;
-}
-.bundle-modal__gift-row--link:hover .bundle-modal__gift-chevron {
-  color: var(--accent);
-}
-.bundle-modal__gifts img,
-.bundle-modal__gift-icon {
-  width: 54px;
-  height: 54px;
-  flex-shrink: 0;
-  border-radius: 9px;
-  background: #fff;
-}
-.bundle-modal__gifts img {
-  object-fit: cover;
-}
-.bundle-modal__gift-icon {
-  display: grid;
-  place-items: center;
-  color: var(--accent);
-  box-shadow: inset 0 0 0 1px var(--line);
-}
-.bundle-modal__gift-icon svg {
-  width: 26px;
-  height: 26px;
-}
-.bundle-modal__gift-info {
-  flex: 1;
-  min-width: 0; /* даёт колонке ужиматься и переносить текст на узком экране */
-  display: grid;
-  gap: 2px;
-}
-.bundle-modal__gift-name {
-  line-height: 1.25;
-}
-.bundle-modal__gift-benefit {
-  color: var(--muted);
-  font-size: 12.5px;
-  line-height: 1.3;
-}
-.bundle-modal__gift-price {
-  flex-shrink: 0;
-  display: grid;
-  justify-items: end;
-  gap: 1px;
-}
-.bundle-modal__gift-price s {
-  color: var(--muted);
-  font-size: 13px;
-}
-.bundle-modal__gift-price strong {
-  color: var(--accent);
+
+.checkout-item__info p.checkout-item__variant {
+  color: var(--soil);
   font-size: 14px;
-}
-.bundle-modal__actions {
-  display: grid;
-  gap: 10px;
-  width: 100%;
-  margin-top: 6px;
-}
-.bundle-modal__actions .btn {
-  width: 100%;
+  font-weight: 600;
 }
 
-/* На телефоне разворачиваем поп-ап на весь экран: единая «шторка» с плоскими
-   краями, скролл внутри неё. Иначе на 360px была узкая карточка с двойным
-   скроллом. */
-@media (max-width: 560px) {
-  .bundle-modal {
-    padding: 0;
-    /* minmax(0,1fr) не даёт грид-колонке разрастись до min-content карточки и
-       вылезти за 360px - без него контент резался справа. */
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .bundle-modal__card {
-    width: 100%;
-    height: 100dvh;
-    max-height: 100dvh;
-    border-radius: 0;
-    padding: 44px 22px 28px;
-    /* Контент пакуем сверху обычными отступами, а не растягиваем по высоте. */
-    align-content: start;
-  }
+/* Both modifier classes so this beats the base .checkout-item__variant rule. */
+.checkout-item__info p.checkout-item__variant.checkout-item__variant--gift {
+  color: var(--red-dark);
+  font-weight: 650;
 }
 
-@keyframes bundle-fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-@keyframes bundle-pop {
-  from { opacity: 0; transform: translateY(8px) scale(0.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-.checkout-bundle strong {
-  font-size: 17px;
-}
-.checkout-bundle p {
-  max-width: 62ch;
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.6;
-}
-/* Акцент на ключевых словах предложения (набор/подарок/бесплатно). */
-.checkout-bundle .hl {
-  color: var(--accent);
+.checkout-item__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin-top: 4px;
+  color: var(--clay);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Подарки, которые доложим к собранному комплекту. */
+.checkout-item__remove {
+  min-height: 36px;
+  margin-top: 8px;
+  padding: 6px 16px;
+  border: 0;
+  border-radius: var(--pill);
+  background: var(--paper);
+  color: var(--soil);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.18s var(--ease-out);
+}
+
+.checkout-item__remove:hover {
+  color: var(--red-dark);
+}
+
+.checkout-item__remove:active {
+  transform: scale(0.97);
+}
+
+.checkout-item__total {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Free gifts: the pale straw tint of .kit-item--gift (starter-kit.css) ---- */
 .checkout-gifts {
   display: grid;
-  gap: 12px;
-  padding: 18px 20px;
-  border-radius: 16px;
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 30%, var(--line));
+  gap: 14px;
+  padding: 20px 28px 20px 20px;
+  border-radius: var(--r-md);
+  background: #f5ebc9;
 }
+
+.checkout-gifts > strong {
+  padding-left: 4px;
+  color: var(--red-dark);
+  font-size: 15px;
+  font-weight: 650;
+}
+
 .checkout-gifts ul {
   display: grid;
   gap: 10px;
@@ -267,238 +279,562 @@
   padding: 0;
   list-style: none;
 }
+
 .checkout-gifts li {
   display: grid;
-  grid-template-columns: 44px 1fr auto auto;
+  grid-template-columns: 56px minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: 12px;
-}
-.checkout-gifts img {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  object-fit: cover;
-}
-.checkout-gifts s {
-  color: var(--muted);
-}
-.checkout-gifts strong:last-child {
-  color: var(--accent);
-}
-/* Обе модификаторные точки - чтобы правило перебило базовое
-   .checkout-item__info p.checkout-item__variant, которое объявлено ниже. */
-.checkout-item__info p.checkout-item__variant.checkout-item__variant--gift {
-  color: var(--accent);
-  font-weight: 700;
-}
-
-/* Empty state */
-.checkout-empty {
-  display: grid;
-  justify-items: start;
-  gap: 18px;
-  color: var(--muted);
-  font-size: 17px;
-}
-
-/* ===== 2. Items ===== */
-.checkout-items {
-  display: grid;
   gap: 16px;
-}
-.checkout-item {
-  display: grid;
-  grid-template-columns: 96px 1fr auto;
-  gap: 20px;
-  align-items: center;
-  padding: 18px;
-  border-radius: 16px;
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
-}
-.checkout-item__media {
-  width: 96px;
-  height: 96px;
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--surface-soft);
-}
-.checkout-item__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.checkout-item__info {
-  display: grid;
-  gap: 6px;
-}
-.checkout-item__info h3 {
-  margin: 0;
-  font-size: 18px;
-}
-.checkout-item__info p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.5;
-}
-.checkout-item__info p.checkout-item__variant {
-  color: var(--accent);
-  font-weight: 700;
-  font-size: 13px;
-}
-.checkout-item__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 18px;
-  margin-top: 2px;
-  color: var(--muted);
-  font-size: 14px;
-}
-.checkout-item__remove {
-  justify-self: start;
-  margin-top: 6px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--muted);
-  padding: 8px 14px;
-  border-radius: 8px;
-  background-color: var(--surface-soft);
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
-  cursor: pointer;
-  transition: color 0.18s ease;
-}
-.checkout-item__remove:hover {
-  color: var(--accent);
-}
-.checkout-item__total {
-  align-self: center;
-  font-size: 20px;
-  font-weight: 800;
-  white-space: nowrap;
+  line-height: 1.35;
 }
 
-/* ===== 3. Summary ===== */
+.checkout-gifts img {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--paper);
+}
+
+.checkout-gifts s {
+  color: var(--clay);
+  font-size: 15px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.checkout-gifts li strong {
+  color: var(--red);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Summary: the soil panel ---- */
 .checkout-summary {
   display: grid;
-  gap: 12px;
-  padding: 24px 26px;
-  border-radius: 18px;
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
-}
-.checkout-summary__row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: var(--muted);
-  font-size: 16px;
-}
-.checkout-summary__row--total {
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
-  color: var(--text);
-}
-.checkout-summary__row--total span {
-  font-size: 18px;
-  font-weight: 700;
-}
-.checkout-summary__row--total strong {
-  font-size: 26px;
-  color: var(--accent);
+  gap: 14px;
+  padding: 22px 28px 24px;
+  border-radius: var(--r-md);
+  background: var(--soil);
+  color: var(--paper);
 }
 
-/* ===== 4. Form ===== */
+.checkout-summary__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  color: var(--sand-text);
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+}
+
+.checkout-summary__row--total {
+  padding-top: 16px;
+  border-top: 1px solid var(--soil-3);
+  color: var(--paper);
+}
+
+.checkout-summary__row--total span {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.checkout-summary__row--total strong {
+  color: var(--paper);
+  font-family: var(--font-display);
+  font-size: clamp(30px, 2.6vw, 36px);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Form ---- */
 .checkout-form {
   display: grid;
-  gap: 18px;
-  padding: 28px;
-  border-radius: 18px;
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
+  gap: 20px;
+  align-content: start;
+  margin-top: 40px;
 }
+
 .checkout-form h2 {
-  margin: 0 0 4px;
-  font-size: 24px;
+  margin: 0;
+  font-size: clamp(26px, 2vw, 30px);
+  line-height: 1.1;
 }
+
 .checkout-field {
   display: grid;
   gap: 8px;
 }
-.checkout-field__hint {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.45;
-}
+
 .checkout-field > span {
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text);
+  color: var(--soil);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
 }
+
 .checkout-field > span em {
-  color: var(--muted);
+  color: var(--clay);
   font-style: normal;
   font-weight: 500;
 }
+
 .checkout-field input,
 .checkout-field textarea {
   width: 100%;
+  min-height: 52px;
+  padding: 14px 16px;
   border: 0;
-  border-radius: 10px;
-  background: var(--bg);
-  box-shadow: inset 0 0 0 1px var(--line);
-  padding: 13px 14px;
+  border-radius: 14px;
+  background: var(--husk);
+  color: var(--soil);
   font: inherit;
-  color: var(--text);
-  transition: box-shadow 0.18s ease;
-}
-.checkout-field textarea {
-  resize: vertical;
-  min-height: 84px;
-}
-.checkout-field input:focus,
-.checkout-field textarea:focus {
-  outline: none;
-  box-shadow: inset 0 0 0 2px var(--accent);
+  font-size: 17px;
+  line-height: 1.4;
 }
 
-/* ===== 5. Submit ===== */
-.checkout-submit {
-  width: 100%;
-  min-height: 54px;
-  font-size: 14px;
-  margin-top: 4px;
+.checkout-field input:hover,
+.checkout-field textarea:hover {
+  background: var(--husk-deep);
 }
-.checkout-note {
-  margin: 0;
-  text-align: center;
-  color: var(--muted);
+
+.checkout-field textarea {
+  min-height: 112px;
+  resize: vertical;
+}
+
+.checkout-field input:focus,
+.checkout-field textarea:focus,
+.checkout-field input:focus-visible,
+.checkout-field textarea:focus-visible {
+  outline: none;
+  background: var(--husk);
+  box-shadow: 0 0 0 2px var(--soil);
+}
+
+.checkout-field__hint {
+  color: var(--clay);
   font-size: 14px;
   line-height: 1.5;
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 560px) {
+/* ---- Submit ---- */
+.checkout-submit {
+  width: 100%;
+  min-height: 56px;
+  margin-top: 4px;
+  font-size: 17px;
+}
+
+.checkout-note {
+  margin: 0;
+  color: var(--clay);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ---- Two columns on a wide screen: list + total | form ----
+   Named areas keep the DOM order intact. The form spans down into a last
+   1fr row, so its height never stretches the rows on the left. Spacing is
+   done with margins, because optional blocks (status, hint, gifts) leave
+   empty rows behind and a row-gap would double up around them. */
+@media (min-width: 1024px) {
   .checkout {
-    gap: 32px;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 420px);
+    grid-template-rows: auto auto auto auto auto auto 1fr;
+    grid-template-areas:
+      "head    head"
+      "status  status"
+      "bundle  bundle"
+      "items   form"
+      "gifts   form"
+      "summary form"
+      ".       form";
+    column-gap: clamp(40px, 5vw, 80px);
+    row-gap: 0;
   }
-  .checkout-item {
-    grid-template-columns: 72px 1fr;
-    align-items: start;
-    gap: 14px;
+
+  .checkout__head {
+    grid-area: head;
+    margin-bottom: 32px;
   }
-  .checkout-item__media {
-    width: 72px;
-    height: 72px;
-    grid-row: span 2;
+
+  .checkout > .checkout-status {
+    grid-area: status;
+    margin-bottom: 24px;
   }
-  .checkout-item__total {
-    grid-column: 2 / 3;
-    justify-self: start;
+
+  .checkout-bundle {
+    grid-area: bundle;
+    margin-bottom: 24px;
   }
+
+  .checkout-items {
+    grid-area: items;
+  }
+
+  .checkout-gifts {
+    grid-area: gifts;
+    margin-top: 10px;
+  }
+
+  .checkout-summary {
+    grid-area: summary;
+    margin-top: 10px;
+  }
+
   .checkout-form {
+    grid-area: form;
+    margin-top: 0;
+    padding-top: 4px;
+  }
+
+  .checkout-empty {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ==========================================================================
+   Bundle prompt: a white sheet that floats over the page
+   ========================================================================== */
+.bundle-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(30, 24, 19, 0.6);
+  animation: bundle-fade 0.2s var(--ease-out);
+}
+
+.bundle-modal__card {
+  position: relative;
+  width: min(520px, 100%);
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  padding: 40px 32px 32px;
+  border-radius: var(--r-lg);
+  background: var(--paper);
+  box-shadow: 0 32px 80px -24px rgba(30, 24, 19, 0.55);
+  color: var(--soil);
+  text-align: center;
+  animation: bundle-pop 0.24s var(--ease-out);
+}
+
+.bundle-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--husk);
+  color: var(--soil);
+  font-family: var(--font-ui);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.18s var(--ease-out);
+}
+
+.bundle-modal__close:hover {
+  background: var(--husk-deep);
+}
+
+.bundle-modal__close:active {
+  transform: scale(0.94);
+}
+
+.bundle-modal__icon {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 4px;
+  border-radius: 50%;
+  background: var(--straw);
+  font-size: 34px;
+  line-height: 1;
+}
+
+.bundle-modal__card h3 {
+  max-width: 20ch;
+  margin: 0;
+  font-size: clamp(21px, 2vw, 25px);
+  line-height: 1.2;
+}
+
+.bundle-modal__card > p {
+  max-width: 44ch;
+  margin: 0;
+  color: var(--soil);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+.bundle-modal__gifts {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bundle-modal__gifts li {
+  width: 100%;
+}
+
+.bundle-modal__gift-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 8px 12px 8px 8px;
+  border-radius: 16px;
+  background: var(--husk);
+  color: inherit;
+  font-size: 15px;
+  text-align: left;
+  text-decoration: none;
+}
+
+.bundle-modal__gift-row--link:hover {
+  background: var(--husk-deep);
+}
+
+.bundle-modal__gift-chevron {
+  flex-shrink: 0;
+  width: 18px;
+  color: var(--clay);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.bundle-modal__gift-chevron svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.bundle-modal__gift-row--link:hover .bundle-modal__gift-chevron {
+  color: var(--soil);
+  transform: translateX(2px);
+}
+
+.bundle-modal__gifts img,
+.bundle-modal__gift-icon {
+  flex-shrink: 0;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background: var(--paper);
+}
+
+.bundle-modal__gifts img {
+  object-fit: cover;
+}
+
+.bundle-modal__gift-icon {
+  display: grid;
+  place-items: center;
+  color: var(--red);
+}
+
+.bundle-modal__gift-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.bundle-modal__gift-info {
+  flex: 1;
+  min-width: 0; /* lets the column shrink and wrap on a narrow screen */
+  display: grid;
+  gap: 2px;
+}
+
+.bundle-modal__gift-name {
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.bundle-modal__gift-benefit {
+  color: var(--clay);
+  font-size: 13.5px;
+  line-height: 1.35;
+}
+
+.bundle-modal__gift-price {
+  flex-shrink: 0;
+  display: grid;
+  justify-items: end;
+  gap: 1px;
+  font-variant-numeric: tabular-nums;
+}
+
+.bundle-modal__gift-price s {
+  color: var(--clay);
+  font-size: 13px;
+}
+
+.bundle-modal__gift-price strong {
+  color: var(--red-dark);
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.bundle-modal__actions {
+  display: grid;
+  gap: 10px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.bundle-modal__actions .btn {
+  width: 100%;
+  min-height: 52px;
+}
+
+/* On a phone the prompt becomes one full-screen sheet with its own scroll:
+   a narrow floating card at 360px meant a double scroll. */
+@media (max-width: 560px) {
+  .bundle-modal {
+    padding: 0;
+    /* minmax(0,1fr) keeps the grid column from growing to the card's
+       min-content width and spilling past 360px. */
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bundle-modal__card {
+    width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    padding: 56px 16px 24px;
+    border-radius: 0;
+    box-shadow: none;
+    /* Pack the content at the top instead of spreading it over the height. */
+    align-content: start;
+  }
+
+  .bundle-modal__close {
+    top: 12px;
+    right: 12px;
+  }
+
+  .bundle-modal__gift-row {
+    gap: 12px;
+    padding-right: 10px;
+  }
+
+  .bundle-modal__gifts img,
+  .bundle-modal__gift-icon {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@keyframes bundle-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes bundle-pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bundle-modal,
+  .bundle-modal__card {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Narrow screens
+   ========================================================================== */
+@media (max-width: 680px) {
+  .checkout-bundle {
+    grid-template-columns: minmax(0, 1fr);
     padding: 20px;
   }
+
+  .checkout-bundle .btn {
+    grid-column: 1;
+    grid-row: auto;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .checkout-item {
+    grid-template-columns: 88px minmax(0, 1fr);
+    gap: 6px 16px;
+    align-items: start;
+    padding: 10px 16px 16px 10px;
+  }
+
+  .checkout-item__media {
+    width: 88px;
+  }
+
+  .checkout-item__info {
+    padding-block: 2px 0;
+  }
+
+  .checkout-item__info h3 {
+    font-size: 18px;
+  }
+
+  .checkout-item__total {
+    grid-column: 2;
+    font-size: 20px;
+    text-align: left;
+  }
+
+  .checkout-gifts {
+    padding: 16px;
+  }
+
+  .checkout-gifts li {
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    gap: 4px 12px;
+    font-size: 15px;
+  }
+
+  .checkout-gifts img {
+    width: 48px;
+    height: 48px;
+    grid-row: span 2;
+  }
+
+  .checkout-gifts li span {
+    grid-column: 2 / -1;
+  }
+
+  .checkout-gifts s {
+    grid-column: 2;
+    justify-self: start;
+  }
+
+  .checkout-summary {
+    padding: 20px;
+  }
+
 }

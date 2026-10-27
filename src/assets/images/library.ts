@@ -18,6 +18,12 @@ import wingedQueenOnWood from "./blog/winged-queen-ant-on-wood.webp";
 import redAntsDrinkingWater from "./blog/red-ants-drinking-water-drop.webp";
 import woodAntsCarryingBeetle from "./blog/wood-ants-carrying-beetle-log.webp";
 
+// Фото формикария Terra с красными пометками для инструкции к стартовому набору:
+// пробка на арене, разделители этажей, пробирка-увлажнитель.
+import guideArenaPlug from "./blog/guide-arena-plug.webp";
+import guideNestDividers from "./blog/guide-nest-dividers.webp";
+import guideHumidifier from "./blog/guide-humidifier.webp";
+
 // Снимки конкретно Messor structor (лежат рядом с фото товаров в ./ants/) -
 // переиспользуются и в каталоге, и в блоге, поэтому собраны здесь же.
 import messorStructor from "./ants/messor-structor.webp";
@@ -28,6 +34,9 @@ import messorWorker from "./ants/messor-worker.webp";
 import messorSoldier from "./ants/messor-soldier.webp";
 
 export {
+  guideArenaPlug,
+  guideNestDividers,
+  guideHumidifier,
   antColonyNestEntrance,
   antEmergingFromHole,
   antHeadMandibles,

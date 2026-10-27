@@ -1,59 +1,57 @@
 /* ============================================================================
-   Карта видов (/species-map)
+   Species map (/species-map)
    ----------------------------------------------------------------------------
-   Настоящая карта OpenStreetMap через Leaflet - как карта объявлений в проекте
-   по животным. Зоны рисуются кругами: круг честно показывает охват, тогда как
-   нарисованный от руки контур притворялся бы точной границей ареала, которой у
-   нас нет. Цвет заливки задаётся из JS (statusColor в speciesMapData.js), сюда
-   он не дублируется - иначе шкала разъехалась бы по двум файлам.
+   A real OpenStreetMap through Leaflet. Zones are drawn as pins: a pin says
+   "roughly here" honestly, a hand-drawn outline would pretend to be a range
+   border we do not have. Pin and swatch colours come from JS (statusColor in
+   speciesMapData) and are not repeated here, so the scale lives in one place.
+   Controls follow the system: husk pills, the active one on soil.
    ========================================================================== */
 .species-map {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-top: 28px;
-  padding: 24px;
-  border-radius: 14px;
-  background: var(--surface-soft);
-  border: 1px solid var(--line);
 }
 
-/* ---- Управление ---- */
+/* ---- Controls ---- */
 .species-map__controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 14px 20px;
   align-items: center;
 }
 
+/* Mode switch: a husk track with the active half on soil. */
 .species-map__modes {
-  display: flex;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  overflow: hidden;
+  display: inline-flex;
   flex: none;
-  background: var(--surface);
+  gap: 4px;
+  padding: 4px;
+  border-radius: var(--pill);
+  background: var(--husk);
 }
 
 .species-map__mode {
+  min-height: 40px;
+  padding: 8px 18px;
+  border: 0;
+  border-radius: var(--pill);
+  background: transparent;
+  color: var(--soil);
   font-family: var(--font-ui);
   font-size: 15px;
   font-weight: 600;
-  padding: 8px 16px;
-  background: transparent;
-  color: var(--muted);
-  border: 0;
-  border-right: 1px solid var(--line);
+  line-height: 1.2;
   cursor: pointer;
 }
 
-.species-map__mode:last-child {
-  border-right: 0;
+.species-map__mode:hover {
+  background: var(--husk-deep);
 }
 
 .species-map__mode.is-active {
-  background: var(--accent);
-  color: #fff;
+  background: var(--soil);
+  color: var(--paper);
 }
 
 .species-map__chips {
@@ -62,59 +60,80 @@
   gap: 8px;
 }
 
+/* Latin names stay italic - that is how species are written. */
 .species-map__chip {
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 0;
+  border-radius: var(--pill);
+  background: var(--husk);
+  color: var(--soil);
   font-family: var(--font-ui);
-  font-size: 14px;
+  font-size: 15px;
   font-style: italic;
-  padding: 6px 13px;
-  border-radius: 99px;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--text);
+  font-weight: 500;
+  line-height: 1.2;
   cursor: pointer;
+  transition: transform 0.18s var(--ease-out);
 }
 
 .species-map__chip:hover {
-  border-color: var(--accent);
+  background: var(--husk-deep);
+}
+
+.species-map__chip:active,
+.species-map__zone:active,
+.species-map__mode:active {
+  transform: scale(0.97);
 }
 
 .species-map__chip.is-active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
+  background: var(--soil);
+  color: var(--paper);
 }
 
-/* Дикие виды - те, которых нет в продаже. Пунктир говорит об этом до клика. */
+/* Wild species (not for sale): no fill, a dashed edge - it reads as
+   "not in the shop" before you click, which a tone step alone cannot say. */
 .species-map__chip--wild {
-  border-style: dashed;
+  padding: 6px 14px;
+  border: 2px dashed var(--straw-deep);
+  background: transparent;
 }
 
-/* ---- Полотно карты ---- */
+.species-map__chip--wild:hover {
+  background: var(--husk);
+}
+
+.species-map__chip--wild.is-active {
+  border-color: var(--soil);
+}
+
+/* ---- Map + side panel ---- */
 .species-map__body {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 250px;
-  gap: 24px;
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 16px;
+  align-items: stretch;
 }
 
 .species-map__canvas {
-  height: 440px;
-  border-radius: 10px;
+  height: 540px;
+  border-radius: var(--r-lg);
   overflow: hidden;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  z-index: 0; /* держим карту под липкой шапкой */
+  background: var(--husk);
+  z-index: 0; /* keep the map under the sticky header */
 }
 
 .species-map__canvas .leaflet-container {
   height: 100%;
   width: 100%;
   font-family: var(--font-ui);
-  background: var(--surface);
+  background: var(--husk);
 }
 
-/* Отметка зоны: точка + подпись. Цвет точки приходит из JS (statusColor),
-   здесь только форма и типографика. */
+/* Zone marker: dot + name + status. The dot colour comes from JS
+   (statusColor); here only the shape and type. The labels sit on map tiles,
+   so they keep a soft shadow to lift off the imagery. */
 .zone-pin {
   display: grid;
   justify-items: center;
@@ -124,123 +143,133 @@
 }
 
 .zone-pin__dot {
-  width: 15px;
-  height: 15px;
-  border-radius: 999px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
   border: 2px solid;
-  box-shadow: 0 1px 4px rgba(23, 21, 18, 0.3);
+  box-shadow: 0 1px 4px rgba(30, 24, 19, 0.3);
 }
 
 .zone-pin__name {
-  padding: 2px 9px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.94);
-  color: var(--text);
-  font-size: 12.5px;
-  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--pill);
+  background: var(--paper);
+  color: var(--soil);
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.3;
   white-space: nowrap;
-  box-shadow: 0 1px 4px rgba(23, 21, 18, 0.18);
+  box-shadow: 0 2px 8px rgba(30, 24, 19, 0.2);
 }
 
 .zone-pin__status {
-  padding: 1px 7px;
-  border-radius: 999px;
-  background: var(--accent);
-  color: #fff;
-  font-size: 10.5px;
-  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--pill);
+  background: var(--soil);
+  color: var(--paper);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.3;
   white-space: nowrap;
 }
 
-/* Зона без данных не должна кричать: подпись статуса гасим до нейтральной. */
+/* A zone without data should not shout: its status label goes neutral. */
 .zone-pin.is-empty .zone-pin__status {
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--muted);
-  box-shadow: 0 1px 3px rgba(23, 21, 18, 0.12);
+  background: var(--paper);
+  color: var(--clay);
+  box-shadow: 0 1px 4px rgba(30, 24, 19, 0.14);
 }
 
-/* ---- Боковая колонка ---- */
+/* ---- Side panel ---- */
 .species-map__side {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 16px;
+}
+
+.species-map__side > div {
+  padding: 24px;
+  border-radius: var(--r-md);
+  background: var(--husk);
 }
 
 .species-map__side-title {
-  margin: 0 0 10px;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
+  margin: 0 0 14px;
+  color: var(--clay);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .species-map__legend {
-  list-style: none;
-  margin: 0;
-  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 9px;
-  font-size: 14px;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
 }
 
 .species-map__legend li {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
-/* Кружок, а не плашка: легенда должна выглядеть тем же, чем отметка на карте. */
+/* A circle, not a bar: the legend should look like the pin on the map. */
 .species-map__swatch {
-  width: 15px;
-  height: 15px;
-  border-radius: 999px;
-  border: 2px solid var(--line);
   flex: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--straw-deep);
 }
 
 .species-map__facts {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  padding-top: 20px;
-  border-top: 1px solid var(--line);
+  gap: 4px;
+  flex: 1 1 auto;
 }
 
 .species-map__latin {
   margin: 0;
-  font-size: 17px;
+  font-size: 21px;
   font-weight: 700;
   font-style: italic;
+  line-height: 1.25;
 }
 
 .species-map__common {
   margin: 0;
-  font-size: 14px;
-  color: var(--muted);
+  color: var(--clay);
+  font-size: 15px;
 }
 
 .species-map__note {
-  margin: 6px 0 0;
-  font-size: 14px;
-  line-height: 1.5;
-  color: var(--muted);
+  margin: 10px 0 0;
+  color: var(--soil);
+  font-size: 15px;
+  line-height: 1.55;
 }
 
 .species-map__facts .btn {
-  margin-top: 10px;
   align-self: flex-start;
+  margin-top: 16px;
 }
 
 .species-map__wild {
-  margin: 10px 0 0;
-  font-size: 14px;
-  color: var(--muted);
+  margin: 12px 0 0;
+  color: var(--clay);
+  font-size: 15px;
   font-style: italic;
 }
 
-/* ---- Чипсы зон ---- */
+/* ---- Zone chips ---- */
 .species-map__zones {
   display: flex;
   flex-wrap: wrap;
@@ -250,97 +279,125 @@
 .species-map__zone {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  min-height: 40px;
+  padding: 6px 8px 6px 16px;
+  border: 0;
+  border-radius: var(--pill);
+  background: var(--husk);
+  color: var(--soil);
   font-family: var(--font-ui);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  padding: 6px 13px;
-  border-radius: 99px;
-  border: 1px solid var(--line);
-  background: var(--surface);
-  color: var(--text);
+  line-height: 1.2;
   cursor: pointer;
+  transition: transform 0.18s var(--ease-out);
+}
+
+/* "Whole country" has no counter - keep its padding even. */
+.species-map__zone:not(:has(span)) {
+  padding-right: 16px;
 }
 
 .species-map__zone:hover {
-  border-color: var(--accent);
+  background: var(--husk-deep);
 }
 
 .species-map__zone.is-active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
+  background: var(--soil);
+  color: var(--paper);
 }
 
 .species-map__zone span {
   display: grid;
   place-items: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 5px;
-  border-radius: 999px;
-  background: var(--surface-soft);
-  color: var(--muted);
-  font-size: 12px;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 7px;
+  border-radius: var(--pill);
+  background: var(--paper);
+  color: var(--soil);
+  font-size: 13px;
+  font-weight: 650;
   font-variant-numeric: tabular-nums;
 }
 
 .species-map__zone.is-active span {
-  background: rgba(255, 255, 255, 0.22);
-  color: #fff;
+  background: var(--soil-3);
+  color: var(--paper);
 }
 
-/* ---- Текстовая сводка ---- */
+/* ---- Text summary (also what screen readers and search engines read) ---- */
 .species-map__summary {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 14px 18px;
+  max-width: 72ch;
 }
 
 .species-map__summary p {
   margin: 0;
-  font-size: 15px;
+  color: var(--soil);
+  font-size: 16px;
   line-height: 1.6;
 }
 
-/* ---- Текст под картой ---- */
+/* ---- Prose under the map ---- */
 .species-map__prose {
-  margin-top: 44px;
-  max-width: 72ch;
+  max-width: 68ch;
+  margin-top: clamp(64px, 7vw, 96px);
 }
 
 .species-map__prose h2 {
-  margin: 32px 0 12px;
-  font-size: 24px;
+  margin: 48px 0 14px;
+  font-size: clamp(24px, 2.4vw, 32px);
+  line-height: 1.15;
+}
+
+.species-map__prose h2:first-child {
+  margin-top: 0;
 }
 
 .species-map__prose p {
-  margin: 0 0 14px;
-  line-height: 1.7;
+  margin: 0 0 16px;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.species-map__prose .btn {
+  min-height: 52px;
+  margin-top: 4px;
 }
 
 .species-map__sold {
-  margin: 0 0 14px;
-  padding-left: 20px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding-left: 22px;
 }
 
 .species-map__sold a {
-  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--straw-deep);
+  text-underline-offset: 4px;
+}
+
+.species-map__sold a:hover {
+  color: var(--red);
+  text-decoration-color: currentColor;
 }
 
 .species-map__disclaimer {
-  margin-top: 24px;
-  padding-left: 16px;
-  border-left: 2px solid var(--line);
-  font-size: 14px;
-  color: var(--muted);
+  margin-top: 28px;
+  padding: 18px 22px;
+  border-radius: 14px;
+  background: var(--husk);
+  color: var(--clay);
+  font-size: 15px;
+  line-height: 1.55;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 980px) {
   .species-map__body {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -348,26 +405,62 @@
   .species-map__side {
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 26px;
   }
 
-  .species-map__facts {
-    border-top: 0;
-    padding-top: 0;
-    flex: 1 1 240px;
+  .species-map__side > div {
+    flex: 1 1 260px;
   }
 }
 
 @media (max-width: 620px) {
   .species-map {
-    padding: 16px;
+    gap: 16px;
+  }
+
+  .species-map__controls {
+    display: grid;
+    gap: 12px;
+  }
+
+  .species-map__modes {
+    justify-self: start;
+  }
+
+  /* On a phone the chip lists become one swipeable rail that runs to the
+     screen edges, so the map itself stays near the top of the page. */
+  .species-map__chips,
+  .species-map__zones {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    margin-inline: calc(-1 * var(--gutter));
+    padding: 2px var(--gutter);
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .species-map__chips::-webkit-scrollbar,
+  .species-map__zones::-webkit-scrollbar {
+    display: none;
+  }
+
+  .species-map__chip,
+  .species-map__zone {
+    flex: none;
+    white-space: nowrap;
   }
 
   .species-map__canvas {
-    height: 330px;
+    height: 380px;
+    border-radius: var(--r-md);
   }
 
-  .species-map__prose h2 {
-    font-size: 21px;
+  .species-map__chip,
+  .species-map__zone {
+    font-size: 14px;
+  }
+
+  .species-map__side > div {
+    padding: 20px;
   }
 }

@@ -9,6 +9,13 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru"/>
   </url>
   <url>
+    <loc>https://goodantshop.md/ru/starter-kit</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/starter-kit"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/starter-kit"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/starter-kit"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/starter-kit"/>
+  </url>
+  <url>
     <loc>https://goodantshop.md/ru/ants</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/ants"/>
     <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/ants"/>
@@ -151,11 +158,26 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/blog/messor-structor"/>
   </url>
   <url>
+    <loc>https://goodantshop.md/ru/blog/starter-kit-guide</loc>
+    <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/blog/starter-kit-guide"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/blog/starter-kit-guide"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/blog/starter-kit-guide"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/blog/starter-kit-guide"/>
+  </url>
+  <url>
     <loc>https://goodantshop.md/ro</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru"/>
     <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/ro/starter-kit</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/starter-kit"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/starter-kit"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/starter-kit"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/starter-kit"/>
   </url>
   <url>
     <loc>https://goodantshop.md/ro/ants</loc>
@@ -300,11 +322,26 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/blog/messor-structor"/>
   </url>
   <url>
+    <loc>https://goodantshop.md/ro/blog/starter-kit-guide</loc>
+    <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/blog/starter-kit-guide"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/blog/starter-kit-guide"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/blog/starter-kit-guide"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/blog/starter-kit-guide"/>
+  </url>
+  <url>
     <loc>https://goodantshop.md/en</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru"/>
     <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/en/starter-kit</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/starter-kit"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/starter-kit"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/starter-kit"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/starter-kit"/>
   </url>
   <url>
     <loc>https://goodantshop.md/en/ants</loc>
@@ -447,5 +484,13 @@
     <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/blog/messor-structor"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/blog/messor-structor"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/blog/messor-structor"/>
+  </url>
+  <url>
+    <loc>https://goodantshop.md/en/blog/starter-kit-guide</loc>
+    <lastmod>2026-10-27</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://goodantshop.md/ru/blog/starter-kit-guide"/>
+    <xhtml:link rel="alternate" hreflang="ro" href="https://goodantshop.md/ro/blog/starter-kit-guide"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://goodantshop.md/en/blog/starter-kit-guide"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://goodantshop.md/ru/blog/starter-kit-guide"/>
   </url>
 </urlset>

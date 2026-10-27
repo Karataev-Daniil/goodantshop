@@ -201,8 +201,11 @@ export interface BlogPost {
     width: number;
     height: number;
   };
+  // Дата выхода. Пост с датой в будущем в сборку не попадает (см. blogPostsData.ts).
   datePublished: string;
   dateModified?: string;
+  // Закреплённый пост стоит крупной карточкой первым в блоге, label - метка на ней.
+  pinned?: { label: Localized };
   author?: { name: string; url: string };
   readingTime?: number;
   video?: BlogVideo;
