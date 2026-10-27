@@ -918,11 +918,12 @@
     gap: 40px;
   }
 
+  /* The ant runs down the lower two thirds of the portrait shot: a wider crop cuts its head off. */
   .home-hero__photo {
     height: auto;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 6 / 5;
     min-height: 0;
-    object-position: 50% 30%;
+    object-position: 50% 62%;
   }
 
   .home-hero__kit {
@@ -1050,6 +1051,23 @@
 
   .home-hero__benefits {
     gap: 6px 16px;
+  }
+
+  .home-hero__photo {
+    aspect-ratio: 1 / 1;
+    object-position: 50% 60%;
+  }
+
+  /* On a phone the photo is too small to carry the card: it would sit on the ant, so it moves below. */
+  .home-hero__kit {
+    position: relative;
+    left: auto;
+    bottom: auto;
+    margin-top: 12px;
+  }
+
+  .home-hero__kit-arrow {
+    margin-left: auto;
   }
 
   .home-hero__kit img {
