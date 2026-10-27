@@ -1,4 +1,6 @@
-﻿@import "./styles/base/ui.css";
+﻿@import "@fontsource-variable/unbounded/wght.css";
+@import "@fontsource-variable/onest/wght.css";
+@import "./styles/base/ui.css";
 @import "./styles/base/layout.css";
 @import "./styles/base/typography.css";
 @import "./styles/pages/home.css";
@@ -9,3 +11,4 @@
 @import "./styles/pages/contacts.css";
 @import "./styles/pages/product-detail.css";
 @import "./styles/pages/checkout.css";
+@import "./styles/pages/starter-kit.css";

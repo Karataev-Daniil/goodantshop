@@ -1,46 +1,70 @@
-/* ===== Product detail layout ===== */
+/* ==========================================================================
+   Product page: colony, formicarium, accessory.
+   The gallery, availability badge and reviews are shared with the
+   starter-kit page, so they follow the same buy-box language as .kit-buy.
+   Surfaces step in tone (husk on paper), never outlines.
+   ========================================================================== */
+
 .product-detail__back {
   display: inline-block;
   margin-bottom: 18px;
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 700;
+  color: var(--clay);
+  font-size: 15px;
+  font-weight: 600;
   transition: color 0.18s ease;
 }
+
 .product-detail__back:hover {
-  color: var(--accent);
+  color: var(--red);
 }
 
 .product-detail__top {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
-  gap: 32px;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+  gap: clamp(32px, 5vw, 72px);
   align-items: start;
+  margin-top: 20px;
 }
 
+/* A product page stacks seven blocks; the full home-page gap made it read as
+   empty, so sections here sit a step closer. */
 .product-section {
-  margin-top: 56px;
+  margin-top: clamp(72px, 7vw, 104px);
 }
+
 /* Offset for the sticky header when jumping to #reviews */
 #reviews {
-  scroll-margin-top: 96px;
+  scroll-margin-top: calc(var(--header-h) + 24px);
 }
+
 .product-section > h2 {
-  font-size: 26px;
+  max-width: 22ch;
+  margin: 0 0 40px;
+}
+
+/* Plain running text (accessory description / usage); classed notes style themselves. */
+.product-section > p:not([class]) {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--soil);
+  font-size: 18px;
+  line-height: 1.6;
 }
 
 /* ===== Gallery ===== */
 .product-gallery {
   display: grid;
-  gap: 12px;
+  gap: 14px;
+  min-width: 0;
 }
+
 .product-gallery__stage {
   position: relative;
-  border-radius: 16px;
   overflow: hidden;
-  background: var(--surface-soft);
-  box-shadow: 0 0 0 1px var(--line);
+  border-radius: var(--r-lg);
+  background: var(--husk);
 }
+
 .product-gallery__image {
   display: block;
   width: 100%;
@@ -48,88 +72,102 @@
   object-fit: cover;
   cursor: zoom-in;
 }
-.product-gallery__nav {
+
+.product-gallery__nav,
+.product-gallery__zoom {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 42px;
-  height: 42px;
+  padding: 0;
   border: 0;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--text);
+  border-radius: var(--pill);
+  background: var(--paper);
+  color: var(--soil);
   cursor: pointer;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-  transition: background 0.18s ease, transform 0.18s ease;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s var(--ease-out);
 }
-.product-gallery__nav:hover {
-  background: #fff;
+
+.product-gallery__nav:hover,
+.product-gallery__zoom:hover {
+  background: var(--soil);
+  color: var(--paper);
 }
+
+.product-gallery__nav {
+  top: 50%;
+  width: 48px;
+  height: 48px;
+  transform: translateY(-50%);
+}
+
 .product-gallery__nav:active {
   transform: translateY(-50%) scale(0.94);
 }
+
 .product-gallery__nav--prev {
-  left: 12px;
+  left: 16px;
 }
+
 .product-gallery__nav--next {
-  right: 12px;
+  right: 16px;
 }
+
 .product-gallery__zoom {
-  position: absolute;
-  right: 12px;
-  bottom: 12px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border: 0;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--text);
-  cursor: pointer;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
-  transition: background 0.18s ease;
+  right: 16px;
+  bottom: 16px;
+  width: 44px;
+  height: 44px;
 }
-.product-gallery__zoom:hover {
-  background: #fff;
+
+.product-gallery__zoom:active {
+  transform: scale(0.94);
 }
+
+/* Room around the strip so the active ring is not clipped by the scroller. */
 .product-gallery__thumbs {
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  margin: -4px;
+  padding: 4px;
   overflow-x: auto;
-  padding-bottom: 2px;
+  scrollbar-width: none;
 }
+
+.product-gallery__thumbs::-webkit-scrollbar {
+  display: none;
+}
+
 .product-gallery__thumb {
   flex: 0 0 auto;
-  width: 64px;
-  height: 64px;
+  width: 76px;
+  height: 76px;
   padding: 0;
   border: 0;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
+  background: var(--husk);
   cursor: pointer;
-  background: var(--surface-soft);
-  box-shadow: inset 0 0 0 1px var(--line);
-  opacity: 0.7;
+  opacity: 0.72;
   transition: opacity 0.18s ease, box-shadow 0.18s ease;
 }
+
 .product-gallery__thumb img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .product-gallery__thumb:hover {
   opacity: 1;
 }
+
 .product-gallery__thumb.is-active {
   opacity: 1;
-  box-shadow: inset 0 0 0 2px var(--accent);
+  box-shadow: 0 0 0 2px var(--red);
 }
 
+/* The lightbox floats over the page - the one place here that may shade. */
 .product-gallery__lightbox {
   position: fixed;
   inset: 0;
@@ -137,635 +175,1040 @@
   display: grid;
   place-items: center;
   padding: 32px;
-  background: rgba(20, 16, 12, 0.86);
+  background: color-mix(in srgb, var(--soil) 90%, transparent);
   cursor: zoom-out;
 }
+
 .product-gallery__lightbox img {
   max-width: min(92vw, 1100px);
   max-height: 88vh;
   object-fit: contain;
-  border-radius: 12px;
+  border-radius: var(--r-md);
 }
+
 .product-gallery__close {
   position: absolute;
-  top: 22px;
-  right: 24px;
-  width: 44px;
-  height: 44px;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
   border: 0;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--text);
+  border-radius: var(--pill);
+  background: var(--paper);
+  color: var(--soil);
   font-size: 18px;
   cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
 
-/* availability badge on the gallery */
+.product-gallery__close:hover {
+  background: var(--red);
+  color: var(--paper);
+}
+
+/* Availability on the photo: the same white pill + dot as .product-card__status. */
 .product-badge {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
-.product-badge--inStock {
-  background: #1f8a30;
-}
-.product-badge--preorder {
+  top: 16px;
+  left: 16px;
   display: inline-flex;
-  flex-direction: column;
   align-items: center;
-  gap: 1px;
-  border-radius: 14px;
-  line-height: 1.15;
-  background: #d97706;
-}
-
-.product-badge__note {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: lowercase;
-  opacity: 0.92;
-}
-.product-badge--outOfStock {
-  background: #9f1d1d;
-}
-
-/* ===== Buy box ===== */
-.product-buy {
-  display: grid;
-  gap: 14px;
-  align-content: start;
-}
-.product-buy__title {
-  margin: 0;
-  font-size: clamp(28px, 4vw, 40px);
-  line-height: 1.05;
-}
-.product-buy__common {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 0.5em;
+  gap: 8px;
+  padding: 7px 14px 7px 12px;
+  border-radius: var(--pill);
+  background: var(--paper);
+  color: var(--soil);
+  font-size: 14px;
   font-weight: 600;
   line-height: 1.2;
 }
-.product-buy__price {
-  display: flex;
-  align-items: baseline;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-.product-buy__price strong {
-  font-size: 30px;
-  color: var(--text);
-}
-.product-buy__price span {
-  color: var(--muted);
-  font-size: 14px;
-}
-.product-buy__availability {
-  width: fit-content;
-  padding: 5px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 800;
-  box-shadow: inset 0 0 0 1px var(--line);
-}
-.product-buy__availability--inStock {
-  color: #1f8a30;
-}
-.product-buy__availability--preorder {
-  color: #b45309;
-}
-.product-buy__availability--outOfStock {
-  color: #9f1d1d;
-}
-.product-buy__excerpt {
-  margin: 0;
-  color: var(--muted);
-  font-size: 16px;
-  line-height: 1.6;
+
+.product-badge::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--clay);
 }
 
-/* Colony-size variant picker */
+.product-badge--inStock::before {
+  background: var(--green);
+}
+
+.product-badge--preorder::before {
+  background: var(--amber);
+}
+
+.product-badge--outOfStock::before {
+  background: var(--red);
+}
+
+.product-badge__main {
+  display: inline;
+}
+
+.product-badge__note {
+  display: inline;
+  color: var(--clay);
+  font-weight: 500;
+}
+
+.product-badge__note::before {
+  content: "· ";
+}
+
+/* ===== Buy box (mirrors .kit-buy) ===== */
+.product-buy {
+  display: grid;
+  align-content: start;
+  min-width: 0;
+}
+
+.product-buy > .kicker {
+  margin: 0 0 12px;
+}
+
+.product-buy__title {
+  margin: 0;
+  font-size: clamp(32px, 3.2vw, 46px);
+  overflow-wrap: break-word;
+}
+
+/* Common name ahead of the Latin one ("Муравей-жнец Messor Structor"). */
+.product-buy__common {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--clay);
+  font-family: var(--font-ui);
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+.product-buy__rating {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  width: fit-content;
+  margin-top: 18px;
+  color: var(--soil);
+  font-size: 16px;
+}
+
+.product-buy__rating .stars {
+  font-size: 17px;
+}
+
+.product-buy__rating strong {
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+}
+
+.product-buy__rating > span:not(.stars) {
+  color: var(--clay);
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--straw-deep);
+  transition: color 0.18s ease, text-decoration-color 0.18s ease;
+}
+
+.product-buy__rating:hover > span:not(.stars) {
+  color: var(--red);
+  text-decoration-color: currentColor;
+}
+
+.product-buy__price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  margin-top: 26px;
+}
+
+.product-buy__price strong {
+  color: var(--soil);
+  font-family: var(--font-display);
+  font-size: clamp(38px, 3.6vw, 52px);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.product-buy__price span {
+  color: var(--clay);
+  font-size: 15px;
+}
+
+/* Not rendered at the moment; kept in the white-pill + dot language. */
+.product-buy__availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 6px 12px 6px 10px;
+  border-radius: var(--pill);
+  background: var(--husk);
+  color: var(--soil);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.product-buy__availability::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--clay);
+}
+
+.product-buy__availability--inStock::before {
+  background: var(--green);
+}
+
+.product-buy__availability--preorder::before {
+  background: var(--amber);
+}
+
+.product-buy__availability--outOfStock::before {
+  background: var(--red);
+}
+
+.product-buy__excerpt {
+  max-width: 48ch;
+  margin: 22px 0 0;
+  color: var(--soil);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+/* Colony-size variant picker: husk rows, the chosen one turns soil. */
 .product-buy__options {
   display: grid;
   gap: 8px;
-  margin-top: 2px;
+  margin-top: 26px;
 }
+
 .product-option {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  gap: 14px;
   width: 100%;
-  padding: 12px 14px;
-  border-radius: 12px;
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
-  color: var(--text);
+  min-height: 56px;
+  padding: 12px 20px 12px 16px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--husk);
+  color: var(--soil);
   font-family: var(--font-ui);
   text-align: left;
   cursor: pointer;
-  transition: box-shadow 0.15s ease, background 0.15s ease;
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
+
+.product-option::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--paper);
+  transition: box-shadow 0.18s var(--ease-out);
+}
+
 .product-option:hover {
-  box-shadow: inset 0 0 0 1px #d8ccb8;
+  background: var(--husk-deep);
 }
+
 .product-option.is-active {
-  background: #fff2ef;
-  box-shadow: inset 0 0 0 2px var(--accent);
+  background: var(--soil);
+  color: var(--paper);
 }
+
+/* Radio dot: red with a paper centre. */
+.product-option.is-active::before {
+  box-shadow: inset 0 0 0 6px var(--red);
+}
+
 .product-option__label {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.35;
 }
+
 .product-option__price {
-  font-size: 15px;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
 .product-buy__cart {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 10px;
-  margin-top: 4px;
+  margin-top: 28px;
 }
+
+.product-buy__cart .btn {
+  flex: 1 1 auto;
+  min-height: 56px;
+  padding-inline: 28px;
+  font-size: 17px;
+}
+
+/* Quantity: a husk pill with round paper buttons. */
 .qty-stepper {
   display: inline-flex;
   align-items: center;
-  border-radius: 8px;
-  box-shadow: inset 0 0 0 1px var(--line);
-  background: var(--surface);
-}
-.qty-stepper button {
-  width: 40px;
-  height: 44px;
-  border: 0;
-  background: transparent;
-  color: var(--text);
-  font-size: 18px;
-  cursor: pointer;
-  border-radius: 8px;
-}
-.qty-stepper button:hover {
-  background: var(--surface-soft);
-}
-.qty-stepper span {
-  min-width: 34px;
-  text-align: center;
-  font-weight: 800;
+  gap: 2px;
+  padding: 4px;
+  border-radius: var(--pill);
+  background: var(--husk);
 }
 
-/* ===== 3. Spec cards ===== */
+.qty-stepper button {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--soil);
+  font-family: var(--font-ui);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s var(--ease-out);
+}
+
+.qty-stepper button:hover {
+  background: var(--soil);
+  color: var(--paper);
+}
+
+.qty-stepper button:active {
+  transform: scale(0.92);
+}
+
+.qty-stepper span {
+  min-width: 40px;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Specifications: one calm husk panel of label / value pairs ===== */
 .spec-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px 40px;
+  padding: clamp(28px, 3.2vw, 44px);
+  border-radius: var(--r-lg);
+  background: var(--husk);
 }
+
 .spec-cards__item {
   display: grid;
   gap: 6px;
-  padding: 16px 18px;
-  border-radius: 14px;
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
-}
-.spec-cards__label {
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-.spec-cards__value {
-  color: var(--text);
-  font-size: 16px;
-  font-weight: 700;
+  align-content: start;
 }
 
-/* ===== 4. What's included ===== */
-.included-list {
-  list-style: none;
+.spec-cards__label {
+  color: var(--clay);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.spec-cards__value {
+  color: var(--soil);
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+/* ===== What's included: heading on the left, a checklist on the right ===== */
+.product-section:has(> .included-list) {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 28px clamp(40px, 5vw, 80px);
+  align-items: start;
+}
+
+.product-section:has(> .included-list) > h2 {
   margin: 0;
-  padding: 0;
+}
+
+.included-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-.included-list li {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  border-radius: 12px;
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
-  color: var(--text);
-  font-weight: 600;
-}
-.included-list__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 26px;
-  height: 26px;
-  border-radius: 999px;
-  background: rgba(31, 138, 48, 0.12);
-  color: #1f8a30;
+  gap: 22px 32px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-/* ===== 5. Cross-sell ===== */
+.included-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  color: var(--soil);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.included-list__icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  margin-top: -2px;
+  border-radius: 50%;
+  background: var(--husk);
+  color: var(--red);
+}
+
+/* ===== Cross-sell: rows like .kit-item ===== */
 .cross-sell {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  gap: 12px;
 }
+
 /* Блок «Что нужно для старта» - строго 2 колонки: позиций немного, а в широкой
-   карточке помещаются и плашка роли, и зачёркнутая цена, и пояснение к подарку. */
+   карточке помещаются и роль, и зачёркнутая цена, и пояснение к подарку. */
 .cross-sell--starter {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
-.cross-sell--starter .cross-card {
-  grid-template-columns: 132px 1fr;
-}
+
 .cross-card {
   display: grid;
-  grid-template-columns: 110px 1fr;
-  gap: 14px;
-  padding: 12px;
-  border-radius: 16px;
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 20px;
+  align-items: center;
+  padding: 12px 20px 12px 12px;
+  border-radius: var(--r-md);
+  background: var(--husk);
 }
+
+.cross-sell--starter .cross-card {
+  grid-template-columns: 132px minmax(0, 1fr);
+  gap: 24px;
+}
+
+/* Same pale straw as .kit-item--gift on the starter-kit page. */
+.cross-card--gift {
+  background: #f5ebc9;
+}
+
 .cross-card__media {
   display: block;
-  border-radius: 12px;
-  overflow: hidden;
   aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--paper);
 }
+
 .cross-card__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-.cross-card__body {
-  display: grid;
-  gap: 8px;
-  align-content: center;
-}
-.cross-card__title {
-  color: var(--text);
-  font-size: 17px;
-  font-weight: 800;
-}
-.cross-card__title:hover {
-  color: var(--accent);
-}
-.cross-card__price {
-  color: var(--accent);
-  font-weight: 800;
+  transition: transform 0.5s var(--ease-out);
 }
 
-/* Пояснение к комплекту «колония + формикарий» над карточками. */
-.starter-note {
-  max-width: 70ch;
-  margin: -4px 0 18px;
-  color: var(--muted);
-  line-height: 1.6;
+a.cross-card__media:hover img {
+  transform: scale(1.05);
+}
+
+.cross-card__body {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+  align-content: center;
+  min-width: 0;
 }
 
 /* Роль позиции в комплекте: дом / корм / подарок. */
 .cross-card__role {
-  justify-self: start;
-  padding: 3px 9px;
-  border-radius: 999px;
-  background: var(--surface-soft);
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-}
-.cross-card__role--gift {
-  background: color-mix(in srgb, var(--accent) 12%, transparent);
-  color: var(--accent-dark);
-}
-.cross-card--gift {
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 34%, var(--line));
-}
-.cross-card__price s {
-  color: var(--muted);
+  color: var(--clay);
+  font-size: 14px;
   font-weight: 600;
 }
-.cross-card__price em {
-  color: var(--accent);
-  font-style: normal;
+
+.cross-card__role--gift {
+  color: var(--red-dark);
 }
+
+.cross-card__title {
+  color: var(--soil);
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  transition: color 0.18s ease;
+}
+
+.cross-card__title:hover {
+  color: var(--red);
+}
+
+.cross-card__price {
+  color: var(--soil);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.cross-card__price s {
+  color: var(--clay);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.cross-card__price em {
+  color: var(--red);
+  font-style: normal;
+  white-space: nowrap;
+}
+
 .cross-card__gift-note {
+  max-width: 44ch;
   margin: 0;
-  color: var(--muted);
-  font-size: 13px;
+  color: var(--clay);
+  font-size: 15px;
   line-height: 1.5;
 }
 
-/* Плашка «в подарок» на странице аксессуара. */
-.gift-note {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 8px;
-  margin: 4px 0 0;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: var(--surface-soft);
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.55;
-}
-.gift-note__tag {
-  padding: 3px 9px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
-  color: var(--accent-dark);
-  font-size: 12px;
-  font-weight: 800;
-}
-.gift-note a {
-  color: var(--accent);
-  font-weight: 700;
+.cross-card .btn {
+  min-height: 44px;
+  margin-top: 6px;
+  padding: 10px 20px;
+  font-size: 15px;
 }
 
-/* ===== 6. Tabs ===== */
+/* .btn-light is husk - on a husk row it needs the paper step to show. */
+.cross-card .btn-light {
+  background: var(--paper);
+}
+
+.cross-card .btn-light:hover {
+  background: var(--straw);
+}
+
+/* Пояснение к комплекту «колония + формикарий» над карточками. */
+.starter-note {
+  max-width: 64ch;
+  margin: -16px 0 12px;
+  color: var(--soil);
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+/* Lead-in paragraphs (the note, the starter-kit link) keep air above the rows;
+   the margin collapses with the paragraph's own bottom margin. */
+.product-section > p + .cross-sell {
+  margin-top: 32px;
+}
+
+/* Плашка «в подарок» на странице аксессуара - как .kit-buy__gift. */
+.gift-note {
+  margin: 22px 0 0;
+  padding: 16px 18px;
+  border-radius: 18px;
+  background: var(--straw);
+  color: var(--soil);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.gift-note__tag {
+  display: inline-block;
+  margin-right: 8px;
+  padding: 2px 10px;
+  border-radius: var(--pill);
+  background: var(--paper);
+  color: var(--red-dark);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.gift-note a {
+  color: var(--soil);
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.gift-note a:hover {
+  color: var(--red);
+}
+
+/* ===== Tabs: pills, the active one soil ===== */
 .product-tabs__nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 4px;
-  border-bottom: 1px solid var(--line);
+  gap: 8px;
 }
+
 .product-tabs__tab {
-  position: relative;
+  flex: 0 0 auto;
+  min-height: 48px;
+  padding: 12px 22px;
   border: 0;
-  background: transparent;
-  padding: 12px 16px;
-  color: var(--muted);
-  font-size: 15px;
-  font-weight: 700;
+  border-radius: var(--pill);
+  background: var(--husk);
+  color: var(--soil);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
   cursor: pointer;
-  transition: color 0.18s ease;
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
+
 .product-tabs__tab:hover {
-  color: var(--text);
+  background: var(--husk-deep);
 }
+
 .product-tabs__tab.is-active {
-  color: var(--text);
+  background: var(--soil);
+  color: var(--paper);
 }
-.product-tabs__tab.is-active::after {
-  content: "";
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: -1px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--accent);
-}
+
 .product-tabs__panel {
-  padding-top: 18px;
-  color: var(--muted);
-  line-height: 1.7;
-  max-width: 760px;
+  max-width: 880px;
+  padding-top: 32px;
+  color: var(--soil);
+  font-size: 18px;
+  line-height: 1.65;
 }
+
+.product-tabs__panel > p {
+  max-width: 68ch;
+  margin: 0;
+}
+
 .product-faq {
   display: grid;
   gap: 10px;
 }
 
-/* ===== 7. Advantages ===== */
+/* ===== Why buy from us: four columns, no boxes ===== */
 .product-advantages {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
+  gap: 40px clamp(24px, 3vw, 48px);
 }
+
 .product-advantages__card {
-  padding: 20px;
-  border-radius: 16px;
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
+  display: grid;
+  gap: 10px;
+  align-content: start;
 }
+
+/* A short stretch of the brand's dashed trail marks each point. */
+.product-advantages__card::before {
+  content: "";
+  width: 50px;
+  height: 2px;
+  margin-bottom: 12px;
+  background-image: repeating-linear-gradient(90deg, var(--red) 0 8px, transparent 8px 14px);
+}
+
 .product-advantages__card strong {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 16px;
+  font-family: var(--font-display);
+  font-size: clamp(18px, 1.4vw, 21px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
+
 .product-advantages__card p {
+  max-width: 34ch;
   margin: 0;
-  color: var(--muted);
-  line-height: 1.6;
+  color: var(--soil);
+  font-size: 16px;
+  line-height: 1.55;
 }
 
-/* ===== Rating line in the buy box ===== */
-.product-buy__rating {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  width: fit-content;
-  color: var(--text);
-}
-.product-buy__rating .stars {
-  font-size: 17px;
-}
-.product-buy__rating strong {
-  font-weight: 800;
-}
-.product-buy__rating span {
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: var(--line);
-}
-.product-buy__rating:hover span {
-  text-decoration-color: var(--accent);
-}
-
-/* ===== 7.5 Customer reviews ===== */
+/* ===== Customer reviews (also on the starter-kit page) ===== */
 .product-reviews__head {
   display: grid;
-  gap: 8px;
-  margin-bottom: 22px;
+  gap: 14px;
+  margin-bottom: 40px;
 }
+
+.product-reviews__head h2 {
+  margin: 0 0 10px;
+}
+
 .product-reviews__summary {
   display: flex;
-  align-items: center;
-  gap: 10px;
   flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
 }
+
 .product-reviews__score {
-  font-size: 30px;
-  font-weight: 800;
-  color: var(--text);
+  color: var(--soil);
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 650;
   line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
 }
+
 .product-reviews__summary .stars {
   font-size: 20px;
 }
+
 .product-reviews__count {
-  color: var(--muted);
-  font-size: 14px;
-  font-weight: 700;
+  color: var(--clay);
+  font-size: 16px;
+  font-weight: 500;
 }
+
 .product-reviews__source {
   margin: 0;
-  color: var(--muted);
-  font-size: 13px;
+  color: var(--clay);
+  font-size: 15px;
 }
+
 .product-reviews__source a {
-  color: var(--muted);
+  color: inherit;
   text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-color: var(--line);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--straw-deep);
   transition: color 0.18s ease, text-decoration-color 0.18s ease;
 }
+
 .product-reviews__source a:hover {
-  color: var(--accent);
-  text-decoration-color: var(--accent);
+  color: var(--red);
+  text-decoration-color: currentColor;
 }
+
 .product-reviews__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 12px;
 }
+
 .review-card {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 18px 20px;
-  border-radius: 16px;
-  background: var(--surface);
-  box-shadow: inset 0 0 0 1px var(--line);
+  gap: 12px;
+  padding: 24px 28px;
+  border-radius: var(--r-md);
+  background: var(--husk);
 }
+
 .review-card__top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
 }
+
 .review-card__author {
-  font-weight: 800;
-  color: var(--text);
-  word-break: break-word;
+  color: var(--soil);
+  font-size: 17px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
 }
+
 .review-card__body {
-  margin: 0;
-  color: var(--muted);
-  font-size: 15px;
-  line-height: 1.6;
   display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: var(--soil);
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
-  overflow: hidden;
+  line-clamp: 3;
 }
+
 .review-card__body.is-expanded {
   display: block;
-  -webkit-line-clamp: unset;
   overflow: visible;
+  -webkit-line-clamp: unset;
+  line-clamp: none;
 }
+
 .review-card__footer {
-  margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  margin-top: auto;
   padding-top: 2px;
 }
+
 .review-card__date {
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-.review-card__toggle {
-  flex: 0 0 auto;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: var(--accent);
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.review-card__toggle:hover {
-  text-decoration: underline;
-}
-.product-reviews__more {
-  margin-top: 22px;
+  color: var(--clay);
+  font-size: 14px;
+  font-weight: 500;
 }
 
-/* ===== 9. Final CTA ===== */
+.review-card__toggle {
+  flex: 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--red);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.review-card__toggle:hover {
+  color: var(--red-dark);
+}
+
+.product-reviews__more {
+  min-height: 52px;
+  margin-top: 24px;
+}
+
+/* ===== Final CTA (not rendered at the moment) ===== */
 .product-cta__inner {
   display: grid;
   gap: 16px;
   justify-items: center;
+  padding: clamp(40px, 6vw, 72px) 24px;
+  border-radius: var(--r-lg);
+  background: var(--straw);
   text-align: center;
-  padding: 40px 24px;
-  border-radius: 24px;
-  background: var(--surface-soft);
 }
+
 .product-cta__inner h2 {
   margin: 0;
-  font-size: clamp(26px, 4vw, 36px);
 }
+
 .product-cta__inner p {
+  max-width: 52ch;
   margin: 0;
-  color: var(--muted);
-  font-size: 17px;
+  color: var(--soil);
+  font-size: 18px;
 }
 
 /* ===== Responsive ===== */
-@media (max-width: 980px) {
-  .product-detail__top {
-    grid-template-columns: 1fr;
+@media (max-width: 1100px) {
+  .spec-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
   .product-advantages {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 680px) {
-  .cross-sell--starter {
+@media (max-width: 980px) {
+  .product-detail__top {
     grid-template-columns: 1fr;
   }
-  .cross-sell--starter .cross-card {
-    grid-template-columns: 110px 1fr;
+
+  .product-section:has(> .included-list) {
+    grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 680px) {
+  .product-section > h2 {
+    margin-bottom: 28px;
+  }
+
+  .product-section > p:not([class]),
+  .product-tabs__panel {
+    font-size: 17px;
+  }
+
+  .product-gallery__nav {
+    width: 42px;
+    height: 42px;
+  }
+
+  .product-gallery__nav--prev {
+    left: 12px;
+  }
+
+  .product-gallery__nav--next {
+    right: 12px;
+  }
+
+  .product-gallery__zoom {
+    right: 12px;
+    bottom: 12px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .product-gallery__thumb {
+    width: 64px;
+    height: 64px;
+  }
+
+  .product-gallery__lightbox {
+    padding: 16px;
+  }
+
   .product-gallery__lightbox img {
     width: 100%;
   }
-  .included-list {
-    grid-template-columns: 1fr;
+
+  .product-badge {
+    top: 12px;
+    left: 12px;
+    font-size: 13px;
   }
-  .product-advantages {
-    grid-template-columns: 1fr;
+
+  .product-option {
+    padding-inline: 14px 16px;
   }
-  .product-reviews__grid {
-    grid-template-columns: 1fr;
-  }
+
   .product-buy__cart {
     flex-direction: column;
     align-items: stretch;
   }
+
   .product-buy__cart .btn {
     width: 100%;
   }
+
   .qty-stepper {
     justify-content: space-between;
+  }
+
+  .spec-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 20px;
+    padding: 24px 22px;
+  }
+
+  .spec-cards__value {
+    font-size: 17px;
+  }
+
+  .included-list {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .cross-sell--starter {
+    grid-template-columns: 1fr;
+  }
+
+  .cross-card,
+  .cross-sell--starter .cross-card {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+    padding: 10px 16px 16px 10px;
+  }
+
+  .cross-card__title {
+    font-size: 17px;
+  }
+
+  .cross-card__price {
+    font-size: 16px;
+  }
+
+  .starter-note {
+    margin: -8px 0 12px;
+  }
+
+  .product-section > p + .cross-sell {
+    margin-top: 24px;
+  }
+
+  /* Pills scroll sideways instead of wrapping onto a second row. */
+  .product-tabs__nav {
+    flex-wrap: nowrap;
+    margin: -6px calc(var(--gutter) * -1);
+    padding: 6px var(--gutter);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .product-tabs__nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .product-tabs__tab {
+    padding-inline: 18px;
+  }
+
+  .product-tabs__panel {
+    padding-top: 24px;
+  }
+
+  .product-advantages {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .product-reviews__head {
+    margin-bottom: 28px;
+  }
+
+  .product-reviews__score {
+    font-size: 34px;
+  }
+
+  .product-reviews__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .review-card {
+    padding: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .product-gallery__nav,
+  .product-gallery__zoom,
+  .qty-stepper button,
+  .cross-card__media img {
+    transition: none;
+  }
+
+  .product-gallery__nav:active {
+    transform: translateY(-50%);
+  }
+
+  .product-gallery__zoom:active,
+  .qty-stepper button:active,
+  a.cross-card__media:hover img {
+    transform: none;
   }
 }

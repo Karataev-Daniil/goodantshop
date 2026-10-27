@@ -6,6 +6,7 @@ const footerText = {
   ru: {
     tagline: "Муравьи, формикарии и поддержка для спокойного старта по всей Молдове.",
     navTitle: "Каталог",
+    starterKit: "Стартовый набор",
     ants: "Муравьи",
     formicariums: "Формикарий",
     accessories: "Уход за колонией",
@@ -23,6 +24,7 @@ const footerText = {
   ro: {
     tagline: "Furnici, formicarii și suport pentru un start liniștit în toată Moldova.",
     navTitle: "Catalog",
+    starterKit: "Set de start",
     ants: "Furnici",
     formicariums: "Formicariu",
     accessories: "Îngrijirea coloniei",
@@ -40,6 +42,7 @@ const footerText = {
   en: {
     tagline: "Ants, formicariums, and support for a calm start across Moldova.",
     navTitle: "Catalog",
+    starterKit: "Starter kit",
     ants: "Ants",
     formicariums: "Formicarium",
     accessories: "Colony care",
@@ -85,6 +88,7 @@ export default function FooterMenu({ curLang }: { curLang: string }) {
 
         <nav className="footer-col">
           <h3 className="footer-col__title">{copy.navTitle}</h3>
+          <Link to={`/${curLang}/starter-kit`}>{copy.starterKit}</Link>
           <Link to={`/${curLang}/ants`}>{copy.ants}</Link>
           <Link to={`/${curLang}/formicariums`}>{copy.formicariums}</Link>
           <Link to={`/${curLang}/accessories`}>{copy.accessories}</Link>
@@ -105,6 +109,12 @@ export default function FooterMenu({ curLang }: { curLang: string }) {
           <span className="footer-col__muted">{copy.hours}</span>
           <span className="footer-col__muted">{copy.delivery}</span>
         </div>
+      </div>
+
+      <div className="container" aria-hidden="true">
+        <span className="footer-wordmark">
+          <span>GOOD</span>ANTSHOP
+        </span>
       </div>
 
       <div className="container footer-bottom">

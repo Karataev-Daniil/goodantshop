@@ -1,61 +1,57 @@
 /* ============================================================================
-   Уход за колонией (/accessories)
+   Colony care (/accessories)
    ----------------------------------------------------------------------------
-   Страница-гайд: короткие разделы, внутри каждого - товар, о котором в нём речь.
-   Каталожная карточка тут не используется: она рассчитана на сетку из трёх
-   колонок и рядом с текстом смотрелась чужеродно. Вместо неё .care-item -
-   горизонтальная строка: миниатюра, название, цена и кнопка в одну линию.
+   A guide page: short sections, each with the product it talks about. The
+   catalog card is not used here - it is built for a three-column grid and
+   looked foreign next to text. Instead .care-item is a horizontal husk row:
+   thumbnail, title, price and button in one line.
+   The three sections read differently on purpose: a species table of husk
+   rows, product rows, and the reminders on a straw field.
    ========================================================================== */
 .care-guide {
   display: flex;
   flex-direction: column;
-  gap: 48px;
-  margin-top: 36px;
+  gap: clamp(72px, 8vw, 112px);
 }
 
 .care-block h2 {
-  margin: 0 0 10px;
-  font-size: 25px;
-  line-height: 1.3;
+  margin: 0 0 14px;
+  font-size: clamp(28px, 2.8vw, 40px);
 }
 
 .care-block__lead {
-  margin: 0 0 22px;
-  max-width: 68ch;
-  line-height: 1.65;
-  color: var(--muted);
+  max-width: 62ch;
+  margin: 0 0 32px;
+  color: var(--soil);
+  font-size: 17px;
+  line-height: 1.6;
 }
 
-/* ---- Рацион по видам ---- */
+/* ---- Diet by species: a table of husk rows ---- */
 .care-species {
-  list-style: none;
-  margin: 0 0 24px;
+  display: grid;
+  gap: 6px;
+  margin: 0 0 40px;
   padding: 0;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--surface);
+  list-style: none;
 }
 
 .care-species__row {
   display: grid;
-  grid-template-columns: 46px minmax(0, 1fr) minmax(0, auto);
-  gap: 14px;
+  grid-template-columns: 64px minmax(0, 1fr) minmax(0, auto);
+  gap: 20px;
   align-items: center;
-  padding: 11px 16px;
-  border-bottom: 1px solid var(--line);
-}
-
-.care-species__row:last-child {
-  border-bottom: 0;
+  padding: 10px 16px 10px 10px;
+  border-radius: 16px;
+  background: var(--husk);
 }
 
 .care-species__row > img {
-  width: 46px;
-  height: 46px;
-  border-radius: 8px;
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
   object-fit: cover;
-  background: var(--surface-soft);
+  background: var(--paper);
 }
 
 .care-species__name {
@@ -66,17 +62,22 @@
 }
 
 .care-species__name a {
-  font-weight: 700;
-  font-size: 15.5px;
+  width: fit-content;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
 .care-species__name a:hover {
-  color: var(--accent);
+  color: var(--red);
 }
 
 .care-species__name span {
-  font-size: 13.5px;
-  color: var(--muted);
+  color: var(--clay);
+  font-size: 15px;
+  line-height: 1.4;
 }
 
 .care-species__food {
@@ -86,53 +87,61 @@
   justify-content: flex-end;
 }
 
+/* Food links: paper pills on the husk row, the same shape as a chip. */
 .care-species__food a {
-  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 6px 14px;
+  border-radius: var(--pill);
+  background: var(--paper);
+  color: var(--soil);
+  font-size: 14px;
   font-weight: 600;
-  padding: 5px 11px;
-  border-radius: 99px;
-  border: 1px solid var(--line);
-  color: var(--accent);
+  line-height: 1.2;
   white-space: nowrap;
 }
 
 .care-species__food a:hover {
-  border-color: var(--accent);
-  background: var(--surface-soft);
+  background: var(--soil);
+  color: var(--paper);
 }
 
-/* ---- Компактная карточка товара ---- */
+/* ---- Product rows ---- */
 .care-block__items {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  max-width: 720px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
+  gap: 10px;
 }
 
 .care-item {
   display: grid;
-  grid-template-columns: 84px minmax(0, 1fr) minmax(0, auto);
-  gap: 16px;
+  grid-template-columns: 104px minmax(0, 1fr) auto;
+  gap: 20px;
   align-items: center;
-  padding: 14px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  background: var(--surface);
+  padding: 12px 20px 12px 12px;
+  border-radius: var(--r-md);
+  background: var(--husk);
 }
 
 .care-item__media {
   display: block;
-  width: 84px;
-  height: 84px;
-  border-radius: 9px;
+  width: 104px;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: var(--surface-soft);
+  border-radius: 14px;
+  background: var(--paper);
 }
 
 .care-item__media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.care-item__media:hover img {
+  transform: scale(1.05);
 }
 
 .care-item__body {
@@ -140,74 +149,99 @@
 }
 
 .care-item__body h3 {
-  margin: 0 0 4px;
-  font-size: 16.5px;
-  line-height: 1.3;
+  margin: 0 0 6px;
+  font-size: 18px;
+  line-height: 1.25;
 }
 
 .care-item__body h3 a:hover {
-  color: var(--accent);
+  color: var(--red);
 }
 
 .care-item__body p {
   margin: 0;
-  font-size: 14px;
+  color: var(--clay);
+  font-size: 15px;
   line-height: 1.5;
-  color: var(--muted);
 }
 
 .care-item__buy {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
+  gap: 10px;
 }
 
 .care-item__buy strong {
-  font-size: 17px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.care-item__buy .btn {
+  min-height: 48px;
+  padding-inline: 20px;
   white-space: nowrap;
 }
 
-/* ---- Памятки ---- */
+/* ---- Reminders: a straw field, three columns ---- */
 .care-notes {
-  margin: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 32px clamp(32px, 4vw, 56px);
+  margin: 8px 0 0;
+  padding: clamp(28px, 4vw, 48px);
+  border-radius: var(--r-lg);
+  background: var(--straw);
+  color: var(--soil);
 }
 
 .care-notes > div {
-  padding-left: 16px;
-  border-left: 2px solid var(--accent);
+  display: grid;
+  gap: 10px;
+  align-content: start;
 }
 
 .care-notes dt {
-  font-weight: 700;
-  font-size: 15px;
-  margin-bottom: 5px;
+  color: var(--soil);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
 .care-notes dd {
   margin: 0;
-  font-size: 14.5px;
+  color: var(--soil);
+  font-size: 16px;
   line-height: 1.6;
-  color: var(--muted);
 }
 
 @media (max-width: 620px) {
-  .care-guide {
-    gap: 38px;
+  .care-block__lead {
+    margin-bottom: 24px;
   }
 
-  .care-block h2 {
-    font-size: 21px;
-  }
-
-  /* На узком экране цепочка «фото - вид - корм» не помещается в строку:
-     фото уходит слева на две строки, корм переезжает под название. */
+  /* On a narrow screen "photo - species - food" does not fit one line: the
+     photo spans two rows on the left, the food moves under the name. */
   .care-species__row {
-    grid-template-columns: 46px minmax(0, 1fr);
-    row-gap: 9px;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 10px 14px;
+    align-items: start;
+    padding: 10px 12px 12px 10px;
+  }
+
+  .care-species__row > img {
+    width: 52px;
+    height: 52px;
+  }
+
+  .care-species__name {
+    padding-top: 4px;
   }
 
   .care-species__food {
@@ -216,19 +250,25 @@
   }
 
   .care-item {
-    grid-template-columns: 64px minmax(0, 1fr);
-    row-gap: 12px;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 12px 14px;
+    align-items: start;
+    padding: 10px 14px 14px 10px;
   }
 
   .care-item__media {
-    width: 64px;
-    height: 64px;
+    width: 76px;
+  }
+
+  .care-item__body h3 {
+    font-size: 17px;
   }
 
   .care-item__buy {
-    grid-column: 2;
+    grid-column: 1 / -1;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    padding-left: 4px;
   }
 }

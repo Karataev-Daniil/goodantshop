@@ -1,37 +1,106 @@
-﻿:root {
-  --bg: #fbfaf7;
-  --surface: #ffffff;
-  --surface-soft: #f4f0e8;
-  --text: #171512;
-  --muted: #706b63;
-  --line: #e8e0d2;
-  --accent: #bd241f;
-  --accent-dark: #8f1714;
-  --container: 1200px;
-  /* Must match .header-inner min-height (62px desktop / 56px ≤980px) so the
-     full-bleed hero band lines up exactly with the viewport - a mismatch leaves
-     a gap that lets the next section peek in on load. */
-  --header-h: 62px;
-  --font-ui: "Manrope", "Inter", "Segoe UI", sans-serif;
+﻿/* ==========================================================================
+   Design tokens - "Moldovan harvest"
+   Палитра взята из предмета: чернозём (почва, в которой живут колонии),
+   солома/зерно (Messor - муравьи-жнецы, носят семена) и красный логотипа.
+   Красное с чёрным на белом - ещё и цвета молдавской вышивки.
+   ========================================================================== */
+:root {
+  --paper: #ffffff;
+  --husk: #f6efdc;        /* тональная ступень: карточки, поля ввода */
+  --husk-deep: #eee3c6;   /* ховер/активное состояние на husk */
+  --straw: #ead9a2;       /* поле: герой, доставка */
+  --straw-deep: #d6bf7c;
+  --soil: #1e1813;        /* чернозём: текст и тёмные секции */
+  --soil-2: #2c241d;      /* поднятая поверхность на тёмном */
+  --soil-3: #43382e;
+  --clay: #6a5f55;        /* второстепенный текст на светлом (5.9:1 на белом) */
+  --sand-text: #c9bca8;   /* второстепенный текст на тёмном */
+  --red: #c40d12;         /* только действия */
+  --red-dark: #9a0a0e;
+  --red-soft: #fbe9e7;
+  --green: #2c7a33;
+  --amber: #b06a00;
+
+  /* Старые имена токенов - на них завязаны внутренние страницы. */
+  --bg: var(--paper);
+  --surface: var(--paper);
+  --surface-soft: var(--husk);
+  --text: var(--soil);
+  --muted: var(--clay);
+  --line: #e6dcc2;
+  --accent: var(--red);
+  --accent-dark: var(--red-dark);
+
+  --font-display: "Unbounded Variable", "Unbounded", "Arial Black", sans-serif;
+  --font-ui: "Onest Variable", "Onest", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --r-lg: 28px;
+  --r-md: 20px;
+  --r-sm: 12px;
+  --pill: 999px;
+
+  --container: 1280px;
+  --gutter: 32px;
+  --section-gap: 136px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Must match .header-inner min-height (see layout.css). */
+  --header-h: 72px;
 }
 
-/* Mobile header is shorter (see layout.css) */
 @media (max-width: 980px) {
   :root {
-    --header-h: 56px;
+    --header-h: 60px;
+    --gutter: 20px;
+    --section-gap: 96px;
+  }
+}
+
+@media (max-width: 560px) {
+  :root {
+    --gutter: 16px;
+    --section-gap: 72px;
   }
 }
 
 * { box-sizing: border-box; }
 /* Smooth in-page anchor scrolling (reset.css, which also had this, isn't
    imported - so it lives here where it actually loads). Respect reduced-motion. */
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-size-adjust: 100%;
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 }
-body { margin: 0; font-family: var(--font-ui); background: var(--bg); color: var(--text); }
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 17px;
+  line-height: 1.55;
+  background: var(--bg);
+  color: var(--text);
+}
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
+p { text-wrap: pretty; }
+
+::selection { background: var(--straw); color: var(--soil); }
+
+:focus-visible {
+  outline: 3px solid var(--red);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Full-bleed band inside the constrained <main class="container">: the
+   background reaches the viewport edges, the content stays on the grid. */
+.bleed {
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+}
 
 /* ===== Star rating (partial-fill) ===== */
 .stars {
@@ -43,40 +112,45 @@ img { display: block; max-width: 100%; }
   white-space: nowrap;
 }
 .stars__bg {
-  color: #d9d3c8;
+  color: #cbbb94;
 }
 .stars__fill {
   position: absolute;
   top: 1px;
   left: 0;
   overflow: hidden;
-  color: #f5a623 !important;
+  color: #e8a317 !important;
 }
 
+/* ===== Buttons: pill, one fill, sentence case ===== */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 44px;
-  padding: 10px 16px;
-  background: var(--accent);
+  gap: 8px;
+  min-height: 48px;
+  padding: 12px 24px;
+  background: var(--red);
   color: #fff;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  width: fit-content;
   border: 0;
+  border-radius: var(--pill);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1.15;
+  text-align: center;
+  width: fit-content;
   cursor: pointer;
-  transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+  transition: transform 0.18s var(--ease-out), background-color 0.18s ease, color 0.18s ease;
 }
-.btn:hover { transform: translateY(-1px); background: var(--accent-dark); box-shadow: 0 12px 24px rgba(189, 36, 31, 0.16); }
-.btn:disabled { opacity: .65; cursor: not-allowed; }
-.btn-secondary { background: #1f1f1f; }
-.btn-secondary:hover { background: #000; box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12); }
-.btn-light { background: #fff; color: var(--text); box-shadow: inset 0 0 0 1px var(--line); }
-.btn-light:hover { background: #f8f3ea; color: var(--text); box-shadow: inset 0 0 0 1px #d8ccb8; }
+.btn:hover { background: var(--red-dark); }
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-primary { background: var(--red); }
+.btn-secondary { background: var(--soil); }
+.btn-secondary:hover { background: #000; }
+.btn-light { background: var(--husk); color: var(--soil); }
+.btn-light:hover { background: var(--husk-deep); color: var(--soil); }
 
 .link span {
   position: relative;
@@ -88,23 +162,29 @@ img { display: block; max-width: 100%; }
   content: "";
   display: block;
   width: 100%;
-  height: 1px;
-  background-color: #0f110f;
+  height: 2px;
+  background-color: currentColor;
   position: absolute;
   left: 0;
-  bottom: -1px;
-  -webkit-transition: .3s;
-  transition: .3s;
-  bottom: 0;
+  bottom: -2px;
+  transition: width 0.3s ease;
 }
 
 .link span:hover::after {
   width: 0;
 }
 
-.grid { display: grid; gap: 19.2px; }
+.grid { display: grid; gap: 28px; }
 .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
+@media (max-width: 980px) {
+  .grid.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  .grid.three { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* Surfaces are separated by a step in tone, not by outlines or shadows. */
 .panel,
 .blog-card,
 .related-card,
@@ -119,46 +199,20 @@ img { display: block; max-width: 100%; }
 .faq-wrap__item,
 .packs-wrap__card {
   border: 0;
-  border-radius: 8px;
-  box-shadow: 0 0 0 1px var(--line);
-  background: var(--surface);
+  border-radius: var(--r-md);
+  box-shadow: none;
+  background: var(--husk);
 }
-
-/* .product-card {
-  box-shadow: 0 16px 44px rgba(58, 43, 26, 0.08);
-} */
 
 .product-card__badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 3.52px 10.4px;
-  border-radius: 999px;
-  background: #fff2ef;
-  color: var(--accent);
-  border: 1px solid rgba(196, 0, 0, 0.18);
-  font-size: 12px;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-}
-
-.footer-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-
-.footer-links {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.footer-links a {
-  color: var(--text);
-  text-decoration: none;
+  padding: 4px 11px;
+  border-radius: var(--pill);
+  background: var(--red-soft);
+  color: var(--red-dark);
+  font-size: 13px;
   font-weight: 600;
 }
 
@@ -166,26 +220,24 @@ img { display: block; max-width: 100%; }
   margin: 16px 0 0;
   display: inline-flex;
   align-items: center;
-  padding: 7.2px 12px;
-  border-radius: 999px;
-  background: #fff2ef;
-  color: #8f1515;
-  border: 1px solid #f5c7c7;
-  font-size: 13.6px;
-  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: var(--pill);
+  background: var(--red-soft);
+  color: var(--red-dark);
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .panel {
-  padding: 16px;
+  padding: 24px;
 }
 
+/* ===== Product card ===== */
 .product-card {
-  overflow: hidden;
   position: relative;
   display: grid;
   grid-template-rows: auto 1fr;
-  /* border-radius: 20px; */
-  /* padding: 10px; */
+  gap: 18px;
 }
 
 .product-media {
@@ -194,70 +246,70 @@ img { display: block; max-width: 100%; }
   overflow: hidden;
   cursor: pointer;
   aspect-ratio: 4 / 3;
+  border-radius: var(--r-md);
+  background: var(--husk);
 }
 .product-media__frame {
   display: block;
   width: 100%;
   height: 100%;
-  border-radius: 8px;
   overflow: hidden;
 }
 .product-media__frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.25s ease;
+  transition: transform 0.6s var(--ease-out);
 }
-.product-media:hover .product-media__frame img { transform: scale(1.02); }
-.product-card__thumb-list {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.product-media:hover .product-media__frame img { transform: scale(1.04); }
+
+.product-content {
   display: grid;
-  grid-auto-flow: column;
-  gap: 6.4px;
-  padding: 10.4px;
-  background: rgba(255, 255, 255, 0.92);
+  gap: 10px;
+  align-content: start;
 }
-.product-card__thumb-list li {
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  overflow: hidden;
-  background: #fff;
+.product-content h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
-.product-card__thumb-list img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.product-card__thumb-list {
-  opacity: 0.98;
-}
-.product-content { 
-  padding: 14px 4px 4px; 
-  display: grid; 
-  gap: 12px; 
-}
-.product-content h3 { margin: 0; font-size: 22px; line-height: 1.22; }
-.product-content p { margin: 0; color: var(--muted); line-height: 1.55; }
+.product-content h3 a:hover { color: var(--red); }
+.product-content p { margin: 0; color: var(--clay); line-height: 1.5; font-size: 16px; }
 .product-card__price {
-  display: grid;
-  gap: 3px;
-  padding-top: 2px;
-}
-.product-card__price span {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.35;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  padding-top: 4px;
 }
 .product-card__price strong {
-  color: var(--text);
-  font-size: 20px;
+  order: -1;
+  color: var(--soil);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
   line-height: 1.2;
+  font-variant-numeric: tabular-nums;
 }
-.product-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.product-card__price span {
+  color: var(--clay);
+  font-size: 14px;
+  line-height: 1.35;
+}
+.product-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+/* "В корзину" - главное действие карточки, "Подробнее" - тихое. */
+.product-actions .btn:not(.btn-secondary) { background: var(--husk); color: var(--soil); }
+.product-actions .btn:not(.btn-secondary):hover { background: var(--husk-deep); }
+.product-actions .btn-secondary { background: var(--red); }
+.product-actions .btn-secondary:hover { background: var(--red-dark); }
 
 .panel.no-border,
 .product-card.no-border,
@@ -274,91 +326,61 @@ img { display: block; max-width: 100%; }
   margin-top: 16px;
 }
 
+/* Status chip on the photo: a dot carries the colour, the words stay ink. */
 .product-card__status {
   position: absolute;
-  top: 13.6px;
-  left: 13.6px;
-  min-width: 86px;
+  top: 14px;
+  left: 14px;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 4px 8px;
-  border-radius: 999px;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.72);
+  gap: 7px;
+  padding: 6px 12px 6px 10px;
+  border-radius: var(--pill);
+  background: var(--paper);
+  color: var(--soil);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.2;
 }
-
-.product-card__status--inStock { background: #1f8a30; }
-.product-card__status--outOfStock { background: #9f1d1d; }
-
-/* Preorder = out of stock now, but orderable - badge shows both, stacked */
-.product-card__status--preorder {
-  flex-direction: column;
-  gap: 1px;
-  padding: 5px 10px;
-  border-radius: 10px;
-  line-height: 1.15;
-  background: #d97706;
+.product-card__status::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--clay);
 }
+.product-card__status--inStock::before { background: var(--green); }
+.product-card__status--outOfStock::before { background: var(--red); }
+.product-card__status--preorder::before { background: var(--amber); }
+.product-card__status--preorder { align-items: center; }
 
+.product-card__status-main { display: inline; }
 .product-card__status-note {
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  text-transform: lowercase;
-  opacity: 0.92;
+  display: inline;
+  color: var(--clay);
+  font-weight: 500;
 }
+.product-card__status-note::before { content: "· "; }
 
 .product-card__hover-delivery {
   position: absolute;
-  right: 13.6px;
-  bottom: 13.6px;
-  padding: 4.8px 10.4px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.88);
-  color: #1f1f1f;
-  font-size: 12px;
-  font-weight: 700;
+  right: 14px;
+  bottom: 14px;
+  padding: 6px 12px;
+  border-radius: var(--pill);
+  background: var(--soil);
+  color: var(--paper);
+  font-size: 13px;
+  font-weight: 600;
   opacity: 0;
-  transform: translateY(16px);
-  transition: 0.2s ease;
+  transform: translateY(12px);
+  transition: opacity 0.2s ease, transform 0.25s var(--ease-out);
 }
 
 .product-card:hover .product-card__hover-delivery {
   opacity: 1;
   transform: translateY(0);
-}
-
-.product-card__thumb-list {
-  position: absolute;
-  inset: auto 0 0 0;
-  display: grid;
-  grid-auto-flow: column;
-  gap: 6.4px;
-  padding: 10.4px;
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.product-card__thumb-list li {
-  width: 40px;
-  height: 40px;
-  border-radius: 4px;
-  overflow: hidden;
-  background: #fff;
-  border: 1px solid transparent;
-}
-
-.product-card__thumb-list li.active {
-  border-color: var(--accent);
-}
-
-.product-card__thumb-list img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .single-slider-controls {
@@ -374,12 +396,12 @@ img { display: block; max-width: 100%; }
 .single-slider-controls .slider-button {
   pointer-events: auto;
   border: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(30, 24, 19, 0.7);
   color: #fff;
-  width: 38px;
-  height: 38px;
-  border-radius: 999px;
-  font-size: 22.4px;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--pill);
+  font-size: 22px;
   line-height: 1;
   display: inline-flex;
   align-items: center;
@@ -388,7 +410,7 @@ img { display: block; max-width: 100%; }
 }
 
 .single-slider-controls .slider-button:hover {
-  background: rgba(0, 0, 0, 0.8);
+  background: var(--soil);
 }
 
 .formic-slider .slider-thumbs {
@@ -404,14 +426,15 @@ img { display: block; max-width: 100%; }
   background: none;
   padding: 0;
   width: 92px;
-  border-radius: 4px;
+  border-radius: var(--r-sm);
   overflow: hidden;
-  box-shadow: inset 0 0 0 1px #ececec;
   cursor: pointer;
+  opacity: 0.6;
 }
 
 .formic-slider .slider-thumbs button.active {
-  box-shadow: inset 0 0 0 1px var(--accent);
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--red);
 }
 
 .formic-slider .slider-thumbs img {
@@ -430,4 +453,261 @@ img { display: block; max-width: 100%; }
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* ==========================================================================
+   Ant trail - the brand's dashed rays become a pheromone trail that the
+   colony walks along. Used on the home hero and the starter-kit page.
+   ========================================================================== */
+.ant-trail {
+  --ant-w: 58px;
+  position: relative;
+  height: var(--trail-h, 64px);
+  overflow: clip;
+  color: var(--soil);
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .ant-trail { --ant-w: 48px; }
+
+  /* Half the column on a phone, otherwise the workers walk on each other. */
+  .ant-trail__walker:nth-child(odd) { display: none; }
+}
+
+/* The trail itself: the same curve the ants follow, drawn as red dashes. */
+.ant-trail__line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+}
+
+.ant-trail__line path {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 2;
+  stroke-dasharray: 12 10;
+  stroke-linecap: butt;
+  opacity: 0.85;
+}
+
+/* Each worker rides the curve with offset-path and turns with it
+   (offset-rotate: auto), the drawing faces right = the direction of travel. */
+.ant-trail__walker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--ant-w);
+  height: calc(var(--ant-w) * 28 / 48);
+  offset-path: var(--trail-path);
+  offset-anchor: 50% 50%;
+  offset-rotate: auto;
+  transform: translateY(var(--y, 0px));
+  animation: ant-march var(--dur, 50s) linear infinite;
+  animation-delay: calc(var(--t, 0) * var(--dur, 50s) * -1);
+}
+
+.ant-trail.is-paused .ant-trail__walker,
+.ant-trail.is-paused .ant__legs-a,
+.ant-trail.is-paused .ant__legs-b {
+  animation-play-state: paused;
+}
+
+/* The body does not sway: only the legs move, so the silhouette stays sharp. */
+.ant {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  shape-rendering: geometricPrecision;
+}
+
+.ant__legs-a,
+.ant__legs-b {
+  transform-box: view-box;
+  transform-origin: 25px 14px;
+  animation: ant-step 0.34s ease-in-out infinite alternate;
+  animation-delay: calc(var(--i) * -0.11s);
+}
+.ant__legs-b { animation-direction: alternate-reverse; }
+
+/* A harvested grain: wheat-gold with a dark crease. */
+.ant__seed ellipse {
+  fill: #d9a03a;
+  stroke: currentColor;
+  stroke-width: 1.1;
+}
+
+.ant__seed-crease {
+  fill: none;
+  stroke: #7a4e12;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+/* Browsers without motion paths keep just the dashed trail. */
+@supports not (offset-path: path("M0 0h1")) {
+  .ant-trail__walker { display: none; }
+}
+
+@keyframes ant-march {
+  from { offset-distance: 0%; }
+  to { offset-distance: 100%; }
+}
+
+@keyframes ant-step {
+  from { transform: rotate(-10deg); }
+  to { transform: rotate(10deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ant-trail__walker {
+    animation: none;
+    offset-distance: calc(var(--t, 0) * 100%);
+  }
+  .ant__legs-a,
+  .ant__legs-b {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
+   Shared page pieces (used on home, product, blog, about, contacts)
+   ========================================================================== */
+.section-heading {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.section-heading > div {
+  display: grid;
+  gap: 8px;
+}
+
+.section-heading h2 {
+  max-width: 22ch;
+  margin: 0;
+}
+
+.section-heading p {
+  max-width: 640px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+/* Ghost buttons: a quiet second action next to the red one. */
+.btn-ghost { background: var(--paper); color: var(--soil); }
+.btn-ghost:hover { background: var(--husk); }
+.btn-on-red { background: var(--paper); color: var(--soil); }
+.btn-on-red:hover { background: var(--straw); }
+.btn-ghost-light { background: transparent; color: var(--paper); box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.55); }
+.btn-ghost-light:hover { background: rgba(255, 255, 255, 0.12); }
+
+/* FAQ accordion */
+.faq-wrap__list {
+  display: grid;
+  gap: 10px;
+}
+
+.faq-wrap__item {
+  overflow: hidden;
+  border-radius: var(--r-md);
+  background: var(--husk);
+  cursor: default;
+}
+
+.faq-wrap__item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 20px 20px 24px;
+  cursor: pointer;
+  list-style: none;
+  color: var(--soil);
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.35;
+}
+
+.faq-wrap__item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-wrap__item summary::after {
+  content: "+";
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--soil);
+  color: var(--paper);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1;
+  transition: transform 0.25s var(--ease-out), background-color 0.2s ease;
+}
+
+.faq-wrap__item summary:hover::after {
+  background: var(--red);
+}
+
+.faq-wrap__item[open] summary::after {
+  transform: rotate(45deg);
+  background: var(--red);
+}
+
+.faq-wrap__item p {
+  margin: 0;
+  max-width: 68ch;
+  padding: 0 24px 24px;
+  color: var(--soil);
+  line-height: 1.6;
+}
+
+/* Inline text link: ink with a red underline. */
+.text-link {
+  color: var(--soil);
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-color: var(--red);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  transition: color 0.18s ease;
+}
+
+.text-link:hover {
+  color: var(--red);
+}
+
+.starter-kit-link {
+  margin: 0 0 20px;
+  max-width: 72ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* "Added to cart" confirmation on any button (cards, kit page). */
+.btn.is-added,
+.btn.is-added:hover,
+.product-actions .btn.is-added {
+  background: var(--green);
+  color: #fff;
 }

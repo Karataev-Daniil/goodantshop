@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import { ants } from "../data/antsData";
 import { formicariums } from "../data/formicariumsData";
+import { STARTER_KIT_PATH, kitPrice, kitProduct } from "../data/starterKitData";
+import AntTrail from "../components/AntTrail";
 import ProductCard from "../components/ProductCard";
 import SEO, { breadcrumbSchema, faqSchema, pageSeo, SITE_TELEGRAM } from "../components/SEO";
 import Stars from "../components/Stars";
@@ -13,14 +15,10 @@ import {
 } from "../data/reviewsData";
 import messorForagingSeeds from "../assets/images/ants/messor-foraging-seeds.webp";
 import messorWorkersCloseup from "../assets/images/ants/messor-workers-closeup.webp";
-import { antTendingAphids, woodAntsCarryingBeetle } from "../assets/images/library";
+import formicariumOrange from "../assets/images/formicariums/terra/formicarium-orange-back-corner.webp";
+import { antHeadMandibles, antTendingAphids, messorWorker, woodAntsCarryingBeetle } from "../assets/images/library";
 import type { TouchEvent } from "react";
-import type { ProductCardItem } from "../components/ProductCard";
 import type { OutletContext, ProductLike } from "../types";
-
-// Hero background carousel: leads with the shot that used to sit in the
-// "what-is" block, followed by a few strong colony close-ups.
-const heroSlides = [messorForagingSeeds];
 
 // «От X лей» в герое считаем из каталога, а не пишем руками - иначе цифра
 // разойдётся с карточками при первой же правке прайса. Товары «нет в наличии»
@@ -50,9 +48,10 @@ export default function HomePage() {
   const starterFormicarium = formicariums[0]!;
   const homeReviewStats = reviewStatsAll();
   const homeReviews = featuredReviews();
+  const kitPath = `/${lang}${STARTER_KIT_PATH}`;
+  const lei = t({ ru: "лей", ro: "lei", en: "lei" });
 
   const [galleryIndex, setGalleryIndex] = useState(0);
-  const [heroIndex, setHeroIndex] = useState(0);
   // Автопрокрутка галереи выключается навсегда после первого касания стрелок,
   // точек или свайпа: если человек начал листать сам, дёргать картинку под ним
   // уже нельзя.
@@ -60,39 +59,13 @@ export default function HomePage() {
   const [openFaq, setOpenFaq] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
-  useEffect(() => {
-    if (heroSlides.length < 2) return undefined;
-    const timer = setInterval(() => {
-      setHeroIndex((i) => (i + 1) % heroSlides.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
-
   const addStarterKit = () => {
     addToCart(starterAnt.id);
     addToCart(starterFormicarium.id);
   };
 
-  const starterKit: ProductCardItem = {
-    id: "starter-kit",
-    title: { ru: "Стартовый набор", ro: "Set de start", en: "Starter kit" },
-    excerpt: {
-      ru: "Формикарий Terra и колония Messor Structor из наличия. Набор инструментов и корм в подарок.",
-      ro: "Formicariu Terra și colonie Messor Structor din stoc. Setul de instrumente și hrana vin cadou.",
-      en: "Terra formicarium and a Messor Structor colony from stock. Tool kit and food come as a gift.",
-    },
-    images: ["/formicarium-colony.webp"],
-    availability: "inStock",
-    // Цена = Terra (1600) + Messor (650). Держите её в согласии с priceOptions
-    // в formicariumsData.ts и antsData.ts, иначе витрина разойдётся с корзиной.
-    priceOptions: [
-      {
-        label: { ru: "Формикарий + колония", ro: "Formicariu + colonie", en: "Formicarium + colony" },
-        value: "2250 лей",
-      },
-    ],
-  };
-
+  // Набор ведёт на свою страницу: там видно, что в него входит и что идёт
+  // подарком, а не на страницу одного формикария.
   const popularItems = [
     {
       item: starterAnt,
@@ -105,8 +78,8 @@ export default function HomePage() {
       onAddToCart: addToCart,
     },
     {
-      item: starterKit,
-      linkTo: `/${lang}/formic/${starterFormicarium.slug}`,
+      item: { ...kitProduct, id: "starter-kit", images: ["/formicarium-colony.webp"] },
+      linkTo: kitPath,
       onAddToCart: addStarterKit,
     },
   ];
@@ -263,152 +236,128 @@ export default function HomePage() {
           faqSchema(lang, homeFaq),
         ]}
       />
-      <div className="home-hero-band">
-        <div className="home-hero-band__bg" aria-hidden="true">
-          {heroSlides.map((image, i) => (
-            <div
-              key={image}
-              className={`store-hero__slide${i === heroIndex ? " is-active" : ""}`}
-              style={{ backgroundImage: `url(${image})` }}
-            />
-          ))}
-          <div className="store-hero__scrim" />
-        </div>
 
-        <div className="home-hero-band__inner">
-          <section className="store-hero">
-            <div className="store-hero__content">
-              <p className="kicker">{t({ ru: "Магазин муравьёв и формикариев", ro: "Magazin de furnici și formicarii", en: "Ant & formicarium shop" })}</p>
-              <h1 className="store-hero__title">
-                {t({
-                  ru: <>Живые муравьи и формикарии<br />для вашего дома</>,
-                  ro: <>Furnici vii și formicarii<br />pentru casa ta</>,
-                  en: <>Live ants and formicariums<br />for your home</>,
-                })}
-              </h1>
-              <p className="store-hero__lead">
-                {t({ ru: "Колонии с маткой, формикарии и всё для старта муравьиной фермы. Наблюдайте за настоящим подземным городом прямо у себя дома - с доставкой по всей Молдове.", ro: "Colonii cu regină, formicarii și tot ce trebuie pentru a porni o fermă de furnici. Urmărește un oraș subteran adevărat chiar la tine acasă - cu livrare în toată Moldova.", en: "Queen-right colonies, formicariums and everything to start an ant farm. Watch a real underground city right at home - with delivery across Moldova." })}
-              </p>
+      {/* Герой стоит на соломенном поле: Messor - жнецы, зерно их ремесло.
+          По нижнему краю поля идёт феромонная тропа с рабочими. */}
+      <section className="home-hero bleed">
+        <div className="home-hero__grid">
+          <div className="home-hero__copy">
+            <h1 className="home-hero__title">
+              {t({
+                ru: "Живые муравьи и формикарии для вашего дома",
+                ro: "Furnici vii și formicarii pentru casa ta",
+                en: "Live ants and formicariums for your home",
+              })}
+            </h1>
+            <p className="home-hero__lead">
+              {t({ ru: "Колонии с маткой, формикарии и всё для старта муравьиной фермы. Наблюдайте за настоящим подземным городом прямо у себя дома - с доставкой по всей Молдове.", ro: "Colonii cu regină, formicarii și tot ce trebuie pentru a porni o fermă de furnici. Urmărește un oraș subteran adevărat chiar la tine acasă - cu livrare în toată Moldova.", en: "Queen-right colonies, formicariums and everything to start an ant farm. Watch a real underground city right at home - with delivery across Moldova." })}
+            </p>
 
-              {/* Цена в первом экране: без неё человек из поиска не понимает
-                  порядок сумм и уходит, не долистав до карточек. */}
-              {antPriceFrom && formicariumPriceFrom && (
-                <p className="store-hero__price">
-                  <span>
-                    {t({ ru: "Колония с маткой", ro: "Colonie cu regină", en: "Queen-right colony" })}{" "}
-                    <strong>
-                      {t({ ru: "от", ro: "de la", en: "from" })} {antPriceFrom} {t({ ru: "лей", ro: "lei", en: "lei" })}
-                    </strong>
-                  </span>
-                  <span className="store-hero__price-sep" aria-hidden="true" />
-                  <span>
-                    {t({ ru: "формикарий", ro: "formicariu", en: "formicarium" })}{" "}
-                    <strong>
-                      {t({ ru: "от", ro: "de la", en: "from" })} {formicariumPriceFrom} {t({ ru: "лей", ro: "lei", en: "lei" })}
-                    </strong>
-                  </span>
-                </p>
-              )}
-
-              <ul className="hero-benefits">
-                {[
-                  t({ ru: "Для новичков", ro: "Pentru începători", en: "For beginners" }),
-                  t({ ru: "Не шумит", ro: "Fără zgomot", en: "No noise" }),
-                  t({ ru: "Не пахнет", ro: "Fără miros", en: "No smell" }),
-                  t({ ru: "Прост в уходе", ro: "Ușor de îngrijit", en: "Easy to care for" }),
-                  t({ ru: "Доставка по всей Молдове", ro: "Livrare în toată Moldova", en: "Delivery across Moldova" }),
-                ].map((benefit) => (
-                  <li key={benefit}>{benefit}</li>
-                ))}
-              </ul>
-              <div className="actions store-hero__actions">
-                <a className="btn btn-primary" href="#popular-products">
-                  {t({ ru: "Выбрать стартовый набор", ro: "Alege kitul de start", en: "Choose starter kit" })}
-                </a>
-                {/* Вторая кнопка для тех, кто не готов класть в корзину, но
-                    готов спросить. Без неё единственный путь - форма заказа. */}
-                <a
-                  className="btn btn-light"
-                  href={SITE_TELEGRAM}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {t({ ru: "Спросить в Telegram", ro: "Întreabă pe Telegram", en: "Ask on Telegram" })}
-                </a>
-              </div>
-              {heroSlides.length > 1 && (
-                <div className="store-hero__dots">
-                  {heroSlides.map((image, i) => (
-                    <button
-                      key={image}
-                      type="button"
-                      className={`store-hero__dot${i === heroIndex ? " is-active" : ""}`}
-                      onClick={() => setHeroIndex(i)}
-                      aria-label={`${t({ ru: "Слайд", ro: "Slide", en: "Slide" })} ${i + 1}`}
-                      aria-current={i === heroIndex}
-                    />
-                  ))}
+            {/* Цена в первом экране: без неё человек из поиска не понимает
+                порядок сумм и уходит, не долистав до карточек. */}
+            {antPriceFrom && formicariumPriceFrom && (
+              <dl className="home-hero__prices">
+                <div>
+                  <dt>{t({ ru: "Колония с маткой", ro: "Colonie cu regină", en: "Queen-right colony" })}</dt>
+                  <dd>
+                    <span>{t({ ru: "от", ro: "de la", en: "from" })}</span> {antPriceFrom} {lei}
+                  </dd>
                 </div>
-              )}
-            </div>
-          </section>
-        </div>
-      </div>
+                <div>
+                  <dt>{t({ ru: "Формикарий", ro: "Formicariu", en: "Formicarium" })}</dt>
+                  <dd>
+                    <span>{t({ ru: "от", ro: "de la", en: "from" })}</span> {formicariumPriceFrom} {lei}
+                  </dd>
+                </div>
+              </dl>
+            )}
 
-      {/* Полоса цифр, а не обещаний: обещания живут в «Почему покупают у нас»
-          ниже. Раньше оба блока говорили одно и то же одними и теми же
-          иконками, и повтор читался как заполнение пустоты. */}
-      <section className="hero-trust">
-        <ul className="hero-trust__grid">
+            <div className="home-hero__actions">
+              <Link className="btn btn-primary" to={kitPath}>
+                {t({ ru: "Выбрать стартовый набор", ro: "Alege kitul de start", en: "Choose starter kit" })}
+              </Link>
+              {/* Вторая кнопка для тех, кто не готов класть в корзину, но
+                  готов спросить. Без неё единственный путь - форма заказа. */}
+              <a className="btn btn-ghost" href={SITE_TELEGRAM} target="_blank" rel="noopener noreferrer">
+                {t({ ru: "Спросить в Telegram", ro: "Întreabă pe Telegram", en: "Ask on Telegram" })}
+              </a>
+            </div>
+
+            <ul className="home-hero__benefits">
+              {[
+                t({ ru: "Для новичков", ro: "Pentru începători", en: "For beginners" }),
+                t({ ru: "Не шумит", ro: "Fără zgomot", en: "No noise" }),
+                t({ ru: "Не пахнет", ro: "Fără miros", en: "No smell" }),
+                t({ ru: "Прост в уходе", ro: "Ușor de îngrijit", en: "Easy to care for" }),
+                t({ ru: "Доставка по всей Молдове", ro: "Livrare în toată Moldova", en: "Delivery across Moldova" }),
+              ].map((benefit) => (
+                <li key={benefit}>{benefit}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="home-hero__media">
+            <img
+              className="home-hero__photo"
+              src={messorWorker}
+              alt={t({
+                ru: "Муравей-жнец Messor Structor крупным планом",
+                ro: "Furnică secerătoare Messor Structor de aproape",
+                en: "A Messor Structor harvester ant up close",
+              })}
+              width="1120"
+              height="1400"
+            />
+            <Link className="home-hero__kit" to={kitPath}>
+              <img src="/formicarium-colony.webp" alt="" width="1140" height="806" />
+              <span className="home-hero__kit-text">
+                <span>{t({ ru: "Стартовый набор", ro: "Set de start", en: "Starter kit" })}</span>
+                <strong>
+                  {kitPrice} {lei}
+                </strong>
+              </span>
+              <svg className="home-hero__kit-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 12h13M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+
+        {/* Полоса цифр, а не обещаний: обещания живут в «Почему покупают у нас»
+            ниже. */}
+        <ul className="home-hero__stats">
           {[
+            { value: "5+", label: t({ ru: "лет с муравьями", ro: "ani cu furnici", en: "years with ants" }) },
+            { value: "500+", label: t({ ru: "отправленных колоний", ro: "colonii trimise", en: "colonies shipped" }) },
             {
-              // Clock - years of experience
-              icon: <><circle cx="12" cy="12" r="9" /><path d="M12 7.5V12l3.5 2" /></>,
-              value: "5+",
-              label: t({ ru: "лет с муравьями", ro: "ani cu furnici", en: "years with ants" }),
-            },
-            {
-              // Truck - shipped colonies
-              icon: <><path d="M3 7h11v8H3zM14 10h3.4L21 13v2h-7z" /><circle cx="7" cy="17" r="1.7" /><circle cx="17" cy="17" r="1.7" /></>,
-              value: "500+",
-              label: t({ ru: "отправленных колоний", ro: "colonii trimise", en: "colonies shipped" }),
-            },
-            {
-              // Star - marketplace rating
-              icon: <path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z" />,
               value: homeReviewStats.ratingValue.toFixed(1),
               label: t({ ru: "средняя оценка на 999.md", ro: "nota medie pe 999.md", en: "average rating on 999.md" }),
             },
             {
-              // Pin - delivery
-              icon: <><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z" /><circle cx="12" cy="10" r="2.6" /></>,
-              value: `150 ${t({ ru: "лей", ro: "lei", en: "lei" })}`,
+              value: `150 ${lei}`,
               label: t({ ru: "доставка по Кишинёву", ro: "livrare în Chișinău", en: "delivery within Chișinău" }),
             },
-          ].map(({ icon, value, label }) => (
-            <li className="hero-trust-card" key={label}>
-              <span className="hero-trust-card__icon" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  {icon}
-                </svg>
-              </span>
-              <span className="hero-trust-card__text">
-                <strong className="hero-trust-card__value">{value}</strong>
-                <span className="hero-trust-card__label">{label}</span>
-              </span>
+          ].map(({ value, label }) => (
+            <li key={label}>
+              <strong>{value}</strong>
+              <span>{label}</span>
             </li>
           ))}
         </ul>
+
+        <AntTrail className="home-hero__trail" />
       </section>
 
       {/* Товар идёт сразу после героя: раньше до первой цены человек проходил
           три объясняющие секции подряд. */}
-      <section className="section popular-products" id="popular-products">
-        <div className="section-heading">
-          <p className="kicker">{t({ ru: "Популярные товары", ro: "Produse populare", en: "Popular products" })}</p>
+      <section className="home-products" id="popular-products">
+        <div className="home-head">
           <h2>{t({ ru: "С чего начинают чаще всего", ro: "De unde încep cel mai des", en: "Where most people start" })}</h2>
+          <Link className="home-head__link" to={`/${lang}/ants`}>
+            {t({ ru: "Все виды муравьёв", ro: "Toate speciile de furnici", en: "All ant species" })}
+          </Link>
         </div>
-        <div className="grid popular-grid">
+        <div className="grid three popular-grid">
           {popularItems.map(({ item, linkTo, onAddToCart }) => (
             <ProductCard key={item.id} item={item} linkTo={linkTo} onAddToCart={onAddToCart} />
           ))}
@@ -417,14 +366,21 @@ export default function HomePage() {
 
       {/* «Что это такое» и галерея слиты в один блок: обе секции показывали
           одни и те же кадры и объясняли одно и то же, только по очереди. */}
-      <section className="section showcase-section">
-        <div className="section-heading">
-          <p className="kicker">{t({ ru: "Что такое муравьиная ферма", ro: "Ce este o fermă de furnici", en: "What is an ant farm" })}</p>
+      <section className="home-showcase bleed">
+        <div className="home-showcase__head">
           <h2>
-            {t({ ru: "Живой мини-мир", ro: "O mini-lume vie", en: "A living mini-world" })}
-            <br />
-            {t({ ru: "за стеклом", ro: "în spatele sticlei", en: "behind glass" })}
+            {t({ ru: "Живой мини-мир за стеклом", ro: "O mini-lume vie în spatele sticlei", en: "A living mini-world behind glass" })}
           </h2>
+          <ul className="showcase-facts">
+            {[
+              t({ ru: "Муравьи строят тоннели", ro: "Furnicile construiesc tunele", en: "Ants build tunnels" }),
+              t({ ru: "Заботятся о потомстве", ro: "Îngrijesc puietul", en: "They care for young" }),
+              t({ ru: "Собирают пищу", ro: "Adună hrană", en: "They collect food" }),
+              t({ ru: "Развивают колонию", ro: "Dezvoltă colonia", en: "They grow the colony" }),
+            ].map((fact) => (
+              <li key={fact}>{fact}</li>
+            ))}
+          </ul>
         </div>
 
         <div className="gallery-showcase">
@@ -433,28 +389,17 @@ export default function HomePage() {
             onTouchStart={onGalleryTouchStart}
             onTouchEnd={onGalleryTouchEnd}
           >
-            <img src={currentSlide.image} alt={currentSlide.label} loading="lazy" />
-            <button
-              type="button"
-              className="gallery-nav gallery-nav--prev"
-              onClick={showPrevSlide}
-              aria-label={t({ ru: "Предыдущее фото", ro: "Foto anterioară", en: "Previous photo" })}
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M15 5 8 12l7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              className="gallery-nav gallery-nav--next"
-              onClick={showNextSlide}
-              aria-label={t({ ru: "Следующее фото", ro: "Foto următoare", en: "Next photo" })}
-            >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </button>
-            {/* Счётчик и точки: без них галерея выглядела статичной картинкой и
+            {gallerySlides.map((slide, i) => (
+              <img
+                key={slide.label}
+                className={i === galleryIndex ? "is-active" : ""}
+                src={slide.image}
+                alt={i === galleryIndex ? slide.label : ""}
+                aria-hidden={i !== galleryIndex}
+                loading="lazy"
+              />
+            ))}
+            {/* Счётчик: без него галерея выглядела статичной картинкой и
                 её просто не листали. */}
             <span className="gallery-showcase__counter" aria-hidden="true">
               {galleryIndex + 1} / {galleryCount}
@@ -462,46 +407,59 @@ export default function HomePage() {
           </div>
 
           <div className="gallery-showcase__text">
-            <p className="gallery-showcase__caption">{currentSlide.label}</p>
+            <p className="gallery-showcase__caption" aria-live="polite">{currentSlide.label}</p>
             <p className="gallery-showcase__lead">{currentSlide.text}</p>
 
-            <div className="gallery-showcase__dots">
-              {gallerySlides.map((slide, i) => (
-                <button
-                  key={slide.label}
-                  type="button"
-                  className={`gallery-dot${i === galleryIndex ? " is-active" : ""}`}
-                  onClick={() => showSlide(i)}
-                  aria-label={`${t({ ru: "Фото", ro: "Foto", en: "Photo" })} ${i + 1}`}
-                  aria-current={i === galleryIndex}
-                />
-              ))}
+            <div className="gallery-showcase__controls">
+              <button
+                type="button"
+                className="gallery-nav gallery-nav--prev"
+                onClick={showPrevSlide}
+                aria-label={t({ ru: "Предыдущее фото", ro: "Foto anterioară", en: "Previous photo" })}
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M15 5 8 12l7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              <div className="gallery-showcase__dots">
+                {gallerySlides.map((slide, i) => (
+                  <button
+                    key={slide.label}
+                    type="button"
+                    className={`gallery-dot${i === galleryIndex ? " is-active" : ""}`}
+                    onClick={() => showSlide(i)}
+                    aria-label={`${t({ ru: "Фото", ro: "Foto", en: "Photo" })} ${i + 1}`}
+                    aria-current={i === galleryIndex}
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                className="gallery-nav gallery-nav--next"
+                onClick={showNextSlide}
+                aria-label={t({ ru: "Следующее фото", ro: "Foto următoare", en: "Next photo" })}
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
             </div>
-
-            <ul className="showcase-facts">
-              {[
-                t({ ru: "Муравьи строят тоннели", ro: "Furnicile construiesc tunele", en: "Ants build tunnels" }),
-                t({ ru: "Заботятся о потомстве", ro: "Îngrijesc puietul", en: "They care for young" }),
-                t({ ru: "Собирают пищу", ro: "Adună hrană", en: "They collect food" }),
-                t({ ru: "Развивают колонию", ro: "Dezvoltă colonia", en: "They grow the colony" }),
-              ].map((fact) => (
-                <li key={fact}>{fact}</li>
-              ))}
-            </ul>
           </div>
         </div>
       </section>
 
-      <section className="section why-hobby">
-        <div className="section-heading">
-          <p className="kicker">{t({ ru: "Почему люди выбирают это хобби", ro: "De ce oamenii aleg acest hobby", en: "Why people choose this hobby" })}</p>
+      <section className="home-why">
+        <div className="home-why__aside">
           <h2>
-            {t({ ru: "Причины начать", ro: "Motivele pentru a începe", en: "Reasons to start" })}
-            <br />
-            {t({ ru: "наблюдать живую колонию", ro: "să urmărești o colonie vie", en: "watching a living colony" })}
+            {t({ ru: "Причины начать наблюдать живую колонию", ro: "Motivele pentru a urmări o colonie vie", en: "Reasons to start watching a living colony" })}
           </h2>
+          <img
+            src={antHeadMandibles}
+            alt={t({ ru: "Голова муравья крупным планом", ro: "Capul unei furnici de aproape", en: "An ant's head up close" })}
+            loading="lazy"
+          />
         </div>
-        <div className="content-grid">
+        <ul className="home-why__list">
           {[
             {
               title: t({ ru: "Снимает стресс", ro: "Reduce stresul", en: "Reduces stress" }),
@@ -552,69 +510,61 @@ export default function HomePage() {
               }),
             },
           ].map((item) => (
-            <div key={item.title}>
-              <div className="why-hobby__text">
-                <h3>{item.title}</h3>
-                <p>{item.text}</p>
-              </div>
-            </div>
+            <li key={item.title}>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </li>
           ))}
-        </div>
+        </ul>
       </section>
 
-      <section className="section how-it-works">
-        <div className="section-heading">
-          <p className="kicker">{t({ ru: "Как начать", ro: "Cum să începi", en: "How to start" })}</p>
-          <h2>{t({ ru: "Простой путь к первой колонии", ro: "Drumul simplu către prima colonie", en: "A simple path to your first colony" })}</h2>
-        </div>
-        <div className="steps-grid">
+      <section className="home-steps bleed">
+        <h2>{t({ ru: "Простой путь к первой колонии", ro: "Drumul simplu către prima colonie", en: "A simple path to your first colony" })}</h2>
+        {/* Это настоящая последовательность, поэтому шаги нумерованы и
+            связаны той же тропой, что и в герое. */}
+        <ol className="home-steps__list">
           {[
             {
-              number: 1,
               title: t({ ru: "Выберите набор", ro: "Alege kitul", en: "Choose your kit" }),
               text: t({ ru: "Найти стартовый набор для своего уровня.", ro: "Găsește setul de start potrivit.", en: "Pick the right starter kit." }),
             },
             {
-              number: 2,
               title: t({ ru: "Получите колонию", ro: "Primește colonie", en: "Receive the colony" }),
               text: t({ ru: "Доставка с безопасной упаковкой и понятными инструкциями.", ro: "Livrare cu ambalaj sigur și instrucțiuni clare.", en: "Delivered safely with clear instructions." }),
             },
             {
-              number: 3,
               title: t({ ru: "Наблюдайте жизнь", ro: "Observă viața", en: "Observe life" }),
               text: t({ ru: "Смотрите, как муравьи строят мир внутри.", ro: "Privește cum furnicile construiesc lumea din interior.", en: "Watch the ants build their world inside." }),
             },
-          ].map((step) => (
-            <div key={step.number}>
-              <strong>{step.number}</strong>
+          ].map((step, i) => (
+            <li key={step.title}>
+              <span className="home-steps__num" aria-hidden="true">{i + 1}</span>
               <h3>{step.title}</h3>
               <p>{step.text}</p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
         {/* Секция объясняет путь и тут же даёт по нему пойти - иначе она
             заканчивается ничем. */}
-        <div className="actions how-it-works__actions">
-          <a className="btn btn-primary" href="#popular-products">
-            {t({ ru: "Посмотреть наборы", ro: "Vezi seturile", en: "See the kits" })}
-          </a>
-          <a className="btn btn-light" href={SITE_TELEGRAM} target="_blank" rel="noopener noreferrer">
+        <div className="home-steps__actions">
+          <Link className="btn btn-on-red" to={kitPath}>
+            {t({ ru: "Посмотреть стартовый набор", ro: "Vezi setul de start", en: "See the starter kit" })}
+          </Link>
+          <a className="btn btn-ghost-light" href={SITE_TELEGRAM} target="_blank" rel="noopener noreferrer">
             {t({ ru: "Задать вопрос", ro: "Pune o întrebare", en: "Ask a question" })}
           </a>
         </div>
       </section>
 
       {/* Доставка была описана только в микроразметке - человек её не видел.
-          Неизвестная стоимость доставки это классическая причина уйти. */}
-      <section className="section delivery-section">
-        <div className="section-heading">
-          <p className="kicker">{t({ ru: "Доставка", ro: "Livrare", en: "Delivery" })}</p>
-          <h2>{t({ ru: "Как колония доедет до вас", ro: "Cum ajunge colonia la tine", en: "How the colony gets to you" })}</h2>
-        </div>
-        <div className="delivery-grid">
+          Неизвестная стоимость доставки это классическая причина уйти.
+          Блок свёрстан как посылочная этикетка. */}
+      <section className="home-delivery bleed">
+        <h2>{t({ ru: "Как колония доедет до вас", ro: "Cum ajunge colonia la tine", en: "How the colony gets to you" })}</h2>
+        <div className="delivery-label">
           {[
             {
-              value: `150 ${t({ ru: "лей", ro: "lei", en: "lei" })}`,
+              value: `150 ${lei}`,
               label: t({ ru: "По Кишинёву", ro: "În Chișinău", en: "Within Chișinău" }),
               note: t({
                 ru: "Бесплатно, если в заказе есть формикарий.",
@@ -623,7 +573,7 @@ export default function HomePage() {
               }),
             },
             {
-              value: `+100 ${t({ ru: "лей", ro: "lei", en: "lei" })}`,
+              value: `+100 ${lei}`,
               label: t({ ru: "По Молдове", ro: "În Moldova", en: "Across Moldova" }),
               note: t({
                 ru: "Стоимость проезда плюс 100 лей - доставляем в любой город.",
@@ -650,26 +600,20 @@ export default function HomePage() {
               }),
             },
           ].map((item) => (
-            <div className="delivery-card" key={item.label}>
-              <strong className="delivery-card__value">{item.value}</strong>
-              <span className="delivery-card__label">{item.label}</span>
-              <p className="delivery-card__note">{item.note}</p>
+            <div className="delivery-label__cell" key={item.label}>
+              <span className="delivery-label__label">{item.label}</span>
+              <strong className="delivery-label__value">{item.value}</strong>
+              <p className="delivery-label__note">{item.note}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="section home-reviews">
-        <div className="section-heading">
-          <p className="kicker">{t({ ru: "Отзывы", ro: "Recenzii", en: "Reviews" })}</p>
-          <h2>{t({ ru: "Что говорят покупатели", ro: "Ce spun clienții", en: "What customers say" })}</h2>
-        </div>
-
+      <section className="home-reviews">
         <div className="home-reviews__summary">
-          <div className="home-reviews__rating">
-            <span className="home-reviews__score">{homeReviewStats.ratingValue.toFixed(1)}</span>
-            <Stars value={homeReviewStats.ratingValue} />
-          </div>
+          <h2>{t({ ru: "Что говорят покупатели", ro: "Ce spun clienții", en: "What customers say" })}</h2>
+          <p className="home-reviews__score">{homeReviewStats.ratingValue.toFixed(1)}</p>
+          <Stars value={homeReviewStats.ratingValue} />
           <a
             className="home-reviews__count"
             href={SELLER_999_URL}
@@ -698,75 +642,86 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section why-buy-us">
-        <div className="section-heading">
-          <p className="kicker">{t({ ru: "Почему покупают у нас", ro: "De ce cumpără la noi", en: "Why buy from us" })}</p>
-          <h2>
-            {t({ ru: "Надёжный старт", ro: "Un start sigur", en: "A reliable start" })}
-            <br />
-            {t({ ru: "муравьиной колонии", ro: "pentru colonie", en: "for your colony" })}
-          </h2>
+      <section className="home-trust">
+        <div className="home-trust__media">
+          <img
+            src={formicariumOrange}
+            alt={t({ ru: "Акриловый формикарий Terra", ro: "Formicariul acrilic Terra", en: "The acrylic Terra formicarium" })}
+            loading="lazy"
+          />
         </div>
-        <div className="trust-grid">
-          {[
-            {
-              icon: (
-                <path d="M3 7h11v8H3zM14 10h3.4L21 13v2h-7z" />
-              ),
-              extraIcon: <><circle cx="7" cy="17" r="1.7" /><circle cx="17" cy="17" r="1.7" /></>,
-              title: t({ ru: "Безопасная доставка", ro: "Livrare sigură", en: "Safe delivery" }),
-              description: t({
-                ru: "Надёжно утепляем посылки в холодное время года и компенсируем риски в пути.",
-                ro: "Ambalăm coletele termic pe timp rece și compensăm riscurile pe drum.",
-                en: "We insulate parcels in cold weather and cover transit risks.",
-              }),
-            },
-            {
-              icon: <path d="M12 3l7 3v5c0 4.4-3 7.4-7 9-4-1.6-7-4.6-7-9V6zM9 12l2 2 4-4" />,
-              title: t({ ru: "Проверенные колонии", ro: "Colonii verificate", en: "Verified colonies" }),
-              description: t({
-                ru: "Каждая матка проходит строгий карантин и проверку на наличие здорового расплода.",
-                ro: "Fiecare regină trece prin carantină strictă și verificarea puietului sănătos.",
-                en: "Every queen passes strict quarantine and a healthy-brood check.",
-              }),
-            },
-            {
-              icon: <path d="M20 15a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" />,
-              title: t({ ru: "Поддержка новичков", ro: "Suport pentru începători", en: "Beginner support" }),
-              description: t({
-                ru: "Остаёмся на связи после покупки и помогаем адаптировать колонию на новом месте.",
-                ro: "Rămânem în legătură după achiziție și ajutăm la adaptarea coloniei la noul loc.",
-                en: "We stay in touch after purchase and help your colony settle in.",
-              }),
-            },
-            {
-              icon: <path d="M12 3l8 4v10l-8 4-8-4V7zM4 7l8 4 8-4M12 11v10" />,
-              title: t({ ru: "Качественные формикарии", ro: "Formicarii de calitate", en: "Quality formicariums" }),
-              description: t({
-                ru: "Используем безопасный акрил и продуманную систему автоувлажнения.",
-                ro: "Folosim acril sigur și un sistem de umidificare bine gândit.",
-                en: "We use safe acrylic and a well-designed auto-humidity system.",
-              }),
-            },
-          ].map((item) => (
-            <div key={item.title}>
-              <span className="trust-icon" aria-hidden="true">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <div className="home-trust__body">
+          <h2>
+            {t({ ru: "Надёжный старт муравьиной колонии", ro: "Un start sigur pentru colonie", en: "A reliable start for your colony" })}
+          </h2>
+          <ul className="trust-list">
+            {[
+              {
+                icon: (
+                  <>
+                    <path d="M3 7h11v8H3zM14 10h3.4L21 13v2h-7z" />
+                    <circle cx="7" cy="17" r="1.7" />
+                    <circle cx="17" cy="17" r="1.7" />
+                  </>
+                ),
+                title: t({ ru: "Безопасная доставка", ro: "Livrare sigură", en: "Safe delivery" }),
+                description: t({
+                  ru: "Надёжно утепляем посылки в холодное время года и компенсируем риски в пути.",
+                  ro: "Ambalăm coletele termic pe timp rece și compensăm riscurile pe drum.",
+                  en: "We insulate parcels in cold weather and cover transit risks.",
+                }),
+              },
+              {
+                icon: <path d="M12 3l7 3v5c0 4.4-3 7.4-7 9-4-1.6-7-4.6-7-9V6zM9 12l2 2 4-4" />,
+                title: t({ ru: "Проверенные колонии", ro: "Colonii verificate", en: "Verified colonies" }),
+                description: t({
+                  ru: "Каждая матка проходит строгий карантин и проверку на наличие здорового расплода.",
+                  ro: "Fiecare regină trece prin carantină strictă și verificarea puietului sănătos.",
+                  en: "Every queen passes strict quarantine and a healthy-brood check.",
+                }),
+              },
+              {
+                icon: <path d="M20 15a2 2 0 0 1-2 2H8l-4 4V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2z" />,
+                title: t({ ru: "Поддержка новичков", ro: "Suport pentru începători", en: "Beginner support" }),
+                description: t({
+                  ru: "Остаёмся на связи после покупки и помогаем адаптировать колонию на новом месте.",
+                  ro: "Rămânem în legătură după achiziție și ajutăm la adaptarea coloniei la noul loc.",
+                  en: "We stay in touch after purchase and help your colony settle in.",
+                }),
+              },
+              {
+                icon: <path d="M12 3l8 4v10l-8 4-8-4V7zM4 7l8 4 8-4M12 11v10" />,
+                title: t({ ru: "Качественные формикарии", ro: "Formicarii de calitate", en: "Quality formicariums" }),
+                description: t({
+                  ru: "Используем безопасный акрил и продуманную систему автоувлажнения.",
+                  ro: "Folosim acril sigur și un sistem de umidificare bine gândit.",
+                  en: "We use safe acrylic and a well-designed auto-humidity system.",
+                }),
+              },
+            ].map((item) => (
+              <li key={item.title}>
+                <svg className="trust-list__icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   {item.icon}
-                  {item.extraIcon}
                 </svg>
-              </span>
-              <strong>{item.title}</strong>
-              <p>{item.description}</p>
-            </div>
-          ))}
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      <section className="section faq-wrap" id="faq">
-        <div className="section-heading">
-          <p className="kicker">{t({ ru: "Вопросы", ro: "Întrebări", en: "Questions" })}</p>
+      <section className="home-faq bleed" id="faq">
+        <div className="home-faq__head">
           <h2>{t({ ru: "Часто задаваемые вопросы", ro: "Întrebări frecvente", en: "Frequently asked questions" })}</h2>
+          <p>
+            {t({ ru: "Не нашли свой вопрос?", ro: "Nu ți-ai găsit întrebarea?", en: "Question not here?" })}{" "}
+            <a href={SITE_TELEGRAM} target="_blank" rel="noopener noreferrer">
+              {t({ ru: "Напишите нам в Telegram", ro: "Scrie-ne pe Telegram", en: "Message us on Telegram" })}
+            </a>
+          </p>
         </div>
         <div className="faq-wrap__list">
           {homeFaq.map((item, i) => (
@@ -847,6 +802,7 @@ export default function HomePage() {
           <p className="seo-prose__links">
             <Link to={`/${lang}/ants`}>{t({ ru: "Купить муравьёв", ro: "Cumpără furnici", en: "Buy ants" })}</Link>
             <Link to={`/${lang}/formicariums`}>{t({ ru: "Формикарии", ro: "Formicarii", en: "Formicariums" })}</Link>
+            <Link to={kitPath}>{t({ ru: "Стартовый набор", ro: "Set de start", en: "Starter kit" })}</Link>
             <a href="#popular-products">{t({ ru: "Популярные товары", ro: "Produse populare", en: "Popular products" })}</a>
             <a href="#faq">{t({ ru: "Частые вопросы", ro: "Întrebări frecvente", en: "FAQ" })}</a>
           </p>

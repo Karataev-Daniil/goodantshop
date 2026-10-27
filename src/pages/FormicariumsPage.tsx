@@ -2,6 +2,7 @@ import { useOutletContext, useParams } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import SEO, { breadcrumbSchema, itemListSchema, pageSeo } from "../components/SEO";
 import { formicariums } from "../data/formicariumsData";
+import { STARTER_KIT_PATH, kitColony, kitFormicarium, kitProduct } from "../data/starterKitData";
 import type { OutletContext } from "../types";
 
 export default function FormicariumsPage() {
@@ -50,6 +51,16 @@ export default function FormicariumsPage() {
               onAddToCart={addToCart}
             />
           ))}
+          {/* Готовый набор с тем же Terra - для тех, кто берёт дом сразу с колонией.
+              В ItemList разметки его нет: это не отдельный формикарий. */}
+          <ProductCard
+            item={kitProduct}
+            linkTo={`/${lang}${STARTER_KIT_PATH}`}
+            onAddToCart={() => {
+              addToCart(kitColony.id);
+              addToCart(kitFormicarium.id);
+            }}
+          />
         </div>
       </section>
     </>
