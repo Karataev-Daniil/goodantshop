@@ -42,6 +42,7 @@ export default function AntsPage() {
               item={item}
               linkTo={`/${lang}/ants/${item.slug}`}
               onAddToCart={addToCart}
+              headingLevel={2}
             />
           ))}
         </div>
