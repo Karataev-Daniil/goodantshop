@@ -2,7 +2,7 @@
 // Используется скриптом prerender.mjs (запускается после vite build).
 // Этот файл бандлится esbuild-ом с заглушкой ассетов, поэтому импорт картинок
 // возвращает абсолютный путь к исходному файлу (его читает sharp для OG).
-import { pageSeo, productSeo, getText } from "../src/components/SEO.tsx";
+import { pageSeo, productSeo, getText, localePath } from "../src/components/SEO.tsx";
 import { ants } from "../src/data/antsData.ts";
 import { formicariums } from "../src/data/formicariumsData.ts";
 import { blogPosts } from "../src/data/blogPostsData.ts";
@@ -32,7 +32,7 @@ const list = [];
 for (const lang of LANGS) {
   for (const page of staticPages) {
     list.push({
-      path: `/${lang}${page.path}`,
+      path: localePath(lang, page.path),
       title: getText(page.seo.title, lang),
       description: getText(page.seo.description, lang),
       image: null,

@@ -203,8 +203,17 @@ export const absoluteUrl = (path: string = ""): string => {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 };
 
+// Путь страницы на нужном языке. Русская главная живёт на чистом домене (/):
+// корень - самый сильный адрес сайта (бренд, внешние ссылки), и раньше он был
+// лишь редиректом на /ru. Остальное - с префиксом: /ru/ants, /ro, /en/blog.
+// Старый /ru уводит на / редиректом 301 (vercel.json).
+export const localePath = (lang: string = "ru", path: string = "/"): string => {
+  const rest = normalizePath(path);
+  return lang === "ru" && !rest ? "/" : `/${lang}${rest}`;
+};
+
 export const localizedUrl = (lang: string = "ru", path: string = "/"): string =>
-  `${SITE_URL}/${lang}${normalizePath(path)}`;
+  `${SITE_URL}${localePath(lang, path)}`;
 
 export const priceValue = (product: { priceOptions?: PriceOption[] }): string | undefined => {
   const option = product.priceOptions?.find((entry) => entry.selected) || product.priceOptions?.[0];
