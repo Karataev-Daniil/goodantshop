@@ -162,9 +162,9 @@ export default function StarterKitPage() {
     {
       q: { ru: "Сколько стоит доставка за город?", ro: "Cât costă livrarea în afara orașului?", en: "How much is delivery out of town?" },
       a: {
-        ru: "Стоимость проезда плюс 100 лей. Доставляем по всей Молдове, время согласуем в Telegram или по телефону.",
-        ro: "Costul transportului plus 100 lei. Livrăm în toată Moldova, ora o stabilim pe Telegram sau la telefon.",
-        en: "The fare plus 100 lei. We deliver across Moldova and agree on the time over Telegram or by phone.",
+        ru: "Рядом с Кишинёвом (например, Анений Ной) - стоимость проезда плюс 100 лей. В дальние города дороже: считаем дорогу туда и обратно и время в пути, сумму называем заранее. Доставляем по всей Молдове, время согласуем в Telegram или по телефону.",
+        ro: "Lângă Chișinău (de exemplu, Anenii Noi) - costul transportului plus 100 lei. În orașele mai îndepărtate costă mai mult: socotim drumul dus-întors și timpul pe drum, iar suma o spunem din timp. Livrăm în toată Moldova, ora o stabilim pe Telegram sau la telefon.",
+        en: "Near Chișinău (for example, Anenii Noi) it is the fare plus 100 lei. Farther towns cost more: we count the round trip and the time on the road and tell you the price in advance. We deliver across Moldova and agree on the time over Telegram or by phone.",
       },
     },
   ];
@@ -367,9 +367,9 @@ export default function StarterKitPage() {
               </span>
               <p>
                 {t({
-                  ru: "Бесплатно, потому что в заказе есть формикарий. За городом - стоимость проезда плюс 100 лей.",
-                  ro: "Gratuit, pentru că în comandă este un formicariu. În afara orașului - costul transportului plus 100 lei.",
-                  en: "Free because the order includes a formicarium. Out of town it is the fare plus 100 lei.",
+                  ru: "Бесплатно, потому что в заказе есть формикарий. Рядом с Кишинёвом - проезд плюс 100 лей, в дальние города дороже.",
+                  ro: "Gratuit, pentru că în comandă este un formicariu. Lângă Chișinău - transportul plus 100 lei, în orașele mai îndepărtate costă mai mult.",
+                  en: "Free because the order includes a formicarium. Near Chișinău it is the fare plus 100 lei; farther towns cost more.",
                 })}
               </p>
             </div>

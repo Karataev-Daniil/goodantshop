@@ -218,9 +218,9 @@ export default function HomePage() {
     {
       q: { ru: "Сколько стоит доставка?", ro: "Cât costă livrarea?", en: "How much does delivery cost?" },
       a: {
-        ru: "По Кишинёву 150 лей, и бесплатно, если в заказе есть формикарий. За городом - стоимость проезда плюс 100 лей. Доставляем по всей Молдове.",
-        ro: "În Chișinău 150 lei, gratuit dacă în comandă este un formicariu. În afara orașului - costul transportului plus 100 lei. Livrăm în toată Moldova.",
-        en: "150 lei within Chișinău, free when the order includes a formicarium. Out of town it is the fare plus 100 lei. We deliver across Moldova.",
+        ru: "По Кишинёву 150 лей, и бесплатно, если в заказе есть формикарий. Рядом с Кишинёвом (например, Анений Ной) - стоимость проезда плюс 100 лей. В дальние города дороже: считаем дорогу туда и обратно и время в пути, сумму называем заранее. Доставляем по всей Молдове.",
+        ro: "În Chișinău 150 lei, gratuit dacă în comandă este un formicariu. Lângă Chișinău (de exemplu, Anenii Noi) - costul transportului plus 100 lei. În orașele mai îndepărtate costă mai mult: socotim drumul dus-întors și timpul pe drum, iar suma o spunem din timp. Livrăm în toată Moldova.",
+        en: "150 lei within Chișinău, free when the order includes a formicarium. Near Chișinău (for example, Anenii Noi) it is the fare plus 100 lei. Farther towns cost more: we count the round trip and the time on the road and tell you the price in advance. We deliver across Moldova.",
       },
     },
   ];
@@ -575,11 +575,11 @@ export default function HomePage() {
             },
             {
               value: `+100 ${lei}`,
-              label: t({ ru: "По Молдове", ro: "În Moldova", en: "Across Moldova" }),
+              label: t({ ru: "Рядом с Кишинёвом", ro: "Lângă Chișinău", en: "Near Chișinău" }),
               note: t({
-                ru: "Стоимость проезда плюс 100 лей - доставляем в любой город.",
-                ro: "Costul transportului plus 100 lei - livrăm în orice oraș.",
-                en: "The fare plus 100 lei - we deliver to any city.",
+                ru: "Проезд плюс 100 лей, например до Анений Ной. В дальние города дороже - сумму назовём заранее.",
+                ro: "Transportul plus 100 lei, de exemplu până la Anenii Noi. În orașele mai îndepărtate costă mai mult - suma o spunem din timp.",
+                en: "The fare plus 100 lei, for example to Anenii Noi. Farther towns cost more - we tell you the price in advance.",
               }),
             },
             {

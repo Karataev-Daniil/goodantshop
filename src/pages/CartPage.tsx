@@ -44,7 +44,8 @@ const optionPriceNumber = (option: PriceOption | null | undefined) =>
   parseInt(String(option?.value || "").replace(/[^\d]/g, ""), 10) || 0;
 
 // Доставка по Кишинёву: 150 лей, бесплатно в заказе с формикарием. Загород
-// считается отдельно (проезд + 100 лей) и заранее не фиксируется - см. подсказку
+// считается отдельно (рядом с Кишинёвом проезд + 100 лей, дальше - по расстоянию
+// и времени в пути) и заранее не фиксируется - см. подсказку
 // под полем адреса. Держите в согласии с shippingRate в SEO.tsx.
 const CHISINAU_DELIVERY = 150;
 
@@ -474,14 +475,14 @@ export default function CartPage() {
                 <small className="checkout-field__hint">
                   {formicariumQty > 0
                     ? t({
-                        ru: "Кишинёв - бесплатно, в заказе есть формикарий. Остальная Молдова - стоимость проезда + 100 лей, сумму уточним при подтверждении.",
-                        ro: "Chișinău - gratuit, ai un formicariu în comandă. Restul Moldovei - costul transportului + 100 lei, suma o precizăm la confirmare.",
-                        en: "Chișinău - free, your order includes a formicarium. Rest of Moldova - transport fare + 100 lei, we'll confirm the amount when we call.",
+                        ru: "Кишинёв - бесплатно, в заказе есть формикарий. Рядом с Кишинёвом (например, Анений Ной) - проезд + 100 лей, в дальние города дороже. Сумму назовём при подтверждении.",
+                        ro: "Chișinău - gratuit, ai un formicariu în comandă. Lângă Chișinău (de exemplu, Anenii Noi) - transportul + 100 lei, în orașele mai îndepărtate costă mai mult. Suma o spunem la confirmare.",
+                        en: "Chișinău - free, your order includes a formicarium. Near Chișinău (for example, Anenii Noi) - the fare + 100 lei; farther towns cost more. We'll tell you the amount when we call.",
                       })
                     : t({
-                        ru: "Кишинёв - 150 лей, бесплатно при заказе с формикарием. Остальная Молдова - стоимость проезда + 100 лей, уточним при подтверждении.",
-                        ro: "Chișinău - 150 lei, gratuit la comanda cu formicariu. Restul Moldovei - costul transportului + 100 lei, precizăm la confirmare.",
-                        en: "Chișinău - 150 lei, free when the order includes a formicarium. Rest of Moldova - transport fare + 100 lei, confirmed on the call.",
+                        ru: "Кишинёв - 150 лей, бесплатно при заказе с формикарием. Рядом с Кишинёвом (например, Анений Ной) - проезд + 100 лей, в дальние города дороже. Сумму назовём при подтверждении.",
+                        ro: "Chișinău - 150 lei, gratuit la comanda cu formicariu. Lângă Chișinău (de exemplu, Anenii Noi) - transportul + 100 lei, în orașele mai îndepărtate costă mai mult. Suma o spunem la confirmare.",
+                        en: "Chișinău - 150 lei, free when the order includes a formicarium. Near Chișinău (for example, Anenii Noi) - the fare + 100 lei; farther towns cost more. We'll tell you the amount when we call.",
                       })}
                 </small>
               </label>
