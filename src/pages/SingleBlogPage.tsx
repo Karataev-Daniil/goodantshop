@@ -5,6 +5,7 @@ import SEO, {
   articleSchema,
   faqSchema,
   getText,
+  localePath,
   SITE_URL,
   SITE_INSTAGRAM,
   HAS_INSTAGRAM,
@@ -335,7 +336,7 @@ export default function SingleBlogPage() {
         </div>
         <div className="blog-hero__inner">
           <nav className="blog-breadcrumbs" aria-label="breadcrumbs">
-            <Link to={`/${lang}`}>{getText({ ru: "Главная", ro: "Acasă", en: "Home" }, lang)}</Link>
+            <Link to={localePath(lang)}>{getText({ ru: "Главная", ro: "Acasă", en: "Home" }, lang)}</Link>
             <span aria-hidden="true">/</span>
             <Link to={`/${lang}/blog`}>{getText({ ru: "Блог", ro: "Blog", en: "Blog" }, lang)}</Link>
             {category && (

@@ -4,7 +4,7 @@ import AntTrail from "../components/AntTrail";
 import { responsiveImg } from "../responsiveImage";
 import ProductGallery from "../components/ProductGallery";
 import ProductReviews from "../components/ProductReviews";
-import SEO, { breadcrumbSchema, faqSchema, pageSeo, productSchema, SITE_TELEGRAM } from "../components/SEO";
+import SEO, { breadcrumbSchema, faqSchema, localePath, pageSeo, productSchema, SITE_TELEGRAM } from "../components/SEO";
 import { reviewsFor, reviewStatsFor } from "../data/reviewsData";
 import {
   KIT_DELIVERY_VALUE,
@@ -217,7 +217,7 @@ export default function StarterKitPage() {
         ]}
       />
 
-      <Link className="product-detail__back" to={`/${lang}`}>
+      <Link className="product-detail__back" to={localePath(lang)}>
         ← {t({ ru: "На главную", ro: "Acasă", en: "Home" })}
       </Link>
 

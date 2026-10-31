@@ -17,6 +17,7 @@ import StarterKitPage from "./pages/StarterKitPage";
 
 import HeaderMenu from "./components/navigation/HeaderMenu";
 import FooterMenu from "./components/navigation/FooterMenu";
+import { localePath } from "./components/SEO";
 
 import { HelmetProvider } from "react-helmet-async";
 import type { HelmetServerState } from "react-helmet-async";
@@ -63,13 +64,9 @@ function Layout() {
   const [cartIds, setcartIds] = useLocalStorage<CartItem[]>('cart-ids', []);
 
   const switchLang = (nextLang: string) => {
-    const parts = location.pathname.split('/').filter(Boolean);
-    if (parts[0]) {
-      parts[0] = nextLang;
-    } else {
-      parts.unshift(nextLang);
-    }
-    navigate(`/${parts.join('/')}`);
+    // Первый сегмент - язык; на чистом домене (/) его нет: это русская главная.
+    const rest = location.pathname.split('/').filter(Boolean).slice(1);
+    navigate(localePath(nextLang, `/${rest.join('/')}`));
   };
 
   // curLang - из URL; для неизвестного языка индекс даёт undefined -> ru.
@@ -124,6 +121,13 @@ function Layout() {
   );
 }
 
+// /ru - прежний адрес русской главной. Сервер уводит с него на / редиректом
+// 301 (vercel.json); если на /ru пришли внутри приложения, делаем то же самое.
+function LangHome() {
+  const { lang } = useParams();
+  return lang === "ru" ? <Navigate to="/" replace /> : <HomePage />;
+}
+
 // helmetContext передаёт только серверный рендер (src/entry-server.tsx), чтобы
 // забрать JSON-LD для статического HTML; в браузере он не нужен.
 // Helmet дописывает в объект контекста поле helmet после рендера.
@@ -135,9 +139,12 @@ export default function App({ helmetContext }: { helmetContext?: HelmetContext }
   return (
     <HelmetProvider context={helmetContext}>
       <Routes>
-        <Route path="/" element={<Navigate to="/ru" replace />} />
-        <Route path="/:lang/*" element={<Layout />}>
+        {/* Русская главная - на чистом домене, без префикса /ru. */}
+        <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
+        </Route>
+        <Route path="/:lang/*" element={<Layout />}>
+          <Route index element={<LangHome />} />
           <Route path="starter-kit" element={<StarterKitPage />} />
           <Route path="ants" element={<AntsPage />} />
           <Route path="ants/:slug" element={<SingleAntPage />} />

@@ -112,12 +112,15 @@ const LANGS = ["ru", "ro", "en"];
 const OG_LOCALE = { ru: "ru_MD", ro: "ro_MD", en: "en_US" };
 
 // Из пути маршрута (/ru/ants) достаём язык и языконезависимый хвост (/ants),
-// чтобы построить canonical и hreflang-альтернативы.
+// чтобы построить canonical и hreflang-альтернативы. Корень (/) - русская главная.
 function splitLangPath(routePath) {
   const m = String(routePath).match(/^\/(ru|ro|en)(\/.*)?$/);
   if (!m) return { lang: "ru", rest: "" };
   return { lang: m[1], rest: m[2] || "" };
 }
+
+// Адрес языковой версии; русская главная - на чистом домене (localePath в SEO.tsx).
+const langUrl = (code, rest) => (code === "ru" && !rest ? `${SITE_URL}/` : `${SITE_URL}/${code}${rest}`);
 
 function applyMeta(html, { title, description, url, image, path: routePath, robots = "index, follow" }) {
   const t = esc(title);
@@ -126,9 +129,9 @@ function applyMeta(html, { title, description, url, image, path: routePath, robo
 
   const hreflang = [
     ...LANGS.map(
-      (code) => `<link rel="alternate" hreflang="${code}" href="${SITE_URL}/${code}${rest}" />`
+      (code) => `<link rel="alternate" hreflang="${code}" href="${langUrl(code, rest)}" />`
     ),
-    `<link rel="alternate" hreflang="x-default" href="${SITE_URL}/ru${rest}" />`,
+    `<link rel="alternate" hreflang="x-default" href="${langUrl("ru", rest)}" />`,
   ];
 
   const block = [
@@ -207,8 +210,8 @@ const sitemapUrls = routes
   .map((route) => {
     const { rest } = splitLangPath(route.path);
     const alternates = [
-      ...LANGS.map((code) => [code, `${SITE_URL}/${code}${rest}`]),
-      ["x-default", `${SITE_URL}/ru${rest}`],
+      ...LANGS.map((code) => [code, langUrl(code, rest)]),
+      ["x-default", langUrl("ru", rest)],
     ]
       .map(([code, href]) => `    <xhtml:link rel="alternate" hreflang="${code}" href="${xmlEsc(href)}"/>`)
       .join("\n");
@@ -243,7 +246,7 @@ const NOT_FOUND = {
   ru: {
     title: "Страница не найдена",
     text: "Такой страницы нет: возможно, ссылка устарела или в адресе опечатка. Загляните в каталог или напишите нам.",
-    links: [["/ru/ants", "Муравьи"], ["/ru/formicariums", "Формикарии"], ["/ru/blog", "Блог"], ["/ru/contacts", "Контакты"], ["/ru", "На главную"]],
+    links: [["/ru/ants", "Муравьи"], ["/ru/formicariums", "Формикарии"], ["/ru/blog", "Блог"], ["/ru/contacts", "Контакты"], ["/", "На главную"]],
   },
   ro: {
     title: "Pagina nu a fost găsită",
@@ -287,7 +290,7 @@ function render404(html) {
   </head>
   <body>
     <main class="container" style="max-width:760px;padding:48px 16px">
-      <a href="/ru" style="display:inline-flex;align-items:center;gap:10px;font-weight:700;color:inherit;text-decoration:none">
+      <a href="/" style="display:inline-flex;align-items:center;gap:10px;font-weight:700;color:inherit;text-decoration:none">
         <img src="/logo.webp" alt="GoodAntShop" width="40" height="40" style="border-radius:50%" />GoodAntShop
       </a>
 ${sections}

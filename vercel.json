@@ -2,7 +2,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/", "destination": "/ru", "permanent": true }
+    { "source": "/ru", "destination": "/", "permanent": true }
   ],
   "headers": [
     {

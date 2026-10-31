@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { SITE_PHONE, SITE_PHONE_DISPLAY } from "../SEO";
+import { SITE_PHONE, SITE_PHONE_DISPLAY, localePath } from "../SEO";
 import type { Lang } from "../../types";
 
 const footerText = {
@@ -68,7 +68,7 @@ export default function FooterMenu({ curLang }: { curLang: string }) {
     <footer className="site-footer">
       <div className="container footer-inner">
         <div className="footer-brand">
-          <Link className="footer-brand__name" to={`/${curLang}`}>
+          <Link className="footer-brand__name" to={localePath(curLang)}>
             <strong>GOOD</strong>ANTSHOP<span>.md</span>
           </Link>
           <p className="footer-brand__tagline">{copy.tagline}</p>
