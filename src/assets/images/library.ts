@@ -17,6 +17,14 @@ import antTendingAphids from "./blog/ant-tending-aphids-branch.webp";
 import wingedQueenOnWood from "./blog/winged-queen-ant-on-wood.webp";
 import redAntsDrinkingWater from "./blog/red-ants-drinking-water-drop.webp";
 import woodAntsCarryingBeetle from "./blog/wood-ants-carrying-beetle-log.webp";
+import antsOnOrangeSlice from "./blog/ants-on-orange-slice.webp";
+import antHangingUnderside from "./blog/ant-hanging-underside-macro.webp";
+import antWithEggsOnLeaf from "./blog/red-ant-head-closeup-leaf.webp";
+import redAntsNestEntrance from "./blog/red-ants-nest-entrance-ground.webp";
+import wingedAntOnGrass from "./blog/winged-ant-on-grass.webp";
+
+// Культура жука-знахаря (живой корм) - фото товара, нужно и в блоге про кормление.
+import feederBeetleCulture from "./accessories/feeder-beetle-culture.webp";
 
 // Фото формикария Terra с красными пометками для инструкции к стартовому набору:
 // пробка на арене, разделители этажей, пробирка-увлажнитель.
@@ -46,6 +54,12 @@ export {
   wingedQueenOnWood,
   redAntsDrinkingWater,
   woodAntsCarryingBeetle,
+  antsOnOrangeSlice,
+  antHangingUnderside,
+  antWithEggsOnLeaf,
+  redAntsNestEntrance,
+  wingedAntOnGrass,
+  feederBeetleCulture,
   messorStructor,
   messorForagingSeeds,
   messorWorkersCloseup,
