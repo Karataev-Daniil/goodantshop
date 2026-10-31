@@ -1,6 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { MouseEvent } from "react";
+import { CARD_SIZES, responsiveImg } from "../responsiveImage";
 import type { Availability, Lang, Localized, PriceOption, Text } from "../types";
 
 const getText = (value: Partial<Localized> | string | null | undefined, lang: string): string => {
@@ -47,9 +48,12 @@ interface ProductCardProps {
   item: ProductCardItem;
   linkTo: string;
   onAddToCart?: (id: number | string) => void;
+  // В каталоге над карточками сразу h1, поэтому там они h2 - без пропуска уровня.
+  headingLevel?: 2 | 3;
 }
 
-export default function ProductCard({ item, linkTo, onAddToCart }: ProductCardProps) {
+export default function ProductCard({ item, linkTo, onAddToCart, headingLevel = 3 }: ProductCardProps) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
   const { lang = "ru" } = useParams();
   const [previewIndex, setPreviewIndex] = useState(0);
   // Кнопка на пару секунд подтверждает добавление: иначе меняется только
@@ -92,18 +96,16 @@ export default function ProductCard({ item, linkTo, onAddToCart }: ProductCardPr
       <Link
         className="product-media"
         to={linkTo}
-        aria-label={title}
         onMouseMove={handleProductHoverMove}
         onMouseLeave={resetPreview}
       >
         <span className="product-media__frame">
-          <img src={imageSrc} alt={title} loading="lazy" />
+          <img {...responsiveImg(imageSrc, CARD_SIZES)} alt={title} loading="lazy" />
         </span>
         {item.availability && (
           <span
             className={`product-card__status product-card__status--${item.availability}`}
             title={badgeAria}
-            aria-label={badgeAria}
           >
             {isPreorder ? (
               <>
@@ -119,14 +121,14 @@ export default function ProductCard({ item, linkTo, onAddToCart }: ProductCardPr
             )}
           </span>
         )}
-        <span className="product-card__hover-delivery">
+        <span className="product-card__hover-delivery" aria-hidden="true">
           {getText({ ru: "Доставка", ro: "Livrare", en: "Delivery" }, lang)}
         </span>
       </Link>
       <div className="product-content">
-        <h3>
+        <Heading>
           <Link to={linkTo}>{title}</Link>
-        </h3>
+        </Heading>
         <p>{excerpt}</p>
         {primaryPrice && (
           <div className="product-card__price">

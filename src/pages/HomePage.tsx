@@ -7,6 +7,7 @@ import AntTrail from "../components/AntTrail";
 import ProductCard from "../components/ProductCard";
 import SEO, { breadcrumbSchema, faqSchema, pageSeo, SITE_TELEGRAM } from "../components/SEO";
 import Stars from "../components/Stars";
+import { responsiveImg } from "../responsiveImage";
 import {
   featuredReviews,
   formatReviewDate,
@@ -299,7 +300,7 @@ export default function HomePage() {
           <div className="home-hero__media">
             <img
               className="home-hero__photo"
-              src={messorWorker}
+              {...responsiveImg(messorWorker, "(max-width: 980px) 100vw, 560px", { priority: true })}
               alt={t({
                 ru: "Муравей-жнец Messor Structor крупным планом",
                 ro: "Furnică secerătoare Messor Structor de aproape",
@@ -309,7 +310,7 @@ export default function HomePage() {
               height="1400"
             />
             <Link className="home-hero__kit" to={kitPath}>
-              <img src="/formicarium-colony.webp" alt="" width="1140" height="806" />
+              <img {...responsiveImg("/formicarium-colony.webp", "78px")} alt="" width="1140" height="806" />
               <span className="home-hero__kit-text">
                 <span>{t({ ru: "Стартовый набор", ro: "Set de start", en: "Starter kit" })}</span>
                 <strong>
@@ -393,7 +394,7 @@ export default function HomePage() {
               <img
                 key={slide.label}
                 className={i === galleryIndex ? "is-active" : ""}
-                src={slide.image}
+                {...responsiveImg(slide.image, "(max-width: 980px) 100vw, 740px")}
                 alt={i === galleryIndex ? slide.label : ""}
                 aria-hidden={i !== galleryIndex}
                 loading="lazy"
@@ -454,7 +455,7 @@ export default function HomePage() {
             {t({ ru: "Причины начать наблюдать живую колонию", ro: "Motivele pentru a urmări o colonie vie", en: "Reasons to start watching a living colony" })}
           </h2>
           <img
-            src={antHeadMandibles}
+            {...responsiveImg(antHeadMandibles, "(max-width: 980px) 100vw, 520px")}
             alt={t({ ru: "Голова муравья крупным планом", ro: "Capul unei furnici de aproape", en: "An ant's head up close" })}
             loading="lazy"
           />
@@ -645,7 +646,7 @@ export default function HomePage() {
       <section className="home-trust">
         <div className="home-trust__media">
           <img
-            src={formicariumOrange}
+            {...responsiveImg(formicariumOrange, "(max-width: 980px) 100vw, 620px")}
             alt={t({ ru: "Акриловый формикарий Terra", ro: "Formicariul acrilic Terra", en: "The acrylic Terra formicarium" })}
             loading="lazy"
           />

@@ -49,6 +49,7 @@ export default function FormicariumsPage() {
               item={item}
               linkTo={`/${lang}/formic/${item.slug}`}
               onAddToCart={addToCart}
+              headingLevel={2}
             />
           ))}
           {/* Готовый набор с тем же Terra - для тех, кто берёт дом сразу с колонией.
@@ -56,6 +57,7 @@ export default function FormicariumsPage() {
           <ProductCard
             item={kitProduct}
             linkTo={`/${lang}${STARTER_KIT_PATH}`}
+            headingLevel={2}
             onAddToCart={() => {
               addToCart(kitColony.id);
               addToCart(kitFormicarium.id);

@@ -111,10 +111,10 @@ export default function FooterMenu({ curLang }: { curLang: string }) {
         </div>
       </div>
 
+      {/* Декоративный водяной знак: буквы в CSS (::before/::after), чтобы он не
+          считался текстом - его тон намеренно почти сливается с фоном. */}
       <div className="container" aria-hidden="true">
-        <span className="footer-wordmark">
-          <span>GOOD</span>ANTSHOP
-        </span>
+        <span className="footer-wordmark" data-accent="GOOD" data-rest="ANTSHOP" />
       </div>
 
       <div className="container footer-bottom">

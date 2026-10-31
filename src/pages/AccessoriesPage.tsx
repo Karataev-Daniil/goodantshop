@@ -1,6 +1,7 @@
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import SEO, { breadcrumbSchema, getText, itemListSchema, pageSeo } from "../components/SEO";
 import { accessories, foodsForAnt, getAccessory } from "../data/accessoriesData";
+import { responsiveImg } from "../responsiveImage";
 import { ants } from "../data/antsData";
 import type { Accessory, OutletContext, Text } from "../types";
 
@@ -30,7 +31,7 @@ function CareItem({ item, lang, onAddToCart }: CareItemProps) {
   return (
     <article className="care-item">
       <Link className="care-item__media" to={to} aria-label={t(item.title)}>
-        <img src={item.image} alt={t(item.title)} loading="lazy" />
+        <img {...responsiveImg(item.image, "104px")} alt={t(item.title)} loading="lazy" />
       </Link>
 
       <div className="care-item__body">
@@ -107,7 +108,7 @@ export default function AccessoriesPage() {
             <ul className="care-species">
               {ants.map((ant) => (
                 <li key={ant.id} className="care-species__row">
-                  <img src={ant.image} alt={getText(ant.title, lang)} loading="lazy" />
+                  <img {...responsiveImg(ant.image, "64px")} alt={getText(ant.title, lang)} loading="lazy" />
                   <div className="care-species__name">
                     <Link to={`/${lang}/ants/${ant.slug}`}>{getText(ant.title, lang)}</Link>
                     <span>{getText(ant.food, lang)}</span>

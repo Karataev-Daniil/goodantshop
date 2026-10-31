@@ -11,6 +11,7 @@ import SEO, {
 } from "../components/SEO";
 import BlogImage from "../components/BlogImage";
 import BlogClip from "../components/BlogClip";
+import { CARD_SIZES, responsiveImg } from "../responsiveImage";
 import { blogPosts, getBlogCategory } from "../data/blogPostsData";
 import { formatBlogDate } from "./BlogPage";
 import type { ReactNode } from "react";
@@ -328,10 +329,7 @@ export default function SingleBlogPage() {
       <header className="blog-hero">
         <div className="blog-hero__band" aria-hidden="true">
           {post.cover?.src && (
-            <div
-              className="blog-hero__bg"
-              style={{ backgroundImage: `url(${post.cover.src})` }}
-            />
+            <img className="blog-hero__bg" {...responsiveImg(post.cover.src, "100vw", { priority: true })} alt="" />
           )}
           <div className="blog-hero__scrim" />
         </div>
@@ -502,7 +500,7 @@ export default function SingleBlogPage() {
                   return (
                     <article className="blog-card" key={rel.id}>
                       <Link className="blog-card__cover" to={`/${lang}/blog/${rel.slug}`} aria-label={getText(rel.title, lang)}>
-                        <img src={rel.cover.src} alt={getText(rel.cover.alt, lang)} loading="lazy" />
+                        <img {...responsiveImg(rel.cover.src, CARD_SIZES)} alt={getText(rel.cover.alt, lang)} loading="lazy" />
                       </Link>
                       <div className="blog-card__content">
                         <h3>

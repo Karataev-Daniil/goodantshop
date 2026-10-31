@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import cartIcon from "../../assets/images/icons/cart.svg";
+import { responsiveImg } from "../../responsiveImage";
 import { SITE_PHONE, SITE_PHONE_DISPLAY } from "../SEO";
 import type { MouseEvent } from "react";
 import type { Translate } from "../../types";
@@ -54,7 +55,7 @@ export default function HeaderMenu({ curLang, switchLang, t, cartCount }: Header
     <header className={`site-header${isHome ? " is-home" : ""}${scrolled ? " is-scrolled" : ""}`}>
       <div className="container header-inner">
         <NavLink className="brand" to={`/${curLang}`}>
-          <img src="/logo.webp" alt="GoodAnt" />
+          <img {...responsiveImg("/logo.webp", "44px")} alt="GoodAnt" width="44" height="44" />
           <div>
             <strong><span>GOOD</span>ANTSHOP<span>.md</span></strong>
             <span>

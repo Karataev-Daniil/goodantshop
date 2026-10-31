@@ -18,6 +18,11 @@
   --red: #c40d12;         /* только действия */
   --red-dark: #9a0a0e;
   --red-soft: #fbe9e7;
+  /* Тот же красный/серый, подогнанный под контраст на конкретном фоне:
+     --red на straw даёт 4.4:1, а на soil 2.9:1 - ниже нормы WCAG. */
+  --red-on-straw: #b80b10;  /* 4.8:1 на straw */
+  --clay-on-straw: #655a51; /* 4.8:1 на straw */
+  --red-on-soil: #dc3439;   /* 3.8:1 на soil, для крупного текста */
   --green: #2c7a33;
   --amber: #b06a00;
 
@@ -268,6 +273,7 @@ p { text-wrap: pretty; }
   gap: 10px;
   align-content: start;
 }
+.product-content h2,
 .product-content h3 {
   margin: 0;
   font-family: var(--font-display);
@@ -276,6 +282,7 @@ p { text-wrap: pretty; }
   line-height: 1.2;
   letter-spacing: -0.01em;
 }
+.product-content h2 a:hover,
 .product-content h3 a:hover { color: var(--red); }
 .product-content p { margin: 0; color: var(--clay); line-height: 1.5; font-size: 16px; }
 .product-card__price {

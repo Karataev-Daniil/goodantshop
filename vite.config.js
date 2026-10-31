@@ -1,8 +1,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import responsiveImages from "./scripts/responsive-images.mjs";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), responsiveImages()],
   server: {
     proxy: {
       "/api": {
