@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { ReactNode, TouchEvent } from "react";
+import { responsiveImg } from "../responsiveImage";
 
 const ChevronLeft = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -50,9 +51,8 @@ export default function ProductGallery({ images, title, imageAlt, badge, zoomLab
       <div className="product-gallery__stage" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
         <img
           className="product-gallery__image"
-          src={current}
+          {...responsiveImg(current, "(max-width: 980px) 100vw, 680px", { priority: true })}
           alt={altText}
-          loading="lazy"
           onClick={() => setZoom(true)}
         />
         {badge}
@@ -99,7 +99,7 @@ export default function ProductGallery({ images, title, imageAlt, badge, zoomLab
               onClick={() => setIndex(i)}
               aria-label={`Image ${i + 1}`}
             >
-              <img src={src} alt={`${altText} - ${i + 1}`} loading="lazy" />
+              <img {...responsiveImg(src, "76px")} alt={`${altText} - ${i + 1}`} loading="lazy" />
             </button>
           ))}
         </div>

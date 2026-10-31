@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useOutletContext, useParams } from "react-router-dom";
 import { ants } from "../data/antsData";
+import { responsiveImg } from "../responsiveImage";
 import { formicariums } from "../data/formicariumsData";
 import { accessories, foodForAnt, toolKit } from "../data/accessoriesData";
 import { kitColony, kitFormicarium } from "../data/starterKitData";
@@ -389,7 +390,7 @@ export default function CartPage() {
                 return (
                   <article className="checkout-item" key={`${group.product.id}-${group.option?.value || ""}`}>
                     <div className="checkout-item__media">
-                      <img src={image} alt={getText(group.product.title, lang)} loading="lazy" />
+                      <img {...responsiveImg(image, "128px")} alt={getText(group.product.title, lang)} loading="lazy" />
                     </div>
                     <div className="checkout-item__info">
                       <h3>{getText(group.product.title, lang)}</h3>
@@ -430,7 +431,7 @@ export default function CartPage() {
                 <ul>
                   {pendingGifts.map((gift) => (
                     <li key={gift.product.id}>
-                      <img src={gift.product.images?.[0] || gift.product.image} alt="" loading="lazy" />
+                      <img {...responsiveImg(gift.product.images?.[0] || gift.product.image, "56px")} alt="" loading="lazy" />
                       <span>
                         {getText(gift.product.title, lang)}
                         {gift.qty > 1 && ` × ${gift.qty}`}
@@ -564,7 +565,7 @@ export default function CartPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src={gift.images?.[0] || gift.image} alt={getText(gift.title, lang)} loading="lazy" />
+                    <img {...responsiveImg(gift.images?.[0] || gift.image, "64px")} alt={getText(gift.title, lang)} loading="lazy" />
                     <span className="bundle-modal__gift-info">
                       <span className="bundle-modal__gift-name">{getText(gift.title, lang)}</span>
                       {gift.benefit && (

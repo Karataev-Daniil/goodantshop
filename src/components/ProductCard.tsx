@@ -1,6 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import type { MouseEvent } from "react";
+import { CARD_SIZES, responsiveImg } from "../responsiveImage";
 import type { Availability, Lang, Localized, PriceOption, Text } from "../types";
 
 const getText = (value: Partial<Localized> | string | null | undefined, lang: string): string => {
@@ -97,7 +98,7 @@ export default function ProductCard({ item, linkTo, onAddToCart }: ProductCardPr
         onMouseLeave={resetPreview}
       >
         <span className="product-media__frame">
-          <img src={imageSrc} alt={title} loading="lazy" />
+          <img {...responsiveImg(imageSrc, CARD_SIZES)} alt={title} loading="lazy" />
         </span>
         {item.availability && (
           <span

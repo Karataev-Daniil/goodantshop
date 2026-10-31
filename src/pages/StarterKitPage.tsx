@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 import AntTrail from "../components/AntTrail";
+import { responsiveImg } from "../responsiveImage";
 import ProductGallery from "../components/ProductGallery";
 import ProductReviews from "../components/ProductReviews";
 import SEO, { breadcrumbSchema, faqSchema, pageSeo, productSchema, SITE_TELEGRAM } from "../components/SEO";
@@ -329,7 +330,7 @@ export default function StarterKitPage() {
           {contents.map((entry) => (
             <li className={`kit-item${entry.gift ? " kit-item--gift" : ""}`} key={entry.key}>
               <Link className="kit-item__media" to={entry.to} tabIndex={-1} aria-hidden="true">
-                <img src={entry.image || "/placeholder-ant.svg"} alt="" loading="lazy" />
+                <img {...responsiveImg(entry.image || "/placeholder-ant.svg", "132px")} alt="" loading="lazy" />
               </Link>
               <div className="kit-item__body">
                 <span className="kit-item__role">{entry.role}</span>
@@ -426,7 +427,7 @@ export default function StarterKitPage() {
         {duo.map((part) => (
           <div className="kit-duo__part" key={part.key}>
             <Link className="kit-duo__media" to={part.to} tabIndex={-1} aria-hidden="true">
-              <img src={part.image || "/placeholder-ant.svg"} alt="" loading="lazy" />
+              <img {...responsiveImg(part.image || "/placeholder-ant.svg", "(max-width: 980px) 100vw, 620px")} alt="" loading="lazy" />
             </Link>
             <h3>{part.title}</h3>
             <p>{part.text}</p>

@@ -5,6 +5,7 @@ import ProductCard from "./ProductCard";
 import ProductReviews from "./ProductReviews";
 import SEO, { breadcrumbSchema, productSchema, productSeo } from "./SEO";
 import Stars from "./Stars";
+import { responsiveImg } from "../responsiveImage";
 import { reviewsFor, reviewStatsFor } from "../data/reviewsData";
 import { commonNameFor } from "../data/speciesMapData";
 import { STARTER_KIT_PATH, kitColony, kitFormicarium, kitPrice } from "../data/starterKitData";
@@ -502,7 +503,7 @@ export default function ProductDetail({ item, type, crossSell = [], similar = []
                 <article className={`cross-card${isGift ? " cross-card--gift" : ""}`} key={product.id}>
                   <Link className="cross-card__media" to={to}>
                     <img
-                      src={product.images?.[0] || product.image || "/placeholder-ant.svg"}
+                      {...responsiveImg(product.images?.[0] || product.image || "/placeholder-ant.svg", "120px")}
                       alt={getText(product.title, lang)}
                       loading="lazy"
                     />

@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import SEO, { breadcrumbSchema, itemListSchema, pageSeo, getText } from "../components/SEO";
 import { blogPosts, isPublished } from "../data/blogPostsData";
+import { CARD_SIZES, responsiveImg } from "../responsiveImage";
 import type { BlogPost } from "../types";
 
 const LOCALES: Record<string, string> = { ru: "ru-RU", ro: "ro-RO", en: "en-US" };
@@ -24,7 +25,7 @@ function BlogCard({ post, lang }: { post: BlogPost; lang: string }) {
     <article className="blog-card">
       <Link className="blog-card__cover" to={`/${lang}/blog/${post.slug}`} aria-label={getText(post.title, lang)}>
         <img
-          src={post.cover.src}
+          {...responsiveImg(post.cover.src, CARD_SIZES)}
           alt={getText(post.cover.alt, lang)}
           width={post.cover.width}
           height={post.cover.height}
@@ -116,7 +117,7 @@ export default function BlogPage() {
         {featured && (
           <Link className="blog-featured" to={`/${lang}/blog/${featured.slug}`}>
             <div className="blog-featured__media">
-              <img src={featured.cover.src} alt={getText(featured.cover.alt, lang)} loading="lazy" />
+              <img {...responsiveImg(featured.cover.src, "(max-width: 980px) 100vw, 750px")} alt={getText(featured.cover.alt, lang)} loading="lazy" />
             </div>
             <div className="blog-featured__body">
               <div className="blog-featured__tags">
