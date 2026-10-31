@@ -28,6 +28,8 @@ import whyAntsAreFascinating from "./blog/why-ants-are-fascinating";
 import messorStructor from "./blog/messor-structor";
 import starterKitGuide from "./blog/starter-kit-guide";
 import messorWintering from "./blog/messor-wintering";
+import howToFeedAnts from "./blog/how-to-feed-ants";
+import antQueen from "./blog/ant-queen";
 
 // Рубрики блога. Список расширяемый - добавляйте новые разделы сюда, и они
 // автоматически появятся в фильтре архива и в хлебных крошках статьи.
@@ -53,6 +55,13 @@ const showScheduled = Boolean(import.meta.env?.DEV);
 // Порядок = порядок на витрине блога. Крупной карточкой сверху идёт пост с
 // pinned (инструкция к стартовому набору - её ищут сразу после покупки), без
 // него - первый в списке. Новые посты добавляйте в конец.
-const allBlogPosts: BlogPost[] = [whyAntsAreFascinating, messorStructor, starterKitGuide, messorWintering];
+const allBlogPosts: BlogPost[] = [
+  whyAntsAreFascinating,
+  messorStructor,
+  starterKitGuide,
+  messorWintering,
+  howToFeedAnts,
+  antQueen,
+];
 
 export const blogPosts: BlogPost[] = allBlogPosts.filter((post) => showScheduled || isPublished(post));

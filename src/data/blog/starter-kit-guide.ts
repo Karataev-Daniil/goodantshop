@@ -261,5 +261,5 @@ export default {
   ],
 
   relatedProductIds: [44, 202],
-  relatedPostIds: [404, 402, 401],
+  relatedPostIds: [405, 404, 402, 401],
 } satisfies BlogPost;
