@@ -511,7 +511,9 @@
 }
 .blog-toc a.is-active {
   color: var(--soil);
-  font-weight: 650;
+  /* Жирность обводкой, а не font-weight: жирные буквы шире, длинный пункт
+     переносился на лишнюю строку, и оглавление прыгало при прокрутке. */
+  -webkit-text-stroke: 0.35px currentColor;
 }
 .blog-toc a.is-active::before {
   opacity: 1;
